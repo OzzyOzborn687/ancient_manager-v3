@@ -1,3 +1,10 @@
+# Баланс камбэков — 19 October 2026
+
+- Reduced compounded gold/rating snowball while retaining item, XP, draft and execution advantages.
+- Added earned deficit kill bounties, stronger high-ground defense and local objective strength checks.
+- Synced both editable dist trees; refreshed script cache keys; existing saves remain compatible.
+- Added full-production-stack seeded balance and mechanics regression tests. See BALANCE.md for formulas, before/after results and limitations.
+
 # v2.1 — 19 October 2026
 
 - Rebuilt the shell and home layout around the supplied reference: a club header, six large left controls including time advancement, centered news and compact standings, a right fixture rail and working previous/next event controls. All prior sections remain available through All sections, Settings and Saves.

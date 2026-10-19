@@ -53,3 +53,16 @@ scheduleFight6=function(m){
  let at=Math.max(m.clock+10,...m.sides.flatMap((s,side)=>s.heroes.filter(p=>groups[side].includes(p.role)).map(p=>p.travelUntil)));m.encounter6={at,zone,groups,attacker,highground};
 };
 const migrateBase7=migrate;migrate=function(){migrateBase7();if(S.active?.live)init7(S.active.live)};
+
+// Comeback rewards are earned only by killing a richer opponent. There is no
+// passive catch-up gold, winner reroll or requirement to reverse a lead.
+const killBase7=kill5;
+kill5=function(m,side,victim,participants){
+ const deaths=victim.d,deficit=net4(m.sides[1-side])-net4(m.sides[side]);
+ const bounty=clamp((deficit-1500)*.045,0,900);
+ killBase7(m,side,victim,participants);
+ // Losing Aegis is not a kill. No bonus for failed/empty encounters.
+ if(victim.d===deaths||!participants.length||bounty===0)return;
+ for(const p of participants)income5(m,side,p,bounty/participants.length,'kills');
+ event4(m,S.teams[m.sides[side].team].short+' получает '+Math.round(bounty)+' дополнительного золота за убийство при отставании.','comeback',{side});
+};
