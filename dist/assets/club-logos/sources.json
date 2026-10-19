@@ -1,0 +1,114 @@
+[
+  {
+    "id": 0,
+    "club": "Xtreme Gaming",
+    "file": "0-square.png",
+    "image_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/teamlogos/8261500.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 1,
+    "club": "Team Spirit",
+    "file": "1.webp",
+    "image_url": "https://media.cyberscore.live/static/teams/2025/6/ae20ddeb-7d9c-4ba5-9276-0ca02fcd2bdf.webp",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 2,
+    "club": "BetBoom Team",
+    "file": "2.webp",
+    "image_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/teamlogos/8255888.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 3,
+    "club": "Team Yandex",
+    "file": "3.webp",
+    "image_url": "https://liquipedia.net/commons/images/9/9c/Team_Yandex_2026_lightmode.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 4,
+    "club": "OG",
+    "file": "4.webp",
+    "image_url": "https://media.cyberscore.live/static/teams/2026/1/069048f9-031a-46b9-8578-d638c4fa1fa4.webp",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 5,
+    "club": "Team Tidebound",
+    "file": "5.webp",
+    "image_url": "https://pbs.twimg.com/profile_images/1990817590692753408/bgBFrX0R_400x400.jpg",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 6,
+    "club": "PlayTime",
+    "file": "6.webp",
+    "image_url": "https://media.cyberscore.live/static/teams/2026/1/bdeadbe8-1b7b-4fcd-b791-06c7fbebbab1.webp",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 7,
+    "club": "LGD Gaming",
+    "file": "7.webp",
+    "image_url": "https://media.cyberscore.live/static/teams/2025/6/ca84e8c9-9716-4b39-8d81-09f2d7ffc179.webp",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 8,
+    "club": "PARIVISION",
+    "file": "8.webp",
+    "image_url": "https://images.seeklogo.com/logo-png/61/1/parivision-logo-png_seeklogo-612976.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 9,
+    "club": "Natus Vincere",
+    "file": "9.webp",
+    "image_url": "https://i.logos-download.com/114320/31735-og-e0b7712e58c588f8e154de48db010ed3.png/NAVI_%28Natus_Vincere%29_Logo_2021-og.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 10,
+    "club": "Aurora Gaming",
+    "file": "10.webp",
+    "image_url": "https://liquipedia.net/commons/images/thumb/d/d0/Aurora_Gaming_full_lightmode.png/1200px-Aurora_Gaming_full_lightmode.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 11,
+    "club": "1w Team",
+    "file": "11.webp",
+    "image_url": "https://images.seeklogo.com/logo-png/61/1/1win-team-logo-png_seeklogo-613028.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 12,
+    "club": "GamerLegion",
+    "file": "12.webp",
+    "image_url": "https://media.cyberscore.live/static/teams/2026/7/c9cf2bcb-6b03-46d2-a12c-9ab352370193.webp",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 13,
+    "club": "Xipto Esports",
+    "file": "13.webp",
+    "image_url": "https://liquipedia.net/commons/images/thumb/7/7e/Xipto_Esports_2025_allmode.png/900px-Xipto_Esports_2025_allmode.png",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 14,
+    "club": "Conventus Stellarum",
+    "file": "14.webp",
+    "image_url": "https://media.cyberscore.live/static/teams/2026/9/6b50b2dc-a0a0-43dc-8703-fc23944cafae.webp",
+    "retrieved": "2026-10-16"
+  },
+  {
+    "id": 15,
+    "club": "Team Liquid",
+    "file": "15.webp",
+    "image_url": "https://media.cyberscore.live/static/teams/2025/8/c6c53230-033c-4a57-83d6-2ab93bcdfeeb.webp",
+    "retrieved": "2026-10-16"
+  }
+]
