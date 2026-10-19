@@ -1,4 +1,4 @@
-/* Ancient Manager v2.1 — Pro Esports Redesign
+/* Ancient Manager v2.1 вЂ” Pro Esports Redesign
    Dark, sharp, serious cyber-sports aesthetic */
 
 :root {
@@ -340,7 +340,7 @@ nav button.active:hover {
   gap: 10px;
 }
 
-/* ===== White headings → dark panels ===== */
+/* ===== White headings в†’ dark panels ===== */
 .white-heading21 {
   background: var(--panel-2);
   box-shadow: none;
