@@ -1,7 +1,10 @@
 /* GabeNews-style tournament bracket */
 .gabe-board{margin:16px 0;overflow-x:auto}
-.gabe-swiss,.gabe-groups,.gabe-playoffs{display:flex;flex-direction:column;gap:16px}
-.gabe-swiss-scroll,.gabe-groups,.gabe-lane-stages{display:flex;gap:12px;align-items:flex-start;min-width:max-content;padding:8px 4px}
+.gabe-swiss,.gabe-playoffs{display:flex;flex-direction:column;gap:16px}
+.gabe-swiss-scroll,.gabe-lane-stages{display:flex;gap:12px;align-items:flex-start;min-width:max-content;padding:8px 4px}
+/* Groups in a 2x2 square */
+.gabe-groups{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:8px 4px;align-items:start}
+.gabe-groups .gabe-col{min-width:0;width:100%}
 .gabe-col{min-width:160px;background:#0e1218;border:1px solid #2a3340;border-radius:8px;overflow:hidden}
 .gabe-col-head{background:#e8c547;color:#1a1408;font-size:11px;font-weight:800;letter-spacing:.6px;text-align:center;padding:8px 10px;text-transform:uppercase}
 .gabe-col-head.gabe-qual{background:#3ee0a0;color:#0a1a12}
