@@ -1,0 +1,7 @@
+/* Existing panel, command-grid and typography tokens remain authoritative. */
+.decision-panel .command-grid button small { line-height:1.55; white-space:normal; }
+.decision-panel .command-grid button:disabled { opacity:.5; cursor:not-allowed; }
+.decision-panel .actions { flex-wrap:wrap; gap:8px; }
+.feed-event.analysis, .feed-event.vision { border-left:2px solid var(--accent, #b9ef73); }
+.position-list span { overflow-wrap:anywhere; }
+@media (max-width:680px) { .decision-panel .command-grid { grid-template-columns:1fr; } }
