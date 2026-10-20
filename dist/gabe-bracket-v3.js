@@ -55,17 +55,29 @@ function gabePlayoffBoard(a,active){
   let playoff=a.schedule.filter(n=>!n.groupMatch);
   let stages={};
   for(let n of playoff){
-    let key=n.label.replace(/ · .+$/,'').replace(/ \d+$/,'')||n.label;
+    let key=n.label.replace(/ \d+$/,'');
     if(n.championship)key='Гранд-финал';
     (stages[key]=stages[key]||[]).push(n);
   }
-  let order=['Верхняя сетка · четвертьфинал','Верхняя сетка · полуфинал','Финал верхней сетки','Нижняя сетка · раунд 1','Нижняя сетка · раунд 2','Нижняя сетка · раунд 3','Полуфинал нижней сетки','Финал нижней сетки','Гранд-финал','BLAST · посев за полуфинал','BLAST · Last Chance','TI · матч за выход'];
-  let keys=Object.keys(stages).sort((a,b)=>{
-    let ia=order.findIndex(o=>a.startsWith(o)||o.startsWith(a));
-    let ib=order.findIndex(o=>b.startsWith(o)||o.startsWith(b));
-    return (ia<0?99:ia)-(ib<0?99:ib);
-  });
-  let upper=keys.filter(k=>/верхн|посев|Upper|полуфинал 1|полуфинал 2|Финал верхней/i.test(k)&&!/нижн/i.test(k));
+  for(let k of Object.keys(stages)){
+    stages[k].sort((x,y)=>{
+      let nx=+(String(x.label).match(/(\d+)\s*$/)||[])[1]||0;
+      let ny=+(String(y.label).match(/(\d+)\s*$/)||[])[1]||0;
+      return nx-ny||x.id-y.id;
+    });
+  }
+  let order=[
+    'Верхняя сетка · четвертьфинал','Верхняя сетка · полуфинал','Финал верхней сетки',
+    'Нижняя сетка · раунд 1','Нижняя сетка · раунд 2','Нижняя сетка · раунд 3',
+    'Полуфинал нижней сетки','Финал нижней сетки','Гранд-финал',
+    'BLAST · посев за полуфинал','BLAST · Last Chance','TI · матч за выход'
+  ];
+  function stageRank(k){
+    let i=order.findIndex(o=>k===o||k.startsWith(o)||o.startsWith(k));
+    return i<0?99:i;
+  }
+  let keys=Object.keys(stages).sort((a,b)=>stageRank(a)-stageRank(b)||a.localeCompare(b));
+  let upper=keys.filter(k=>/верхн|посев|Upper|Финал верхней/i.test(k)&&!/нижн/i.test(k));
   let lower=keys.filter(k=>/нижн|Last Chance|вылет|TI ·/i.test(k));
   let finals=keys.filter(k=>/Гранд|grand/i.test(k));
   function lane(title,ks){
