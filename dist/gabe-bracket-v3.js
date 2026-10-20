@@ -1,4 +1,3 @@
-function restPanel6(){return '';}
 function gabeCrest(id){
   if(id==null||!Number.isInteger(id))return '<span class="gabe-unknown">?</span>';
   let t=S.teams[id];
