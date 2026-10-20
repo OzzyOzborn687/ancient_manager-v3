@@ -1395,12 +1395,12 @@ const BALANCE22 = {
   "ult": 100
  }
 },
- version:'2.2', tick:60, phases:[600,1500], windows:[300,720,1200], windowCooldown:120,
- combat:{scale:150,noise:.018,minProbability:.015,initiative:1.09,highground:1.22,
+ version:'2.6', tick:60, phases:[600,1500], windows:[300,720,1200], windowCooldown:120,
+ combat:{scale:150,relativeScale:.22,noise:.018,minProbability:.015,initiative:1.09,highground:1.22,
   vision:.08,control:.1,momentum:.035,aegis:1.13,roshanExposure:.8,smokeBonus:1.18,
   casualties:[1,4],retaliation:.28,ultCooldown:120,healthLoss:24,momentumGain:.22,momentumDecay:.88},
  power:{skillBase:85,role:[1.2,1.12,1,.8,.75],heroBase:.55,heroPhase:.17,
-  netWorthDivisor:9500,netWorthExponent:.62,level:.024,formBase:.8,form:.0025,
+  netWorthDivisor:9500,netWorthExponent:.48,level:.024,formBase:.8,form:.0025,
   moraleBase:.82,morale:.0023,energyBase:.65,energy:.0035,masteryBase:.7,mastery:.3,
   ultReady:1.06,ultMissing:.86,healthBase:.55,health:.0045,cohesionPenalty:.86,
   combo:.035,control:.025,initiation:.035,damageBalance:.035,save:.018,
@@ -1409,13 +1409,14 @@ const BALANCE22 = {
   roshanHeroes:['Ursa','Templar Assassin','Troll Warlord','Huskar','Slardar'],
   initiationHeroes:['Axe','Mars','Tidehunter','Magnus','Earthshaker','Centaur Warrunner','Enigma','Sand King'],
   tagThreshold:4},
- economy:{passive:100,farm:[490,445,370,170,145],accessBase:.5,accessControl:.85,
+ economy:{accessMin:.78,accessMax:1.15,safetyMin:.78,passive:100,farm:[490,445,370,170,145],accessBase:.5,accessControl:.85,
   farmCarry:1.35,farmOthers:.9,actionFarm:.68,defendFarm:.85,farmTag:.035,
   skill:.003,xp:1.2,xpDivisor:42,maxLevel:30,heal:36,
   itemStart:1300,itemGrowth:1.4,itemMax:6000,slots:6,
   fallbackItems:['Power Treads','Blink Dagger','Black King Bar','Aghanim’s Scepter','Daedalus','Satanic'],
   killBase:160,killLevel:9,killNet:.018,assist:.45,deathBase:18,deathLevel:2.5,deathMax:120,
-  comeback:.035,comebackMax:700},
+  comeback:.025,comebackMax:600,shutdownPerKill:85,shutdownMax:850,killWeights:[1.25,1.35,.95,.65,.6],killPowerExponent:.35,
+  victimRole:[1.25,1.2,1,.85,.8],victimBkb:.85},
  map:{wards:2,sentries:1,wardMax:5,sentryMax:4,wardLifetime:360,wardRefresh:180,
   controlBase:.5,structureControl:.025,aliveControl:.03,visionControl:.1,farmControl:-.12,
   pushControl:.07,controlMin:.12,controlMax:.88,controlBlend:.35,zoneCount:5,
@@ -1435,7 +1436,14 @@ const BALANCE22 = {
   control:{label:'Контроль карты',phase:[.98,1.08,1.04],farm:1,preferred:'vision'},
   late:{label:'Фарм до лейта',phase:[.92,.97,1.14],farm:1.1,preferred:'farm'},
   pressure:{label:'Раннее давление',phase:[1.16,1.06,.88],farm:.95,preferred:'siege'}
- }, tacticDisruption:180, surrender:{minute:1500,deficit:22000,ratio:.68,lostTowers:8},
+ }, tacticDisruption:180, surrender:{minute:2100,deficit:30000,ratio:.52,lostTowers:10,grace:240},
+ execution:{daySpread:.09,driftSpread:.035,driftEvery:360,
+  errorBase:.07,errorSkill:.0018,errorFatigue:.001,errorVision:.05,errorGreed:.045,errorMin:.035,errorMax:.24,
+  skillReference:85,greedRatio:1.1,normalSpread:.035,errorFactor:.70,
+  types:['missedInitiation','badFocus','overextended'],
+  labels:{missedInitiation:'сорвана инициация',badFocus:'ошибка выбора цели',overextended:'излишне глубокий заход'},
+  targetCoreBonus:1.5,skirmishFirst:[120,240],skirmishInterval:[150,270]},
+ fatigue:{groups:[20,30,25,25],playoffs:33,unit:'series'},
  playback:{speeds:[1,2,4],defaultSpeed:1,realTickMs:1000,gameSeconds:10,skipBatch:120,maxMinutes:600}
 };
 const Match22 = { B:BALANCE22 };

@@ -5,3 +5,5 @@
 .feed-event.analysis, .feed-event.vision { border-left:2px solid var(--accent, #b9ef73); }
 .position-list span { overflow-wrap:anywhere; }
 @media (max-width:680px) { .decision-panel .command-grid { grid-template-columns:1fr; } }
+
+.feed-event.mistake { border-left:2px solid #df9c61; background:rgba(223,156,97,.06); }

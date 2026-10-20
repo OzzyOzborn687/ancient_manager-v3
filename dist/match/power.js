@@ -16,7 +16,8 @@ Match22.unit=function(m,p){
   (1+Math.pow(Math.max(0,p.nw-p.bank)/P.netWorthDivisor,P.netWorthExponent)+p.level*P.level)*
   (1+itemBonus)*(P.formBase+(p.form??80)*P.form)*(P.moraleBase+(p.morale??80)*P.morale)*
   (P.energyBase+(p.energy??80)*P.energy)*(P.masteryBase+(p.mastery??1)*P.mastery)*
-  (p.ultUntil<=m.clock?P.ultReady:P.ultMissing)*(P.healthBase+p.health*P.health);
+  (p.ultUntil<=m.clock?P.ultReady:P.ultMissing)*(P.healthBase+p.health*P.health)*
+  (m.execution26?.day?.[side]??1);
 };
 Match22.strength=function(m,side,group=alive4(m,side)){
  const P=this.B.power,C=this.B.combat,s=m.sides[side],hs=group.map(p=>this.hero(p.hero));
@@ -28,7 +29,7 @@ Match22.strength=function(m,side,group=alive4(m,side)){
  return group.reduce((n,p)=>n+this.unit(m,p),0)*synergy*tactic.phase[this.phaseIndex(m)]*
   (m.disruption22?.[side]>m.clock?P.cohesionPenalty:1)*(s.aegisUntil>m.clock?C.aegis:1);
 };
-Match22.probability=function(A,D,noise=0){const C=this.B.combat;return clamp(1/(1+Math.exp(-(A-D)/C.scale))+noise,C.minProbability,1-C.minProbability)};
+Match22.probability=function(A,D,noise=0){const C=this.B.combat,scale=Math.max(C.scale,(A+D)/2*C.relativeScale);return clamp(1/(1+Math.exp(-(A-D)/scale))+noise,C.minProbability,1-C.minProbability)};
 Match22.encounter=function(m,side,{zone=1,highground=false,exposed=false,smoke=false,groups=null}={}){
  const C=this.B.combat,own=groups?.[side]||alive4(m,side),enemy=groups?.[1-side]||alive4(m,1-side);
  const factor=s=>1+m.sides[s].vision22.zones[zone]*C.vision+m.sides[s].control*C.control+m.tempo22.momentum[s]*C.momentum;

@@ -47,12 +47,15 @@ Match22.checkEnd=function(m){
  for(let side of [0,1]){
   const s=m.sides[side],e=m.sides[1-side];
   if(s.ancient.hp<=0){this.finish(m,1-side,'ancient');return;}
-  if(m.clock>=G.minute&&net4(e)-net4(s)>=G.deficit&&net4(s)/Math.max(1,net4(e))<G.ratio&&towerCount4(s)>=G.lostTowers){this.finish(m,1-side,'surrender');return;}
+  const lost=m.clock>=G.minute&&net4(e)-net4(s)>=G.deficit&&net4(s)/Math.max(1,net4(e))<G.ratio&&towerCount4(s)>=G.lostTowers;
+  m.surrenderSince26??=[null,null];
+  if(!lost)m.surrenderSince26[side]=null;
+  else {m.surrenderSince26[side]??=m.clock;if(m.clock-m.surrenderSince26[side]>=G.grace&&m.lastFight<m.clock-G.grace){this.finish(m,1-side,'surrender');return;}}
  }
 };
 Match22.minute=function(m){
  if(m.finishedSide!=null)return;
- const B=this.B;
+ const B=this.B;this.prepareExecution(m);
  // Economy uses the preceding minute's commitment. No reward is granted by clicking.
  for(let side of [0,1])this.economy(m,side,B.tick);
  m.clock+=B.tick;this.timers(m);this.refresh(m);
@@ -62,6 +65,7 @@ Match22.minute=function(m){
  const enemy=this.ai(m,1,manual?own:m.lastActions22[0]),actions=[own,enemy];m.plans=[...actions];
  this.map(m,actions);
  for(const side of [0,1])autoBuyback6(m,side);
+ this.skirmish(m,actions);
  // Initiative is based on the intended action; resolution order alternates to avoid side bias.
  const order=m.minute%2===0?[0,1]:[1,0];
  for(const side of order){

@@ -5,6 +5,8 @@ Match22.tacticKey = key => ({tempo:'pressure',teamfight:'aggressive',balanced:'c
 Match22.init = function(m) {
  if(m.simVersion===BALANCE22.version)return m;
  const B=this.B;
+ // Preserve the complete v2.2 match, including committed orders and partial ticks.
+ if(m.simVersion==='2.2'&&m.tempo22&&m.window22){m.simVersion=B.version;this.refresh(m);return m;}
  m.simVersion=B.version;m.minuteAccumulator22=0;m.phase=this.phase(m);
  m.tempo22={initiator:null,mapAdvantage:null,momentum:[0,0]};
  m.window22={pending:true,reason:m.clock?'Продолжение сохранённой карты':'План на старт карты',last:m.clock,seen:B.windows.filter(t=>t<=m.clock)};
@@ -42,7 +44,7 @@ const makeBase22=makeLive4;
 makeLive4=function(...args){const m=makeBase22(...args);Match22.init(m);m.initialChance=positionScore4(m);return m};
 const migrateBase22=migrate;
 migrate=function(){
- migrateBase22();pauseLive4(false);S.gameVersion=BALANCE22.version;S.matchSchema22=22;
+ migrateBase22();pauseLive4(false);S.gameVersion=BALANCE22.version;S.matchSchema22=26;
  const maps=[S.active?.live,S.active?.sim13?.live,S.practice13?.live];
- for(const m of maps)if(m?.sides){const old=m.simVersion!==BALANCE22.version;Match22.init(m);if(old)event4(m,'Карта перенесена в 2.2: золото, счёт, предметы и повреждения сохранены; вижен и раздельные бараки восстановлены.','migration');}
+ for(const m of maps)if(m?.sides){const old=m.simVersion!==BALANCE22.version;Match22.init(m);if(old)event4(m,'Карта перенесена в 2.6: состояние карты сохранено; новые механики ошибок и распределения убийств применяются со следующего тика.','migration');}
 };

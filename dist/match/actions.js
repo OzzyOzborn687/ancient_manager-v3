@@ -76,29 +76,39 @@ Match22.pushDamage=function(m,side,type){const M=this.B.map;return alive4(m,side
 Match22.kill=function(m,side,victim,participants){
  if(victim.deadUntil>m.clock||!participants.length)return;
  const E=this.B.economy,s=m.sides[1-side];
- if(s.aegisUntil>m.clock&&s.aegisHero===victim.role){s.aegisUntil=0;victim.deadUntil=m.clock+5;victim.health=100;this.event(m,victim.hero+' теряет Аегис и возродится через 5 секунд.','aegis',{side:1-side});return;}
+ participants=[...new Set(participants)].filter(p=>p.deadUntil<=m.clock&&m.sides[side].heroes.includes(p));
+ if(!participants.length)return;
+  if(s.aegisUntil>m.clock&&s.aegisHero===victim.role){s.aegisUntil=0;victim.deadUntil=m.clock+5;victim.health=100;this.event(m,victim.hero+' теряет Аегис и возродится через 5 секунд.','aegis',{side:1-side});return;}
  const deficit=Math.max(0,net4(s)-net4(m.sides[side]));
- const bounty=E.killBase+victim.level*E.killLevel+victim.nw*E.killNet+Math.min(E.comebackMax,deficit*E.comeback);
- const killer=participants.slice().sort((a,b)=>b.nw-a.nw)[0];killer.k++;killer.streak++;
+ const shutdown=Math.min(E.shutdownMax,victim.streak*E.shutdownPerKill);
+ const bounty=E.killBase+victim.level*E.killLevel+victim.nw*E.killNet+Math.min(E.comebackMax,deficit*E.comeback)+shutdown;
+ const killer=weighted4(participants,participants.map(p=>E.killWeights[p.role]*Math.pow(Math.max(1,this.unit(m,p)),E.killPowerExponent)));killer.k++;killer.streak++;
  for(const p of participants){income5(m,side,p,p===killer?bounty:bounty*E.assist/Math.max(1,participants.length-1),'kills');if(p!==killer)p.a++;}
  victim.d++;victim.streak=0;victim.deadUntil=m.clock+Math.min(E.deathMax,E.deathBase+victim.level*E.deathLevel);victim.zone=5;victim.destination=5;victim.travelUntil=0;victim.combatUntil=0;victim.health=100;
- this.event(m,killer.hero+' убивает '+victim.hero+': '+Math.round(bounty)+' золота, возрождение через '+Math.round(victim.deadUntil-m.clock)+' с.','kill',{side});
+ this.event(m,killer.hero+' убивает '+victim.hero+': '+Math.round(bounty)+' золота, возрождение через '+Math.round(victim.deadUntil-m.clock)+' с.'+(shutdown?' Серия убийств прервана: +'+Math.round(shutdown)+' золота.':''),'kill',{side,killer:killer.role,victim:victim.role,shutdown});
 };
 Match22.fight=function(m,side,assessment,{smoke=false,exposed=false,highground=false}={}){
  const C=this.B.combat,own=assessment.fight.own.filter(p=>p.deadUntil<=m.clock),enemy=assessment.fight.enemy.filter(p=>p.deadUntil<=m.clock);
  if(!own.length||!enemy.length)return own.length>0;
- const p=clamp(assessment.p+(rng()*2-1)*C.noise,C.minProbability,1-C.minProbability),win=rng()<p,winner=win?side:1-side,loser=1-winner;
+ const execution=[this.execution(m,side,own,{exposed,highground,zone:assessment.zone}),this.execution(m,1-side,enemy,{defending:highground,zone:assessment.zone})];
+ const A=assessment.fight.A*execution[0].factor,D=assessment.fight.D*execution[1].factor;
+ const tactical=assessment.p-assessment.fight.p;
+ const p=clamp(this.probability(A,D)+tactical+(rng()*2-1)*C.noise,C.minProbability,1-C.minProbability),win=rng()<p,winner=win?side:1-side,loser=1-winner;
  const winning=win?own:enemy,losing=win?enemy:own;
  const superiority=Math.abs(assessment.fight.A-assessment.fight.D)/Math.max(1,assessment.fight.A+assessment.fight.D);
  const count=Math.min(losing.length,C.casualties[0]+Math.floor(superiority*C.casualties[1])+(smoke?0:1));
- const victims=losing.slice().sort((a,b)=>smoke?(a.role-b.role):a.health-b.health||a.nw-b.nw);
- for(const v of victims.slice(0,count))this.kill(m,winner,v,winning.filter(p=>p.deadUntil<=m.clock));
- if(rng()<C.retaliation*(1-superiority)&&losing.some(p=>p.deadUntil<=m.clock))this.kill(m,loser,winning.at(-1),losing.filter(p=>p.deadUntil<=m.clock));
+ const E=this.B.economy,pool=[...losing];
+ const deathsBefore=m.sides.map(s=>s.heroes.reduce((n,p)=>n+p.d,0));
+ for(let i=0;i<count&&pool.length;i++){
+  const v=weighted4(pool,pool.map(q=>E.victimRole[q.role]*(1+Math.max(0,100-q.health)/100)/(q.items.some(j=>j.name==='Black King Bar')?1/E.victimBkb:1)*(smoke&&q===assessment.target?this.B.execution.targetCoreBonus:1)));
+  pool.splice(pool.indexOf(v),1);this.kill(m,winner,v,winning.filter(p=>p.deadUntil<=m.clock));
+ }
+ if(rng()<C.retaliation*(1-superiority)&&losing.some(p=>p.deadUntil<=m.clock))this.kill(m,loser,weighted4(winning,winning.map(q=>this.B.economy.victimRole[q.role])),losing.filter(p=>p.deadUntil<=m.clock));
  for(const p of [...own,...enemy]){if(p.ultUntil<=m.clock)p.ultUntil=m.clock+C.ultCooldown;if(p.deadUntil<=m.clock)p.health=Math.max(1,p.health-C.healthLoss);}
  m.tempo22.initiator=side;m.tempo22.momentum[winner]=clamp(m.tempo22.momentum[winner]+C.momentumGain,-1,1);m.tempo22.momentum[loser]=clamp(m.tempo22.momentum[loser]-C.momentumGain,-1,1);
- const reason=assessment.factors.join('; ');
- this.event(m,(smoke?(win?'Смоук нашёл цель':'Смоук провалился'):'Файт: победа '+this.name(m,winner))+': '+reason+'.','fight-end',{winner,side,pWin:p,A:assessment.fight.A,D:assessment.fight.D});
- m.turningPoints6.push({sec:m.clock,started:m.clock-this.B.tick,stage:stage4(m),winner,kills:[winner===0?count:0,winner===1?count:0],gold:net4(m.sides[0])-net4(m.sides[1]),highground});
+ const reason=assessment.factors.join('; ')+execution.filter(e=>e.error).map(e=>'; '+this.name(m,e.side)+': '+this.B.execution.labels[e.error]).join('');
+ this.event(m,(smoke?(win?'Смоук нашёл цель':'Смоук провалился'):'Файт: победа '+this.name(m,winner))+': '+reason+'.','fight-end',{winner,side,pWin:p,A,D,expectedP:assessment.p,execution:execution.map(e=>({side:e.side,factor:e.factor,error:e.error})),comeback:net4(m.sides[winner])<net4(m.sides[loser])});
+ m.turningPoints6.push({sec:m.clock,started:m.clock-this.B.tick,stage:stage4(m),winner,kills:[m.sides[1].heroes.reduce((n,p)=>n+p.d,0)-deathsBefore[1],m.sides[0].heroes.reduce((n,p)=>n+p.d,0)-deathsBefore[0]],gold:net4(m.sides[0])-net4(m.sides[1]),highground});
  this.window(m,winner===0?'Выигранный файт: реализуйте преимущество':'Проигранный файт: перестройте план');
  m.lastFight=m.clock;return win;
 };
