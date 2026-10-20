@@ -38,6 +38,22 @@ const fs=require('fs'),assert=require('node:assert/strict');
  const before=await page.evaluate(()=>({base:development21().base,cash:S.budget,cost:DEVELOPMENT21.base.cost[development21().base]}));
  await page.locator('[onclick="upgradeDevelopment21(\'base\')"]').click();
  assert(await page.evaluate(before=>development21().base===before.base+1&&S.budget===before.cash-before.cost,before));
+ // Difficulty is selectable, persisted and shown on the next map.
+ await page.evaluate(()=>go('settings'));
+ for(const level of ['easy','normal','hard','heavy','impossible']){
+  await page.locator('[onclick="setCareerDifficulty(\''+level+'\')"]').click();
+  assert(await page.evaluate(level=>S.difficulty===level,level));
+  assert.equal(await page.locator('.difficulty-options [aria-pressed="true"]').count(),1);
+ }
+ await page.evaluate(()=>saveQueue);
+ await page.reload({waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>window.ancientStartup?.ready);
+ assert(await page.evaluate(()=>S.difficulty==='impossible'&&validSave(S)));
+ for(const width of [390,590,1440]){
+  await page.setViewportSize({width,height:1280});await page.evaluate(()=>go('settings'));
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  await page.screenshot({path:resultDir+'/difficulty-'+width+'.png'});
+ }
  await page.evaluate(()=>{selectedBracket=S.events.find(e=>formatKey6(e)==='pgl').id;bracketTabV1='groups';go('bracket');});
  await page.getByRole('button',{name:'Вписать',exact:true}).first().click();
  const fit=await page.locator('.neon-graph').first().evaluate(e=>e.style.transform);
@@ -83,6 +99,13 @@ const fs=require('fs'),assert=require('node:assert/strict');
  // Actual model-8 controls keep changing the real match beneath the new skin.
  await page.evaluate(()=>{fresh();S.events=[{id:0,name:'FISSURE',series:'FISSURE',day:0,pool:1000000,qualified13:S.teams.slice(0,8).map(t=>t.id)}];startEvent();playMap();go('match');});
  assert(await page.evaluate(()=>S.active.live.modelVersion===8));
+ const beforeDifficulty=await page.evaluate(()=>({level:S.active.live.difficulty.level,power:Match8.strength(S.active.live,1)}));
+ await page.evaluate(()=>go('settings'));
+ await page.locator('[onclick="setCareerDifficulty(\'impossible\')"]').click();
+ assert(await page.evaluate(before=>S.active.live.difficulty.level===before.level&&Match8.strength(S.active.live,1)===before.power,beforeDifficulty));
+ await page.evaluate(()=>{S.active.live=null;playMap();});
+ assert(await page.evaluate(()=>S.active.live.difficulty.level==='impossible'&&S.active.live.difficulty.multipliers[1]===1.2));
+ assert(await page.locator('.difficulty-match').count());
  for(const width of [390,590,1440]){
   await page.setViewportSize({width,height:1000});
   await page.screenshot({path:resultDir+'/live-match-'+width+'.png'});
@@ -97,7 +120,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
  assert(await page.evaluate(()=>!!localStorage.getItem('ancient-manager-v1')));
  const beforeDay=await page.evaluate(()=>{fresh();S.events.forEach(e=>{if(e.day<=S.day)e.day=S.day+30});go('home');return S.day;});
  await page.locator('#advance').click();assert(await page.evaluate(day=>S.day>day,beforeDay));
- const report={baseURL,graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','bracket fit/100%','model-8 farm order and tactic','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('16px "Russo One"'))};
+ const report={baseURL,graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','five difficulty levels and reload','frozen map difficulty/next map bonus','bracket fit/100%','model-8 farm order and tactic','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('16px "Russo One"'))};
  fs.writeFileSync(resultDir+'/report.json',JSON.stringify(report,null,2));
  console.log(JSON.stringify({...report,checks:checks.filter(c=>c.documentOverflow||c.bright.length)},null,2));
  assert.equal(errors.length,0);assert.equal(failures.length,0);assert(!checks.some(c=>c.documentOverflow),'No whole-page horizontal overflow');

@@ -431,3 +431,13 @@ thead tr { background:#1c1524; }
 #app .neon-bucket-team .club-avatar12,
 #app .neon-match-team .club-avatar12,
 #app .group-row21 .club-avatar12 { background:transparent; border:0; }
+
+/* Career difficulty uses the existing pink/lime controls. */
+.difficulty-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr)); gap:12px; }
+.difficulty-options button { display:flex; flex-direction:column; text-align:left; gap:10px; min-height:144px; padding:16px; }
+.difficulty-options b { font-size:18px; color:#f7c6ec; }
+.difficulty-options small { font-size:14px; line-height:1.4; font-weight:400; color:var(--muted); }
+.difficulty-options button > span { margin-top:auto; color:#ff8ce6; font-size:13px; }
+.difficulty-options button[aria-pressed="true"] b,.difficulty-options button[aria-pressed="true"] > span { color:var(--lime); }
+.difficulty-match { margin-bottom:16px; font-size:14px; }
+@media(max-width:470px) { .difficulty-options { grid-template-columns:1fr; }.difficulty-options button { min-height:115px; } }
