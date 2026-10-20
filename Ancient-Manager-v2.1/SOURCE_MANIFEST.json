@@ -2,7 +2,7 @@
   "version": "2.1",
   "source_commit": "d49e9d950244160d0ca38a0e345459c97ffc3ad3",
   "files": {
-    "CHANGELOG.md": "989910daebdeeaab3c0027d3f3700ac266b8b08a02ae07357d411fcdc6a9f600",
+    "CHANGELOG.md": "b5837bcfd80753f26ea12bfeb80c9ce16d5dee2941aee544738ad0ae1bddf793",
     "dist/assets/club-logos/0-square.png": "a13337a67840a7ae6b2f1ac434a0fb6cff0139cd17da25635ee895f8ba2cabd0",
     "dist/assets/club-logos/0.webp": "3abea06047fce90c9d567e1bfb3bd476519ac0e7747504524ba82cf5dfb7ffab",
     "dist/assets/club-logos/1.webp": "cd83bcf27512076ae6b241d5cbeb1f690208241b6b24ce2fb8ffdf3600f243b5",
@@ -24,14 +24,14 @@
     "dist/calendar-v21.js": "ec199005898d501e409c6233d0eada8f0b569baf5c9c36cc5913ad134f87471a",
     "dist/calendar.js": "f186c2becee43a965be971a076b1db20dd99eb6e42650f30385d9aa6278a919a",
     "dist/career-v1.js": "e563c3bdd5ea2384f70ab0a9fa2a1adc0df395bfc309badfb7db4fcffe89f6e5",
-    "dist/development-v21.js": "ab31d88548ebd8ad9d1cba6fd0355acf5c411310b25df204fe06fb2c10f11cae",
-    "dist/engine-v4.js": "e67d092bb126765815632d34234f59dc0cd3437945aef5d09e216412bcb7bae2",
+    "dist/development-v21.js": "ca05dc3e5b9b9c55b12f440740bb887d8b0735a815084d102b9e584c3715ceab",
+    "dist/engine-v4.js": "0111cf88427ccc99837a049bd734632b275a63b08a9372f4098b2199a56d49d5",
     "dist/engine-v5.js": "8b1eca3f36ee9ff084fff1002727ef26b8e47800e9b69b2b9227f38418d8616c",
-    "dist/engine-v6.js": "00ad2b34acd643b96f49fb4a6433436a55253d58eb5e05d7622f5c8f6fcd9718",
+    "dist/engine-v6.js": "25f107375e8b0adeaa7a7ae552d1a38a9b375f232abfeabf4a4bfccd76221a0d",
     "dist/engine-v7.js": "5911383786cb3be93c8600d0e1094e88d7d778b8de772c0fd932455d750c39c3",
     "dist/game.js": "26d5e20b02ee04c3441f6ab1fe9f12132786ced58c096602d49e44a14601e23f",
     "dist/hero-pools.js": "a47bcc23825c412fa070dbca5c4c59774809273e11bc33d46ceab27105531d10",
-    "dist/index.html": "c8969cb3a504ef602100a0cbe62a2befca20a2dcbc5830de145982b63574023e",
+    "dist/index.html": "1047835483268a4fc024909bf209b48e714879674a73c40def06e69e0cc2cf8c",
     "dist/interface-v2.css": "cf735e7ee5b9a8f7e251bb2bcc0b3d8cfc1e4e1acaad5d2cd202abed63fad721",
     "dist/interface-v2.js": "8283b7d855d04ef234c8b387ab98fda2461b63165c0fc01ba758e0ae3baeb17e",
     "dist/interface-v21.css": "5f529cf1cde580d834fd5075a543955a00c99f13e5e05ff2e086d630ec618d3e",
@@ -61,7 +61,9 @@
     "tests/variation-v7.cjs": "a96e36ce9b053448b44d976819a0bfec59b8871dbd67e4dce525728c56839295",
     "tests/world-v1.2.cjs": "6e5c1f5ff664639243c705a9288b499bb19cde42f0a9592b03eafb1091d08577",
     "BALANCE.md": "c830f38b8d2e3bc6366097d32f32ef08072f8a5f7a6da4c679154fd2a9434637",
-    "tests/comebacks.cjs": "dcd8f1dacb01f5f5a38f6beb071b5e1b77e4880b09d7ba4b1d497ce60faaf219"
+    "tests/comebacks.cjs": "dcd8f1dacb01f5f5a38f6beb071b5e1b77e4880b09d7ba4b1d497ce60faaf219",
+    "tests/recovery-v21.cjs": "203e2f2a5466780d13af9c12d5ff4abe66b6958998cd7c74ae78593356e26991"
   },
-  "base_repository_commit": "6bf0768defe1100dfb8963f7d4e516a178880958"
+  "base_repository_commit": "6bf0768defe1100dfb8963f7d4e516a178880958",
+  "recovery_base_repository_commit": "a4ddc7d53c1c9c2bacb9513c003872f30ae0802e"
 }

@@ -1,3 +1,11 @@
+# Восстановление клуба — 20 October 2026
+
+- Added Recovery to Development: five levels. Fatigue accumulation divisors: 1 / 1.4 / 2 / 2.75 / 3.5. Daily recovery multipliers outside tournaments: 1 / 1.25 / 1.5 / 1.75 / 2.
+- Level 1 is the default; upgrades to levels 2–5 cost $125,000 / $250,000 / $450,000 / $700,000. Map fatigue (manual, automatic, AI, scrims and legacy formats) and intensive training use the club's recovery level. Inside tournaments, daily recovery keeps its previous rate; paid rest stays at −15 / −30 fatigue.
+- Paid tournament rest is limited to two purchases for groups/qualifiers and two for playoffs, still no more than one package per series. Basic and premium packages share the limit. Swiss, seeding and last-chance rounds use the group allowance; upper/lower brackets and finals share the playoff allowance. Limits persist on save/reload and reset for a new tournament.
+- Existing careers start Recovery at level 1 without changing other upgrades. Old saves only recorded the last paid-rest series; migration counts that known purchase once in its original stage. Earlier unrecorded purchases cannot be reconstructed.
+- Tested deployed HTML (including the pinned tournament script), actual calendar ticks and a complete map/finish, save/reload, costs/locks, quota exhaustion, stage transitions and legacy purchase migration. Both dist trees are updated and script cache keys refreshed.
+
 # Баланс камбэков — 19 October 2026
 
 - Reduced compounded gold/rating snowball while retaining item, XP, draft and execution advantages.
