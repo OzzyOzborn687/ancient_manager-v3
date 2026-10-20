@@ -1,0 +1,76 @@
+name: Native applications
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'native/**'
+      - '.github/workflows/native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mac:
+    runs-on: macos-15
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: native/package-lock.json
+      - run: npm --prefix native ci --no-audit --no-fund
+      - run: npm --prefix native run build:web
+      - run: npm --prefix native run test:desktop
+      - run: npm --prefix native run mac
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Verify universal application
+        run: |
+          APP=$(find native/out -maxdepth 3 -name 'Ancient Manager.app' -type d | head -1)
+          test -n "$APP"
+          lipo -verify_arch x86_64 arm64 "$APP/Contents/MacOS/Ancient Manager"
+          codesign --verify --deep --strict "$APP"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ancient-Manager-macOS
+          path: |
+            native/out/*.dmg
+            native/out/*.zip
+      - name: Publish Mac download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APP_TAG: app-v2.6.0-${{ github.run_number }}
+        run: gh release create "$APP_TAG" native/out/*.dmg native/out/*.zip --title "Ancient Manager 2.6 — Mac" --notes-file native/RELEASE_NOTES.md --target "$GITHUB_SHA"
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: native/package-lock.json
+      - run: npm --prefix native ci --ignore-scripts --no-audit --no-fund
+      - run: npm --prefix native run ios:sync
+      - name: Prepare opaque App Store icon
+        run: swift native/scripts/icon.swift dist/assets/club-logos/0-square.png native/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png
+      - name: Build iPhone simulator
+        run: xcodebuild -project native/ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath native/ios-build CODE_SIGNING_ALLOWED=NO build > native/ios-build.log 2>&1 || { tail -200 native/ios-build.log; exit 1; }
+      - name: Build unsigned iPhone archive
+        run: xcodebuild -project native/ios/App/App.xcodeproj -scheme App -configuration Release -destination 'generic/platform=iOS' -archivePath native/out/Ancient-Manager.xcarchive CODE_SIGNING_ALLOWED=NO archive > native/ios-archive.log 2>&1 || { tail -200 native/ios-archive.log; exit 1; }
+      - name: Package iOS builds
+        run: |
+          ditto -c -k --keepParent native/ios-build/Build/Products/Debug-iphonesimulator/App.app native/out/Ancient-Manager-iPhone-Simulator.zip
+          ditto -c -k --keepParent native/out/Ancient-Manager.xcarchive native/out/Ancient-Manager-iPhone-unsigned.xcarchive.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Ancient-Manager-iPhone
+          path: |
+            native/out/*.zip
+            native/ios-build.log
+            native/ios-archive.log

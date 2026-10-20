@@ -7,6 +7,9 @@ Match8.assess=function(m,side,type){
  const danger=seen.length/Math.max(1,ready.length)+unknown*this.B.risk.unknown+(this.sight(m,side,zone)?0:this.B.risk.noSight);
  const risk=clamp(danger+(opposition-own)/Math.max(1,own+opposition)*this.B.risk.power,this.B.risk.min,this.B.risk.max);
  const conditions=[ready.length+' героев в группе',Math.round(arrival)+' с. до сбора',seen.length+' обнаруженных врагов в зоне',unknown+' позиций неизвестно',m.sides[side].heroes[0].items.some(i=>i.name==='Black King Bar')?'BKB у керри готов':'Керри без BKB'];
+ const objective=this.target(m,side,type==='throne',zone<3?zone:null);
+ if(['siege','split','throne'].includes(type)&&objective.tier===2&&m.clock<this.B.objectives.earlyTier2Until)conditions.push('T2 укреплена до '+this.B.objectives.earlyTier2Until/60+'-й минуты; урон осады '+Math.round(this.B.objectives.earlyTier2Damage*100)+'%');
+ if(m.v8.defense?.[side])conditions.push('Автозащита временно стягивает героев: '+this.zoneName(m.v8.defense[side].zone));
  const price=type==='farm'?'Уступаете давление на линии и объекты':type==='vision'?'Саппорты покидают коров; вард стоит '+this.B.vision.wardCost+' золота; сентри — '+this.B.vision.sentryCost+' при наличии средств':type==='rosh'?'Группа оставляет линии, теряет здоровье в яме; Аегис занимает слот':type==='smoke'||type==='counterSmoke'?'Один заряд смоука и фарм участников':type==='split'?'1–2 героя отделяются; возвращение и TP требуют времени':type==='defend'?'Отказ от давления; возможны расходы глифа и выкупа':type==='throne'?'Полный сбор и риск потери героев глубоко на базе':type==='coach'?'Короткое окно может быть упущено при автоматическом выборе':'Фарм группы и время перехода; глиф может остановить штурм';
  return {...description,reason:this.available(m,side,type),risk,riskLabel:risk>this.B.risk.high?'высокий':risk>this.B.risk.medium?'средний':'низкий',arrival,conditions,price,known:seen.length,unknown};
 };

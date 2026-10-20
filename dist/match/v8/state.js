@@ -38,7 +38,7 @@ Match8.capture=function(m,side){return {sec:m.clock,gold:net4(m.sides[side])-net
 Match8.closeDecision=function(m,side,reason){
  const id=m.v8.activeDecision[side],entry=m.v8.decisionLog.find(d=>d.id===id);if(!entry||entry.end)return;
  entry.end=this.capture(m,side);entry.reason=reason;entry.delta={gold:Math.round(entry.end.gold-entry.start.gold),ownGold:Math.round(entry.end.ownGold-entry.start.ownGold),objects:entry.end.objects-entry.start.objects,kills:entry.end.kills-entry.start.kills,deaths:entry.end.deaths-entry.start.deaths,roshan:entry.end.roshan-entry.start.roshan};
- entry.events=m.events.filter(e=>e.eventId8>entry.start.eventSerial&&['kill','fight-end','objective','roshan','vision','aegis','glyph','buyback'].includes(e.type)).slice(-12).map(e=>({sec:e.sec,text:e.text,type:e.type}));
+ entry.events=m.events.filter(e=>e.eventId8>entry.start.eventSerial&&['kill','fight-end','objective','roshan','vision','aegis','glyph','buyback','defense'].includes(e.type)).slice(-12).map(e=>({sec:e.sec,text:e.text,type:e.type}));
  m.v8.activeDecision[side]=null;
 };
 

@@ -28,6 +28,7 @@ Match8.tick=function(m,dt){
  }
  // Commit only after both coaches evaluated the same observation snapshot.
  for(let side=0;side<2;side++)if(intents[side])this.issue(m,side,intents[side]);
+ this.updateDefense(m);
  for(let side=0;side<2;side++){this.autoBuyback(m,side);assign5(m,side);this.placeVision(m,side);}
  this.encounters(m);battle5(m,dt);
  for(const side of (m.v8.frame%2?[0,1]:[1,0])){objectives4(m,side,dt);if(m.finishedSide!=null)break;}
@@ -36,6 +37,9 @@ Match8.tick=function(m,dt){
   const T=B.tempo;m.sides[side].control=clamp(T.controlBase+zones.size*T.zone+m.v8.wards[side].length*T.ward,T.minControl,T.maxControl);
   m.tempo22.momentum[side]*=Math.pow(T.decay,dt/60);
   m.v8.lastObserved[side]=m.plans[side];
+  m.v8.lastObservedOrders??=[null,null];
+  const order=m.v8.orders[side];
+  m.v8.lastObservedOrders[side]=order&&!order.hidden?{type:order.type,zone:order.zone}:null;
  }
  m.tempo22.mapSide=m.sides[0].control===m.sides[1].control?null:m.sides[0].control>m.sides[1].control?0:1;
  this.sync(m);

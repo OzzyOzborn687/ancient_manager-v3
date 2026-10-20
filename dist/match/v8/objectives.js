@@ -18,15 +18,19 @@ Match8.objectives=function(m,side,dt){
  if(!['siege','split','throne'].includes(order.type)||m.clock<O.pushStart||!group.length)return;
  const t=this.target(m,side,order.type==='throne',order.zone),defenders=this.local(m,1-side,t.lane),engaged=m.v8.battles.some(b=>b.zone===t.lane);
  if(engaged)return;
+ if(m.clock<s.nextObjective)return;
  const front=m.v8.front[side];front[t.lane]=clamp(front[t.lane]+dt*(group.length*O.frontRate-defenders.length*O.frontDefense),0,1);
  if(front[t.lane]<O.front[t.tier]||m.clock<s.nextObjective)return;
  if(defenders.length&&m.clock-m.v8.lastFight[t.lane]>=this.B.combat.encounterCooldown){fight4(m,side,t.tier>=3,t.lane);return;}
  if(e.glyphUntil>m.clock)return;
- if(e.glyphReady<=m.clock&&t.entity.hp<t.entity.max*O.glyphThreshold&&defenders.length){e.glyphUntil=m.clock+O.glyphDuration;e.glyphReady=m.clock+O.glyphCooldown;this.event(m,this.name(m,1-side)+' использует глиф: время на подкрепления.','glyph',{side:1-side});return;}
- const damage=dt*group.reduce((n,p)=>n+O.dpsBase+Match22.hero(p.hero).push*O.dpsHero+Math.max(0,p.nw-p.bank)*O.dpsSpent,0)/(1+defenders.length*O.defenderBlock);
+ if(e.glyphReady<=m.clock&&t.entity.hp<t.entity.max*O.glyphThreshold&&(defenders.length||m.v8.defense?.[1-side]?.zone===t.lane)){e.glyphUntil=m.clock+O.glyphDuration;e.glyphReady=m.clock+O.glyphCooldown;this.event(m,this.name(m,1-side)+' использует глиф: время на подкрепления.','glyph',{side:1-side});return;}
+ const earlyTier2=t.type==='tower'&&t.tier===2&&m.clock<O.earlyTier2Until;
+ if(earlyTier2){m.v8.fortificationNotices??=[null,null];if(m.v8.fortificationNotices[side]!==t.lane){m.v8.fortificationNotices[side]=t.lane;this.event(m,'T2 · '+this.zoneName(t.lane)+' укреплена до '+O.earlyTier2Until/60+'-й минуты: ранняя осада наносит '+Math.round(O.earlyTier2Damage*100)+'% урона.','fortification',{side:1-side,zone:t.lane});}}
+ const damage=(earlyTier2?O.earlyTier2Damage:1)*dt*group.reduce((n,p)=>n+O.dpsBase+Match22.hero(p.hero).push*O.dpsHero+Math.max(0,p.nw-p.bank)*O.dpsSpent,0)/(1+defenders.length*O.defenderBlock);
  const before=t.entity.hp;t.entity.hp=Math.max(0,before-damage);
+ if(t.entity.hp<before){m.v8.structurePressure??=[null,null];m.v8.structurePressure[1-side]={zone:t.lane,tier:t.tier,type:t.type,at:m.clock};}
  if(t.entity.hp<=0){
-  m.objectiveLog.push({sec:m.clock,side,lane:t.lane,tier:t.tier,type:t.type});s.nextObjective=m.clock+O.regroup;
+  m.objectiveLog.push({sec:m.clock,side,lane:t.lane,tier:t.tier,type:t.type});s.nextObjective=m.clock+O.regroup;if(t.type==="tower"&&t.tier<3)front[t.lane]=O.frontAfterObjective;
   this.event(m,this.name(m,side)+' разрушает '+t.label+'. На месте '+group.length+' атакующих; '+defenders.length+' защитников.','objective',{side,target:t.type,zone:t.lane});
   if(t.type==='ancient'){this.finish(m,side,'ancient');return;}
   for(const p of s.heroes)income5(m,side,p,t.type==='tower'?O.goldTower:O.goldRax,'objects');

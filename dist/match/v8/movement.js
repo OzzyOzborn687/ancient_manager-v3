@@ -16,15 +16,20 @@ Match8.arrivals=function(m){
  }
 };
 Match8.assign=function(m,side){
- const order=m.v8.orders[side];if(!order)return;
- const s=m.sides[side];s.targetLane=order.zone<3?order.zone:s.targetLane;
+ const order=m.v8.orders[side],response=m.v8.defense?.[side];if(!order&&!response)return;
+ const s=m.sides[side];s.targetLane=response?.zone??(order?.zone<3?order.zone:s.targetLane);
  for(const p of this.alive(m,side)){
   if(p.combatUntil>0&&p.combatUntil>=m.clock)continue;
-  if(p.health<this.B.movement.retreatHealth&&order.type!=='throne')p.retreat8=true;
+  if(p.health<this.B.movement.retreatHealth&&order?.type!=='throne')p.retreat8=true;
   let zone=laneZone6(side,p.role),defensive=false;
-  if(m.v8.reformUntil?.[side]>m.clock)zone=this.B.movement.rallyZone;
+  if(response&&!p.retreat8&&response.roles.includes(p.role)){
+   zone=response.zone;defensive=true;
+   // An available TP can interrupt an uncompleted walk; a spent TP/combat cannot.
+   if(p.travelUntil>m.clock+this.B.movement.tp&&p.tpUntil<=m.clock){p.travelUntil=0;p.destination=p.zone;}
+  }
+  else if(m.v8.reformUntil?.[side]>m.clock)zone=this.B.movement.rallyZone;
   else if(p.retreat8)zone=5;
-  else if(order.roles.includes(p.role)){zone=order.zone;defensive=order.type==='defend';}
+  else if(order?.roles.includes(p.role)){zone=order.zone;defensive=order.type==='defend';}
   else if(p.role===0)zone=3;
   this.move(m,p,zone,defensive);
  }

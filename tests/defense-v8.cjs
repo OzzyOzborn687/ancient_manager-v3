@@ -1,0 +1,32 @@
+'use strict';
+const assert=require('node:assert/strict'),{run}=require('./harness22.cjs')({modelVersion:8});
+run(require('./fixtures-v8.cjs'));
+run('function defenseFixture(side,type){const m=mirrorMap26(83012,["control","control"]);m.clock=2700;m.v8.nextThink=[99999,99999];m.v8.orders=[null,null];m.v8.lastObservedOrders=[null,null];m.v8.lastFight.fill(-300);m.v8.battles=[];m.battle=null;for(let s=0;s<2;s++)for(const p of m.sides[s].heroes){p.deadUntil=0;p.combatUntil=0;p.retreat8=false;p.travelUntil=0;p.tpUntil=0;p.health=100;p.zone=s===side?1:3;p.destination=p.zone;}if(type==="throne"){for(const t of m.sides[1-side].lanes[1].towers)t.hp=0;for(const t of m.sides[1-side].t4)t.hp=0;}Match8.issue(m,1-side,"farm",{manual:true,target:3});Match8.issue(m,side,type,{manual:true,target:1});m.v8.front[side][1]=1;return m;}');
+for(const side of [0,1])for(const type of ['siege','throne']){
+ run('var m=defenseFixture('+side+','+JSON.stringify(type)+');var before=m.sides[1-'+side+'].ancient.hp;simulateTick4(m,10);simulateTick4(m,10);');
+ assert(run('m.v8.defense[1-'+side+']?.zone===1'),type+' triggers defense on either side');
+ assert(run('m.sides[1-'+side+'].heroes.filter(p=>m.v8.defense[1-'+side+'].roles.includes(p.role)).every(p=>p.destination===1&&p.travelUntil>m.clock&&p.tpUntil>m.clock)'),type+' real TP and travel');
+ run('simulateTick4(m,10);');
+ assert.equal(run('Match8.local(m,1-'+side+',1).length'),type==='throne'?5:3,type+' free heroes arrive');
+ assert(run('m.sides[1-'+side+'].ancient.hp>0&&m.sides[1-'+side+'].ancient.hp>=before-1000'),type+' no unattended throne loss');
+ assert.equal(run('m.v8.orders[1-'+side+'].type'),'farm','Manager order retained');
+ assert(run('m.events.some(e=>e.type==="defense")'),'Explained in log');
+}
+run('var travel=defenseFixture(1,"throne");var walker=travel.sides[0].heroes[0];walker.destination=4;walker.travelUntil=travel.clock+60;simulateTick4(travel,10);simulateTick4(travel,10);');
+assert(run('walker.destination===1&&walker.travelUntil===travel.clock+BALANCE8.movement.tp'),'Unused TP redirects walking hero');
+run('var occupied=defenseFixture(1,"siege");occupied.sides[0].heroes[0].combatUntil=occupied.clock+90;occupied.sides[0].heroes[1].deadUntil=occupied.clock+90;simulateTick4(occupied,10);simulateTick4(occupied,10);');
+assert(run('occupied.sides[0].heroes[0].zone===3&&occupied.sides[0].heroes[1].zone===3'),'No teleporting dead or fighting heroes');
+run('var hidden=defenseFixture(1,"siege");Match8.updateDefense(hidden);');
+assert(run('!hidden.v8.defense[0]'),'No reading current enemy order before public snapshot');
+run('var reset=defenseFixture(1,"siege");reset.v8.lastObservedOrders=[null,{type:"siege",zone:1}];Match8.updateDefense(reset);reset.v8.lastObservedOrders=[null,null];reset.clock+=BALANCE8.defense.alertHold+1;Match8.updateDefense(reset);');
+assert(run('!reset.v8.defense[0]&&reset.v8.orders[0].type==="farm"'),'Alert expires and original order resumes');
+run('var early=defenseFixture(1,"siege");early.clock=600;for(const p of early.sides[0].heroes)p.deadUntil=99999;early.sides[0].lanes[1].towers[0].hp=0;early.sides[0].glyphReady=99999;early.sides[1].nextObjective=0;var tower=early.sides[0].lanes[1].towers[1];var startingHP=tower.hp;var lateCopy=JSON.parse(JSON.stringify(early));lateCopy.clock=BALANCE8.objectives.earlyTier2Until;objectives4(early,1,10);objectives4(lateCopy,1,10);var earlyDamage=startingHP-tower.hp,lateDamage=startingHP-lateCopy.sides[0].lanes[1].towers[1].hp;');
+assert(Math.abs(run('earlyDamage/lateDamage')-.15)<1e-10,'Exact early T2 armor from config');
+run('for(let i=0;i<12;i++){early.clock+=10;Match8.issue(early,1,"siege");objectives4(early,1,10);}');
+assert(run('tower.hp>0&&early.clock<=780'),'Spamming siege cannot erase a healthy early T2');
+assert(run('early.events.filter(e=>e.type==="fortification").length===1'),'No spam in journal');
+run('var chain=defenseFixture(1,"siege");for(const p of chain.sides[0].heroes)p.deadUntil=99999;chain.sides[0].lanes[1].towers[0].hp=1;chain.sides[0].glyphReady=99999;chain.sides[1].nextObjective=0;objectives4(chain,1,10);var next=chain.sides[0].lanes[1].towers[1].hp;for(let i=0;i<3;i++){chain.clock+=10;Match8.issue(chain,1,"siege");objectives4(chain,1,10);}');
+assert(run('chain.v8.front[1][1]===BALANCE8.objectives.frontAfterObjective&&chain.sides[0].lanes[1].towers[1].hp===next'),'New structure requires regroup and a fresh wave');
+run('var persisted=JSON.parse(JSON.stringify(travel)),seed=S.seed;for(let i=0;i<12;i++)simulateTick4(travel,10);var outcome=JSON.stringify(travel);S.seed=seed;for(let i=0;i<12;i++)simulateTick4(persisted,10);');
+assert.equal(run('JSON.stringify(persisted)'),run('outcome'),'Defense survives exact save continuation');
+console.log('PASS siege defense: both sides/plans, TP, occupied heroes, public snapshot, resumption, early T2 armor, anti-chain-push and saved continuation');

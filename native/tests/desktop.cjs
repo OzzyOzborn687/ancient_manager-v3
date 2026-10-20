@@ -1,0 +1,20 @@
+'use strict';
+const {_electron}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path');
+(async()=>{
+ const root=path.resolve(__dirname,'..');
+ let application=await _electron.launch({args:['.'],cwd:root,timeout:60000});
+ let window=await application.firstWindow();await window.waitForFunction(()=>globalThis.ancientStartup?.ready);
+ await window.evaluate(()=>{fresh();S.budget=765432;setCareerDifficulty('heavy');save();return saveQueue;});
+ await application.close();
+ application=await _electron.launch({args:['.'],cwd:root,timeout:60000});
+ window=await application.firstWindow();await window.waitForFunction(()=>globalThis.ancientStartup?.ready);
+ assert(await window.evaluate(()=>S.budget===765432&&S.difficulty==='heavy'&&validSave(S)),'Career persists between app launches');
+ await application.context().setOffline(true);await window.reload();await window.waitForFunction(()=>globalThis.ancientStartup?.ready);
+ assert(await window.evaluate(()=>S.difficulty==='heavy'),'Offline startup');
+ await window.evaluate(()=>{go('saves');portableSave();});
+ assert(await window.locator('#careerCode').inputValue());
+ await window.evaluate(()=>closeModal());
+ const preferences=await application.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences());
+ assert(!preferences.nodeIntegration&&preferences.contextIsolation&&preferences.sandbox,'Renderer stays isolated');
+ await application.close();console.log('PASS macOS app: startup, saved career, difficulty, offline reload, portable save and sandbox');
+})().catch(error=>{console.error(error);process.exit(1);});

@@ -24,7 +24,7 @@ Match8.describe=function(m,side,type){
  const known=this.known(m,side),target=this.target(m,side,type==='throne');let zone=target.lane,roles=[0,1,2,3,4];
  if(type==='farm'){zone=3;roles=[...this.B.orders.farmRoles];}
  if(type==='vision'){zone=this.sight(m,side,4)<.5?4:target.lane;roles=[...this.B.orders.visionRoles];}
- if(type==='defend'){const threatening=known.filter(p=>p.zone<3);zone=threatening.length?threatening[0].zone:(m.sides[1-side].targetLane??1);}
+ if(type==='defend'){const threatening=known.filter(p=>p.zone<3);zone=m.v8.defense?.[side]?.zone??(threatening.length?threatening[0].zone:(m.sides[1-side].targetLane??1));}
  if(type==='split'){const scored=[0,1,2].map(z=>({z,seen:known.filter(p=>p.zone===z).length,hp:this.target(m,side,false,z).entity.hp})).sort((a,b)=>a.seen-b.seen||a.hp-b.hp);zone=scored[0].z;roles=[...this.B.orders.splitRoles];}
  if(type==='rosh')zone=4;
  if(['smoke','counterSmoke'].includes(type)){const victim=known.sort((a,b)=>a.role-b.role)[0];zone=victim?.zone??3;roles=m.clock<1500?[1,2,3,4]:[0,1,2,3];}

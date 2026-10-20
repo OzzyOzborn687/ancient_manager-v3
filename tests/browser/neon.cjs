@@ -115,12 +115,22 @@ const fs=require('fs'),assert=require('node:assert/strict');
  assert(await page.evaluate(()=>S.active.live.orders[0].type==='farm'));
  await page.locator('[onclick="changeMatchTactic22(\'late\')"]').click();
  assert(await page.evaluate(()=>S.active.live.tactics22[0]==='late'));
+ await page.evaluate(()=>{
+  const m=S.active.live;m.clock=2700;m.v8.nextThink=[99999,99999];m.v8.battles=[];m.battle=null;
+  for(let side=0;side<2;side++)for(const p of m.sides[side].heroes){p.deadUntil=0;p.combatUntil=0;p.retreat8=false;p.travelUntil=0;p.tpUntil=0;p.health=100;p.zone=side?1:3;p.destination=p.zone;}
+  for(const t of m.sides[0].lanes[1].towers)t.hp=0;for(const t of m.sides[0].t4)t.hp=0;
+  Match8.issue(m,0,'farm',{manual:true,target:3});Match8.issue(m,1,'throne',{manual:true,target:1});
+  for(let i=0;i<3;i++)simulateTick4(m,10);go('match');
+ });
+ assert(await page.evaluate(()=>Match8.local(S.active.live,0,1).length===5),'Five heroes respond to throne pressure');
+ assert((await page.locator('.decision-panel').innerText()).includes('Автоматическая защита'));
+ await page.screenshot({path:resultDir+'/automatic-base-defense.png'});
  await page.evaluate(()=>go('saves'));assert(await page.locator('#app button').count()>0);
  await page.evaluate(()=>{save();});await page.evaluate(()=>saveQueue);
  assert(await page.evaluate(()=>!!localStorage.getItem('ancient-manager-v1')));
  const beforeDay=await page.evaluate(()=>{fresh();S.events.forEach(e=>{if(e.day<=S.day)e.day=S.day+30});go('home');return S.day;});
  await page.locator('#advance').click();assert(await page.evaluate(day=>S.day>day,beforeDay));
- const report={baseURL,graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','five difficulty levels and reload','frozen map difficulty/next map bonus','bracket fit/100%','model-8 farm order and tactic','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('16px "Russo One"'))};
+ const report={baseURL,graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','five difficulty levels and reload','frozen map difficulty/next map bonus','bracket fit/100%','model-8 farm order and tactic','automatic base defense and actual TP','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('16px "Russo One"'))};
  fs.writeFileSync(resultDir+'/report.json',JSON.stringify(report,null,2));
  console.log(JSON.stringify({...report,checks:checks.filter(c=>c.documentOverflow||c.bright.length)},null,2));
  assert.equal(errors.length,0);assert.equal(failures.length,0);assert(!checks.some(c=>c.documentOverflow),'No whole-page horizontal overflow');

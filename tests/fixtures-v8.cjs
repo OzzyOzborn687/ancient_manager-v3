@@ -22,6 +22,18 @@ function scenario8(seed,key){
  Match8.issue(m,1,ahead?'farm':'siege',{manual:true,target:ahead?3:1});
  if(late&&!ahead){for(const p of m.sides[0].heroes)p.nw=23000;m.sides[0].heroes[0].health=20;m.sides[0].heroes[1].health=20;}
  if(ahead&&!late||late&&!ahead){Match8.issue(m,0,'rosh');m.v8.nextThink[0]=m.clock+60;}
+ if(key==='late-entrenched'){
+  for(let side=0;side<2;side++)for(const p of m.sides[side].heroes){p.nw=side?25000:18000;p.deadUntil=0;p.health=100;p.retreat8=false;p.zone=side?1:3;p.destination=p.zone;p.travelUntil=0;}
+  m.v8.wards=[[{zone:1,expires:m.clock+360}],[]];m.v8.orders=[null,null];m.v8.commandAt=[-100,-100];m.v8.nextThink[0]=m.clock;m.v8.front=[Array(3).fill(0),Array(3).fill(0)];
+  if(!Match8.issue(m,1,'defend',{manual:true,target:1}).ok)throw Error('Entrenched fixture order rejected');
+ }
+ if(key==='late-race'){
+  for(let side=0;side<2;side++){const s=m.sides[side],lane=side?1:0;for(const t of s.lanes[lane].towers)t.hp=0;for(const t of s.t4)t.hp=0;s.ancient.hp=1;s.glyphReady=999999;
+   for(const p of s.heroes){p.health=100;p.deadUntil=0;p.retreat8=false;p.travelUntil=0;p.zone=side?(p.role===2||p.role===3?0:3):1;p.destination=p.zone;}
+  }
+  m.v8.orders=[null,null];m.v8.commandAt=[-100,-100];m.v8.nextThink[0]=m.clock;m.v8.lastObservedOrders=[null,null];m.v8.structurePressure=[null,null];m.v8.front=[Array(3).fill(1),Array(3).fill(1)];
+  if(!Match8.issue(m,1,'split',{manual:true,target:0,roles:[2,3]}).ok)throw Error('Base-race fixture order rejected');
+ }
  Match8.observe(m);Match8.sync(m);return m;
 }
 function finish8(m){

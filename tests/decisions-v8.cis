@@ -3,7 +3,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {run}=require('./harness22.cjs')({modelVersion:8});run(require('./fixtures-v8.cjs'));
 const resultDir=process.env.RESULTS_DIR||'test-results';
-const count=200,contexts=['early-ahead','early-behind','late-ahead','late-behind'],rows=[];
+const count=200,contexts=['early-ahead','early-behind','late-ahead','late-behind','late-entrenched','late-race'],rows=[];
 for(const context of contexts){
  const batch=run(`(()=>{
  const actions=['coach','farm','vision','smoke','counterSmoke','rosh','siege','split','defend','throne','tactic:aggressive','tactic:control','tactic:late','tactic:pressure'];
@@ -32,4 +32,4 @@ const weaknesses=Object.fromEntries([...new Set(rows.map(r=>r.action))].map(acti
 }));
 console.table(weaknesses);fs.mkdirSync(resultDir,{recursive:true});fs.writeFileSync(resultDir+'/decisions-v8.json',JSON.stringify({seedsPerArm:count,rows,weaknesses},null,2));
 for(const [action,r] of Object.entries(weaknesses).filter(([a])=>!a.startsWith('tactic:')))assert(r.win<r.alternativeMean,action+' needs a valid counterexample');
-console.log('PASS paired A/B, four map tactics and no dominant individual order');
+console.log('PASS paired A/B, four map tactics, entrenched high ground/base race and no dominant individual order');
