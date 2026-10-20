@@ -1,0 +1,206 @@
+[
+  {
+    "file": "ai-tactics.cjs",
+    "status": "PASS",
+    "seconds": 0.1,
+    "output": "PASS softmax stable at extreme scores, normalized, temperature controls spread\nPASS AI samples valid alternatives rather than always selecting argmax\nPASS style and preferred bonuses remain within requested range\nPASS draft slope and opposing draft influence tactic fit\nPASS manual manager tactic and restored active map are preserved\nPASS new manual orders do not leak to the opposing coach\nPASS smoke regeneration independent from Roshan start and action cooldown\nPASS close fights have one base casualty, winner losses use its own probability\nPASS retaliation hurts winners more in close fights than dominant wins\nPASS AI and fight regression checks\n\n"
+  },
+  {
+    "file": "auto-fatigue-v26.cjs",
+    "status": "PASS",
+    "seconds": 0.1,
+    "output": "PASS asynchronous background series fatigue, independent clubs, exact single charge\n\n"
+  },
+  {
+    "file": "balance-v26.cjs",
+    "status": "PASS",
+    "seconds": 2.5,
+    "output": "PASS seeded 100-map balance sample {\n  \"maps\": 100,\n  \"strongWins\": 91,\n  \"upsets\": 9,\n  \"comebacks5000\": 2,\n  \"leadChanges3000\": 4,\n  \"stalls\": 0,\n  \"killsByRole\": [\n    913,\n    951,\n    697,\n    459,\n    399\n  ],\n  \"errors\": [\n    179,\n    210\n  ],\n  \"meanMinutes\": 53.029999999999994,\n  \"carryShare\": 0.2670371453641416\n}\n\n"
+  },
+  {
+    "file": "balance-v1.3.cjs",
+    "status": "PASS",
+    "seconds": 11.3,
+    "output": "Fixed draft, equal teams: {\n  maps: 100,\n  wins: 60,\n  losses: 40,\n  leadChanges: 54,\n  unique: 100,\n  averageMinutes: 65.70333333333332\n}\nRating advantage: { maps: 40, strongerWins: 37 }\n\n"
+  },
+  {
+    "file": "career-v1.3.cjs",
+    "status": "PASS",
+    "seconds": 10.8,
+    "output": "Migration and free agents: { version: '2.6', players: 93 }\nShared development: {\n  human: 0.11913818611147065,\n  opponent: 0.1377461516378986,\n  form: 79.32359154028228\n}\nFinance and contracts: { debt: 500000, contract: 0 }\nNegotiation and release: { signed: 'fy', released: 'XinQ' }\nActive transfer replacement and expiry: both clubs retain five roles; expired player stays released\nNatural economy and scoped effects: {\n  gold: 12000,\n  items: [\n    'Power Treads',\n    'Power Treads',\n    'Phase Boots',\n    'Arcane Boots',\n    'Arcane Boots'\n  ]\n}\nActual map: { winner: 0, minutes: 48, points: 3 }\nGG and save during a map: passed\nActual paid BO2 scrim: pause/save/resume, single charge, no rating gain PASS\n{ format: 'pgl', series: 47, days: 5, own: false, reward: 0 }\n{ format: 'blast', series: 34, days: 8, own: false, reward: 0 }\n{ format: 'dreamSwiss', series: 86, days: 6, own: true, reward: 6000 }\n{ format: 'dreamGroup', series: 74, days: 7, own: false, reward: 0 }\n{ format: 'ti', series: 59, days: 6, own: false, reward: 0 }\n{ format: 'esl', series: 66, days: 6, own: false, reward: 0 }\n{ format: 'fissure', series: 14, days: 3, own: false, reward: 0 }\n{ format: 'cup', series: 38, days: 4, own: false, reward: 0 }\nActual automatic FISSURE: full bracket, own participation, prize and calendar PASS\nActual withdrawal PASS\nPASS v1.3\n\n"
+  },
+  {
+    "file": "career-v1.cjs",
+    "status": "PASS",
+    "seconds": 0.4,
+    "output": "Initial rosters/budget/navigation: {\n  lgdBudget: 1500000,\n  version: '2.6',\n  patch: '7.41',\n  malrine: 'Malrine / 95'\n}\nSell/sign: sold player is a free agent; signing and release in feed\nPatch cycle, replacement, dates, per-map effects: {\n  names: [ '7.41', '7.41A', '7.41B', '7.41C', '7.41F', '7.42' ],\n  quarterDays: 92,\n  buff: 1.11\n}\n100 reshuffle windows, no human transfers, valid rosters: { windows: 100, signings: 370, logEntries: 740 }\nCalendar cities stay fixed across refresh/load: ESL One Stockholm 2026|ESL One Prague 2027|ESL One Paris 2027\nLegacy save, active map and delayed roster migration: clock and funds retained; one roster update after event\nCalendar lifecycle and deferred reshuffles: { days: 1051, patches: 12, reshuffles: 8 }\nEvery format completes with visible playoff and correct paths: [\n  { key: 'pgl', playoffSeries: 14, allSeries: 47 },\n  { key: 'blast', playoffSeries: 10, allSeries: 34 },\n  { key: 'dreamSwiss', playoffSeries: 14, allSeries: 86 },\n  { key: 'dreamGroup', playoffSeries: 18, allSeries: 74 },\n  { key: 'ti', playoffSeries: 14, allSeries: 59 },\n  { key: 'esl', playoffSeries: 10, allSeries: 66 },\n  { key: 'fissure', playoffSeries: 14, allSeries: 14 },\n  { key: 'cup', playoffSeries: 14, allSeries: 38 }\n]\nReal match smoke: { winner: 1, minutes: 70.83333333333333, patch: '7.41' }\nPASS v1.0\n\n"
+  },
+  {
+    "file": "coach-return.cjs",
+    "status": "PASS",
+    "seconds": 0.1,
+    "output": "Paused/saved own map: exact clock, gold, heroes and score retained; step mode restored PASS\nRunning trainer: request stops current own map at yield, no replay or duplicate result PASS\nSaved partial AI series: completes exactly once, then returns to next own series PASS\nSpectator and scrim modes are not converted into player participation PASS\nPASS coach return\n\n"
+  },
+  {
+    "file": "balance-v8.cjs",
+    "status": "PASS",
+    "seconds": 37.5,
+    "output": "┌─────────┬────────────┬──────┬──────┬───────┬────────────────────┬────────┬───────────┐\n│ (index) │ mode       │ maps │ wins │ rate  │ meanMinutes        │ stalls │ comebacks │\n├─────────┼────────────┼──────┼──────┼───────┼────────────────────┼────────┼───────────┤\n│ 0       │ 'mirror'   │ 200  │ 108  │ 0.54  │ 60.958333333333336 │ 0      │ 129       │\n│ 1       │ 'favorite' │ 200  │ 147  │ 0.735 │ 59.62583333333334  │ 0      │ 91        │\n│ 2       │ 'expert'   │ 200  │ 99   │ 0.495 │ 58.735             │ 0      │ 121       │\n└─────────┴────────────┴──────┴──────┴───────┴────────────────────┴────────┴───────────┘\n┌─────────┬──────────────┬────────────┬──────┬──────┬──────┬────────────────────┐\n│ (index) │ a            │ b          │ maps │ wins │ rate │ meanMinutes        │\n├─────────┼──────────────┼────────────┼──────┼──────┼──────┼────────────────────┤\n│ 0       │ 'aggressive' │ 'control'  │ 100  │ 53   │ 0.53 │ 60.15              │\n│ 1       │ 'aggressive' │ 'late'     │ 100  │ 53   │ 0.53 │ 60.288333333333334 │\n│ 2       │ 'aggressive' │ 'pressure' │ 100  │ 47   │ 0.47 │ 60.17166666666667  │\n│ 3       │ 'control'    │ 'late'     │ 100  │ 51   │ 0.51 │ 60.29833333333333  │\n│ 4       │ 'control'    │ 'pressure' │ 100  │ 43   │ 0.43 │ 59.87833333333333  │\n│ 5       │ 'late'       │ 'pressure' │ 100  │ 40   │ 0.4  │ 60.465             │\n└─────────┴──────────────┴────────────┴──────┴──────┴──────┴────────────────────┘\nPASS v8 balance, duration, kill distribution, errors, all six 100-map tactic mirrors\nPASS measured legacy duration baseline { model: '2.6', maps: 200, meanMinutes: 58.94 }\n\n"
+  },
+  {
+    "file": "comebacks.cjs",
+    "status": "PASS",
+    "seconds": 70.6,
+    "output": "PASS: earned bounty, single payout, Aegis/equal-gold exclusions, save continuation, no gold power multiplier, undefended-base comeback\n[\n  {\n    \"gap\": 0,\n    \"maps\": 300,\n    \"strongerOrSide0Wins\": 137,\n    \"leaderAt20WinPct\": 74.66666666666667,\n    \"comeback3000Pct\": 35,\n    \"averageMinutes\": 62.53499999999999,\n    \"maxMinutes\": 148\n  },\n  {\n    \"gap\": 10,\n    \"maps\": 300,\n    \"strongerOrSide0Wins\": 225,\n    \"leaderAt20WinPct\": 79,\n    \"comeback3000Pct\": 29.666666666666668,\n    \"averageMinutes\": 58.53166666666665,\n    \"maxMinutes\": 107.83333333333333\n  },\n  {\n    \"gap\": 20,\n    \"maps\": 300,\n    \"strongerOrSide0Wins\": 275,\n    \"leaderAt20WinPct\": 89.66666666666667,\n    \"comeback3000Pct\": 14.666666666666666,\n    \"averageMinutes\": 53.771111111111146,\n    \"maxMinutes\": 95.83333333333333\n  }\n]\n\n"
+  },
+  {
+    "file": "defense-v8.cjs",
+    "status": "PASS",
+    "seconds": 0.1,
+    "output": "PASS siege defense: both sides/plans, TP, occupied heroes, public snapshot, resumption, early T2 armor, anti-chain-push and saved continuation\n\n"
+  },
+  {
+    "file": "development-v21.cjs",
+    "status": "PASS",
+    "seconds": 15,
+    "output": "Successful season form/OVR traces: [\n  {\n    staff: 1,\n    trace: [ [Object], [Object], [Object] ],\n    peak: 72,\n    skill: 80.54000000000002\n  },\n  {\n    staff: 5,\n    trace: [ [Object], [Object], [Object] ],\n    peak: 60,\n    skill: 81.08000000000004\n  }\n]\nPASS integrated automatic tournament: actual maps, career results, frozen base buffs, standings, one-time development outcome and valid save\nPASS v2.1: historical templates, idempotent calendar migration, costs/5-level bounds/locks, calendar-time peak, staff acceleration, long potential growth, inactivity, early exits, scrim exclusion, frozen preparation, standings, all new screens and save validation\n\n"
+  },
+  {
+    "file": "difficulty.cjs",
+    "status": "PASS",
+    "seconds": 4.1,
+    "output": "PASS difficulty: exact 5-level factors, both sides/AI-only, one application, real fight odds, frozen maps, old saves, migration, validation and settings\n\n"
+  },
+  {
+    "file": "engine-v6.cjs",
+    "status": "PASS",
+    "seconds": 62,
+    "output": "Rating/fatigue and rolling economy: {\n  wins: 79,\n  maps: 80,\n  min: 30.666666666666668,\n  max: 83,\n  avg: 48.31041666666668\n}\nDirectional factors: {\n  base: 49.785018475294024,\n  tired: 31.433620663232702,\n  earlySiege: -0.1,\n  preparedSiege: 0.07\n}\nFormats: [\n  { key: 'pgl', series: 47, place: 3, champion: 11 },\n  { key: 'blast', series: 34, place: 1, champion: 0 },\n  { key: 'dreamSwiss', series: 86, place: 1, champion: 0 },\n  { key: 'dreamGroup', series: 74, place: 3, champion: 14 },\n  { key: 'ti', series: 59, place: 4, champion: 2 },\n  { key: 'esl', series: 66, place: 1, champion: 0 },\n  { key: 'fissure', series: 14, place: 1, champion: 0 },\n  { key: 'cup', series: 38, place: 1, champion: 0 }\n]\nRest, persistence: { fatigue: 20, clock: 600, saveValid: true }\nComeback/objects: earned gold released; open base can be finished regardless of lead\n\n"
+  },
+  {
+    "file": "fatigue-v26.cjs",
+    "status": "PASS",
+    "seconds": 0.2,
+    "output": "PASS groups repeat 20/30/25/25 once per series, independently for each team\nPASS BO2 charges after final card, never per map or twice on record\nPASS BO3 charges after final card, never per map or twice on record\nPASS BO5 charges after final card, never per map or twice on record\nPASS playoffs +33 for every series; clamps at 100\nPASS recovery levels 1..5 affect only their club; staff/base grant no recovery\nPASS save/reload and 2.2 migration do not recharge completed series\nPASS unfinished series resumes without charging; later completion charges once\nPASS automatic opponent series uses same +20, not a charge for every map\nPASS scrim workload unchanged and does not advance group fatigue cycle\nPASS legacy 2.1 series charges once after BO3, both clubs equally\nPASS old qualifier/group history seeds cycle without retroactive fatigue\nPASS fatigue 2.6\n\n"
+  },
+  {
+    "file": "interface-v2.cjs",
+    "status": "PASS",
+    "seconds": 0.8,
+    "output": "PASS v2.0: every tab, all biographies/photos, full-page player profile, dynamic team tags, filters, year/club awards, fictional fallback, contracts, active map navigation and save\n\n"
+  },
+  {
+    "file": "interface-v8.cjs",
+    "status": "PASS",
+    "seconds": 0.3,
+    "output": "PASS model v8 interface: all commands, live risk/cost/conditions, pure render, regroup, report and saved map\n\n"
+  },
+  {
+    "file": "match-rules.cjs",
+    "status": "PASS",
+    "seconds": 2.2,
+    "output": "Draft legality and repeatability: 100 valid drafts, seeded RNG\nDraft, lanes and cohesion: lane opponents, pair synergy, counters, cohesion\nEarly local fights: 1v1/2v2 on lanes\nContested Roshan: fight before Aegis\nOld live save: existing map continues\nEqual-team maps and final reports: {\n  maps: 24,\n  wins: 13,\n  averageMinutes: 66.16666666666669,\n  maxMinutes: 91.66666666666667\n}\n\n"
+  },
+  {
+    "file": "match-v22.cjs",
+    "status": "PASS",
+    "seconds": 1.7,
+    "output": "PASS logistic monotonic, overwhelming power wins almost always, bounded noise\nPASS phases 10/25, draft scaling and tactic disruption\nPASS legacy migration idempotent, damaged barracks split proportionally\nPASS Roshan cooldown, reward, Aegis slot and respawn window\nPASS Aegis consumed without a death, regular kill awards gold and respawn\nPASS smoke forecast worsens with wards and BKB; no charge spent on unavailable action\nPASS carry farming earns more, gives map control away\nPASS split push damage, return travel cost and structure order\nPASS surrender requires both severe economy loss and most structures\nPASS single minute accumulator and exact save/resume RNG continuation\nPASS same elapsed time at 1x/2x/4x produces identical state\nPASS decision timing and UI forecast has no RNG side effects\nPASS AI uses valid scored alternatives and reacts to real push\nPASS full matches:\n{\n  maps: 60,\n  wins: 32,\n  stalls: 0,\n  maxMinutes: 72,\n  meanMinutes: 58.416666666666664\n}\n\n"
+  },
+  {
+    "file": "match-v26.cjs",
+    "status": "PASS",
+    "seconds": 0.1,
+    "output": "PASS probability keeps relative skill meaningful at late-game power scales\nPASS kill credit uses living participants only and includes every role\nPASS shutdown rewards a real kill, not Aegis loss or a failed attack\nPASS both teams make explained errors; fatigue and risky sieges raise their risk\nPASS forecasts render without rolling form or mistakes; JSON continues exactly\nPASS 2.2 match upgrades preserve orders, partial tick, vision and economy\nPASS farmers still encounter lane fights and can lose a core\nPASS v2.6 mechanics\n\n"
+  },
+  {
+    "file": "model-v8.cjs",
+    "status": "PASS",
+    "seconds": 1.3,
+    "output": "PASS model v8: travel, local fights, remote objectives, smoke, split, defense, availability, hidden information, speed determinism, report, legacy spatial and 2.6 save/RNG continuation\n\n"
+  },
+  {
+    "file": "native-adapter.cjs",
+    "status": "PASS",
+    "seconds": 0,
+    "output": "PASS native adapter: iOS share JSON, original recovery, lifecycle pause/save and unchanged browser behavior\n\n"
+  },
+  {
+    "file": "neon-tournaments.cjs",
+    "status": "PASS",
+    "seconds": 0.1,
+    "output": "PASS neon tournaments: 8 real formats, pure previews, full 24-team field, Swiss history/thresholds, all RR/GSL matches, playoff dependencies, BO5 finals, BLAST/TI bridges and live score orientation\n\n"
+  },
+  {
+    "file": "neon-ui.cjs",
+    "status": "PASS",
+    "seconds": 0.1,
+    "output": "PASS neon UI: 22 screens, live squad values/profile actions, pure rendering, actual upgrade costs/save validation, navigation and local assets/fonts\n\n"
+  },
+  {
+    "file": "player-retirement.cjs",
+    "status": "PASS",
+    "seconds": 0.2,
+    "output": "Starter retirement: confirmation, reserve promotion, market exclusion, archive, direct-action guards and real save/reload PASS\nReserve salary removed, own players only, tournament/KV/coach locks PASS\nRookie replacement, paid free agent and atomic refusal when unaffordable PASS\nAI reshuffles/replacements, daily progression and malformed retirement save validation PASS\nPASS player retirement\n\n"
+  },
+  {
+    "file": "recovery-v21.cjs",
+    "status": "PASS",
+    "seconds": 0.8,
+    "output": "PASS recovery: 5 levels, prices and guards, map fatigue for both clubs, actual daily ticks, tournament/break distinction, old saves, paid-rest quotas per stage, real save/reload, legacy formats and purchase migration.\n\n"
+  },
+  {
+    "file": "recovery-v26.cjs",
+    "status": "PASS",
+    "seconds": 0.9,
+    "output": "PASS recovery: 5 levels, prices and guards, map fatigue for both clubs, actual daily ticks, series fatigue policy, tournament/break distinction, old saves, paid-rest quotas per stage, real save/reload, legacy formats and purchase migration.\n\n"
+  },
+  {
+    "file": "reshuffle-positions.cjs",
+    "status": "PASS",
+    "seconds": 0.3,
+    "output": "New agents: { Parker: [ 92, 96 ], Tailung: [ 94, 99 ] }\nExisting career migration: budget and active roster retained; both agents added once\nAll positions with an empty free-agent pool: {\n  windows: 80,\n  positions1to5: [ 188, 180, 188, 216, 186 ],\n  totalMoneyPreserved: true\n}\nLogo: square club asset and centered badge\nPASS reshuffle positions and agents\n\n"
+  },
+  {
+    "file": "startup.cjs",
+    "status": "PASS",
+    "seconds": 8.1,
+    "output": "Fresh boot with real storage/render: PASS\nv1.3 saved career reload: PASS\nv1.2 migration via actual boot: PASS\nActive map restore through real boot: PASS\nIndexedDB reads/writes never settle: local career opens in 5540 ms\nStorage denied: usable game + visible save warning PASS\nMigration failure: visible recovery, original bytes untouched, export available PASS\nUnreadable save is retained: PASS\nPASS startup regression\n\n"
+  },
+  {
+    "file": "tactics-mirror.cjs",
+    "status": "PASS",
+    "seconds": 13.2,
+    "output": "┌─────────┬──────────────┬────────────┬──────┬──────┬──────┬────────┬─────────────┐\n│ (index) │ a            │ b          │ wins │ maps │ rate │ stalls │ meanMinutes │\n├─────────┼──────────────┼────────────┼──────┼──────┼──────┼────────┼─────────────┤\n│ 0       │ 'aggressive' │ 'control'  │ 55   │ 100  │ 0.55 │ 0      │ 59.88       │\n│ 1       │ 'aggressive' │ 'late'     │ 56   │ 100  │ 0.56 │ 0      │ 59.71       │\n│ 2       │ 'aggressive' │ 'pressure' │ 46   │ 100  │ 0.46 │ 0      │ 58.87       │\n│ 3       │ 'control'    │ 'late'     │ 47   │ 100  │ 0.47 │ 0      │ 60.02       │\n│ 4       │ 'control'    │ 'pressure' │ 46   │ 100  │ 0.46 │ 0      │ 58.11       │\n│ 5       │ 'late'       │ 'pressure' │ 42   │ 100  │ 0.42 │ 0      │ 57.78       │\n└─────────┴──────────────┴────────────┴──────┴──────┴──────┴────────┴─────────────┘\nPASS all six fixed-draft tactic mirrors, 100 maps per pair\n\n"
+  },
+  {
+    "file": "tactics-v1.1.cjs",
+    "status": "PASS",
+    "seconds": 3.9,
+    "output": "{\n  gg: '8 scenarios: both modes, 0–60 minutes, immediate loss, intact base, one score update',\n  series: 'GG settles BO3 at 0:2',\n  gates: 'gold / map deficit, smoke stock, living heroes and battle state',\n  encounter: 'travel -> local battle; no instant map result; saved RNG and cooldown',\n  frequency: { attempts: 10000, successful: 2298, percent: 22.98 },\n  controls: 'GG and counter-smoke rendered in both modes; disabled reasons'\n}\n\n"
+  },
+  {
+    "file": "ti-event.cjs",
+    "status": "PASS",
+    "seconds": 1.2,
+    "output": "Boot rollback: protected full original, TI reset, old results removed, no repeat PASS\nExplicit restore of original survives reload without another rollback PASS\nBackup write failure leaves career intact PASS\nMatching exact start snapshot restores historical budget and attributes PASS\nPlan locks and frozen map factors, result counted once, rewards paid once PASS\nScrim exclusion and TI hub/save/home/calendar/match render PASS\nPASS TI event and recovery\n\n"
+  },
+  {
+    "file": "variation-v7.cjs",
+    "status": "PASS",
+    "seconds": 12.3,
+    "output": "Roshan lifecycle: { respawnSeconds: 522, savePreserved: true }\nIdentical teams, fixed draft, 100 independent maps: {\n  wins: 63,\n  losses: 37,\n  significantLeadChanges: 47,\n  winnerPreviouslyBehind3000: 37,\n  uniqueMaps: 100,\n  averageMinutes: 61.94833333333334,\n  maxMinutes: 91.33333333333333\n}\nSave-resume exact continuation: same state and RNG after reload\nDefault roster, stronger and weaker opponents: [\n  { opponent: 'PT', wins: 30, losses: 10 },\n  { opponent: '1W', wins: 13, losses: 27 }\n]\n\n"
+  },
+  {
+    "file": "world-v1.2.cjs",
+    "status": "PASS",
+    "seconds": 6.6,
+    "output": "Vacancies recruit free agents before generation: { midReplacement: 'MidOne', generated: 'LunarPulse' }\nMigration removes Academy identities and preserves active-map stats: { renamed: 'SolarBlade', team: 'Obsidian Five' }\nRename dialogs and persistence: player + club rename survive save/load; logo shown\nSkip every format: [\n  { key: 'pgl', series: 47, champion: 15 },\n  { key: 'blast', series: 34, champion: 4 },\n  { key: 'dreamSwiss', series: 86, champion: 3 },\n  { key: 'dreamGroup', series: 74, champion: 12 },\n  { key: 'ti', series: 59, champion: 5 },\n  { key: 'esl', series: 66, champion: 7 },\n  { key: 'fissure', series: 14, champion: 5 },\n  { key: 'cup', series: 38, champion: 15 }\n]\nFuture skip advances to tournament end: day 10\nPause/reload/resume: passed\nLegacy active tournament skip: passed\nActual engine skip: all FISSURE series completed\nPASS v1.2\n\n"
+  },
+  {
+    "file": "decisions-v8.cis",
+    "status": "PASS",
+    "seconds": 231.3,
+    "output": "early-ahead: 50 paired seeds\nearly-ahead: 100 paired seeds\nearly-ahead: 150 paired seeds\nearly-ahead: 200 paired seeds\n┌─────────┬───────────────┬─────────────────────┬───────┬──────┬─────────┬────────┬────────┬────────┬─────────────┬────────────┬───────┬──────────┬─────────┐\n│ (index) │ context       │ action              │ seeds │ gold │ objects │ kills  │ deaths │ roshan │ smokeEvents │ wardEvents │ win   │ baseline │ deltaPP │\n├─────────┼───────────────┼─────────────────────┼───────┼──────┼─────────┼────────┼────────┼────────┼─────────────┼────────────┼───────┼──────────┼─────────┤\n│ 0       │ 'early-ahead' │ 'coach'             │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.72  │ 0.72     │ 0       │\n│ 1       │ 'early-ahead' │ 'farm'              │ 200   │ 2403 │ 0       │ 0.66   │ 0.55   │ -0.145 │ 0           │ 0          │ 0.61  │ 0.72     │ -11     │\n│ 2       │ 'early-ahead' │ 'vision'            │ 200   │ 1239 │ 0       │ 0.445  │ 0.305  │ -0.145 │ 0           │ 2          │ 0.595 │ 0.72     │ -12.5   │\n│ 3       │ 'early-ahead' │ 'smoke'             │ 200   │ 1781 │ 0       │ 1.065  │ 0.85   │ -0.145 │ 0           │ 0          │ 0.685 │ 0.72     │ -3.5    │\n│ 4       │ 'early-ahead' │ 'counterSmoke'      │ 200   │ 1781 │ 0       │ 1.065  │ 0.85   │ -0.145 │ 0           │ 0          │ 0.685 │ 0.72     │ -3.5    │\n│ 5       │ 'early-ahead' │ 'rosh'              │ 200   │ -115 │ 0       │ -0.13  │ -0.125 │ 0.855  │ 0           │ 0          │ 0.715 │ 0.72     │ -0.5    │\n│ 6       │ 'early-ahead' │ 'siege'             │ 200   │ 1518 │ 0       │ 1.09   │ 0.66   │ -0.145 │ 0           │ 0          │ 0.685 │ 0.72     │ -3.5    │\n│ 7       │ 'early-ahead' │ 'split'             │ 200   │ 2263 │ 0       │ 1.325  │ 1.37   │ -0.145 │ 0           │ 0          │ 0.785 │ 0.72     │ 6.5     │\n│ 8       │ 'early-ahead' │ 'defend'            │ 200   │ 217  │ 0       │ -0.155 │ -0.125 │ -0.145 │ 0           │ 0          │ 0.615 │ 0.72     │ -10.5   │\n│ 9       │ 'early-ahead' │ 'throne'            │ 200   │ 1518 │ 0       │ 1.09   │ 0.66   │ -0.145 │ 0           │ 0          │ 0.685 │ 0.72     │ -3.5    │\n│ 10      │ 'early-ahead' │ 'tactic:aggressive' │ 200   │ 87   │ 0       │ 0.05   │ 0      │ -0.11  │ 0           │ 0.01       │ 0.635 │ 0.72     │ -8.5    │\n│ 11      │ 'early-ahead' │ 'tactic:control'    │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.72  │ 0.72     │ 0       │\n│ 12      │ 'early-ahead' │ 'tactic:late'       │ 200   │ 102  │ 0       │ 0.06   │ 0.01   │ -0.12  │ 0           │ 0.01       │ 0.655 │ 0.72     │ -6.5    │\n│ 13      │ 'early-ahead' │ 'tactic:pressure'   │ 200   │ 122  │ 0       │ 0.065  │ -0.005 │ -0.12  │ 0           │ 0.01       │ 0.71  │ 0.72     │ -1      │\n└─────────┴───────────────┴─────────────────────┴───────┴──────┴─────────┴────────┴────────┴────────┴─────────────┴────────────┴───────┴──────────┴─────────┘\nearly-behind: 50 paired seeds\nearly-behind: 100 paired seeds\nearly-behind: 150 paired seeds\nearly-behind: 200 paired seeds\n┌─────────┬────────────────┬─────────────────────┬───────┬──────┬─────────┬────────┬────────┬────────┬─────────────┬────────────┬───────┬──────────┬─────────┐\n│ (index) │ context        │ action              │ seeds │ gold │ objects │ kills  │ deaths │ roshan │ smokeEvents │ wardEvents │ win   │ baseline │ deltaPP │\n├─────────┼────────────────┼─────────────────────┼───────┼──────┼─────────┼────────┼────────┼────────┼─────────────┼────────────┼───────┼──────────┼─────────┤\n│ 0       │ 'early-behind' │ 'coach'             │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.445 │ 0.445    │ 0       │\n│ 1       │ 'early-behind' │ 'farm'              │ 200   │ 144  │ 0       │ 0.04   │ 0.45   │ 0      │ -0.01       │ -0.005     │ 0.32  │ 0.445    │ -12.5   │\n│ 2       │ 'early-behind' │ 'vision'            │ 200   │ -620 │ 0       │ 0.035  │ 0.475  │ 0      │ -0.01       │ 1.995      │ 0.355 │ 0.445    │ -9      │\n│ 3       │ 'early-behind' │ 'smoke'             │ 200   │ -34  │ 0.185   │ 0.825  │ 0.795  │ 0      │ 0.485       │ 0.01       │ 0.275 │ 0.445    │ -17     │\n│ 4       │ 'early-behind' │ 'counterSmoke'      │ 200   │ -384 │ 0.1     │ 0.67   │ 1.085  │ 0      │ -0.005      │ -0.005     │ 0.28  │ 0.445    │ -16.5   │\n│ 5       │ 'early-behind' │ 'rosh'              │ 200   │ -911 │ 0       │ -0.08  │ 0.115  │ 0      │ -0.01       │ -0.005     │ 0.295 │ 0.445    │ -15     │\n│ 6       │ 'early-behind' │ 'siege'             │ 200   │ -12  │ 0       │ -0.065 │ -0.025 │ 0      │ -0.005      │ -0.005     │ 0.39  │ 0.445    │ -5.5    │\n│ 7       │ 'early-behind' │ 'split'             │ 200   │ 215  │ 0       │ 0.04   │ 0.45   │ 0      │ -0.01       │ -0.005     │ 0.36  │ 0.445    │ -8.5    │\n│ 8       │ 'early-behind' │ 'defend'            │ 200   │ -26  │ 0.29    │ 1.445  │ 2.15   │ 0      │ -0.01       │ -0.005     │ 0.33  │ 0.445    │ -11.5   │\n│ 9       │ 'early-behind' │ 'throne'            │ 0     │ null │ null    │ null   │ null   │ null   │ null        │ null       │ null  │ null     │ null    │\n│ 10      │ 'early-behind' │ 'tactic:aggressive' │ 200   │ -613 │ 0.005   │ 0.425  │ 0.735  │ 0      │ 0.01        │ 0          │ 0.385 │ 0.445    │ -6      │\n│ 11      │ 'early-behind' │ 'tactic:control'    │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.445 │ 0.445    │ 0       │\n│ 12      │ 'early-behind' │ 'tactic:late'       │ 200   │ -608 │ 0.005   │ 0.425  │ 0.735  │ 0      │ 0.01        │ 0          │ 0.39  │ 0.445    │ -5.5    │\n│ 13      │ 'early-behind' │ 'tactic:pressure'   │ 200   │ -597 │ 0.005   │ 0.435  │ 0.735  │ 0      │ 0.01        │ -0.005     │ 0.37  │ 0.445    │ -7.5    │\n└─────────┴────────────────┴─────────────────────┴───────┴──────┴─────────┴────────┴────────┴────────┴─────────────┴────────────┴───────┴──────────┴─────────┘\nlate-ahead: 50 paired seeds\nlate-ahead: 100 paired seeds\nlate-ahead: 150 paired seeds\nlate-ahead: 200 paired seeds\n┌─────────┬──────────────┬─────────────────────┬───────┬───────┬─────────┬────────┬────────┬────────┬─────────────┬────────────┬───────┬──────────┬─────────┐\n│ (index) │ context      │ action              │ seeds │ gold  │ objects │ kills  │ deaths │ roshan │ smokeEvents │ wardEvents │ win   │ baseline │ deltaPP │\n├─────────┼──────────────┼─────────────────────┼───────┼───────┼─────────┼────────┼────────┼────────┼─────────────┼────────────┼───────┼──────────┼─────────┤\n│ 0       │ 'late-ahead' │ 'coach'             │ 200   │ 0     │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.94  │ 0.94     │ 0       │\n│ 1       │ 'late-ahead' │ 'farm'              │ 200   │ 932   │ -0.96   │ -0.33  │ -0.265 │ -0.005 │ 0           │ 0          │ 0.765 │ 0.94     │ -17.5   │\n│ 2       │ 'late-ahead' │ 'vision'            │ 200   │ 746   │ -0.96   │ -0.18  │ -0.38  │ -0.005 │ 0           │ 2          │ 0.855 │ 0.94     │ -8.5    │\n│ 3       │ 'late-ahead' │ 'smoke'             │ 200   │ -1327 │ -0.96   │ 0.295  │ 1.305  │ -0.005 │ 0           │ 0.005      │ 0.91  │ 0.94     │ -3      │\n│ 4       │ 'late-ahead' │ 'counterSmoke'      │ 200   │ -1327 │ -0.96   │ 0.295  │ 1.305  │ -0.005 │ 0           │ 0.005      │ 0.91  │ 0.94     │ -3      │\n│ 5       │ 'late-ahead' │ 'rosh'              │ 200   │ -1320 │ -0.96   │ -0.455 │ -0.345 │ 0.995  │ 0           │ 0          │ 0.92  │ 0.94     │ -2      │\n│ 6       │ 'late-ahead' │ 'siege'             │ 200   │ -70   │ -0.03   │ -0.015 │ 0.07   │ -0.005 │ 0           │ 0          │ 0.9   │ 0.94     │ -4      │\n│ 7       │ 'late-ahead' │ 'split'             │ 200   │ 599   │ -0.565  │ 0.165  │ 0.525  │ -0.005 │ 0           │ 0          │ 0.695 │ 0.94     │ -24.5   │\n│ 8       │ 'late-ahead' │ 'defend'            │ 200   │ -704  │ -0.96   │ -0.415 │ -0.355 │ -0.005 │ 0           │ 0.005      │ 0.87  │ 0.94     │ -7      │\n│ 9       │ 'late-ahead' │ 'throne'            │ 200   │ -93   │ -0.72   │ -0.015 │ 0.07   │ -0.005 │ 0           │ 0          │ 0.915 │ 0.94     │ -2.5    │\n│ 10      │ 'late-ahead' │ 'tactic:aggressive' │ 200   │ -4    │ 0       │ -0.005 │ 0      │ 0      │ 0           │ 0          │ 0.94  │ 0.94     │ 0       │\n│ 11      │ 'late-ahead' │ 'tactic:control'    │ 200   │ 0     │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.94  │ 0.94     │ 0       │\n│ 12      │ 'late-ahead' │ 'tactic:late'       │ 200   │ -4    │ 0       │ -0.005 │ 0      │ 0      │ 0           │ 0          │ 0.94  │ 0.94     │ 0       │\n│ 13      │ 'late-ahead' │ 'tactic:pressure'   │ 200   │ -2    │ 0       │ -0.005 │ 0      │ 0      │ 0           │ 0          │ 0.945 │ 0.94     │ 0.5     │\n└─────────┴──────────────┴─────────────────────┴───────┴───────┴─────────┴────────┴────────┴────────┴─────────────┴────────────┴───────┴──────────┴─────────┘\nlate-behind: 50 paired seeds\nlate-behind: 100 paired seeds\nlate-behind: 150 paired seeds\nlate-behind: 200 paired seeds\n┌─────────┬───────────────┬─────────────────────┬───────┬──────┬─────────┬───────┬────────┬────────┬─────────────┬────────────┬───────┬──────────┬─────────┐\n│ (index) │ context       │ action              │ seeds │ gold │ objects │ kills │ deaths │ roshan │ smokeEvents │ wardEvents │ win   │ baseline │ deltaPP │\n├─────────┼───────────────┼─────────────────────┼───────┼──────┼─────────┼───────┼────────┼────────┼─────────────┼────────────┼───────┼──────────┼─────────┤\n│ 0       │ 'late-behind' │ 'coach'             │ 200   │ 0    │ 0       │ 0     │ 0      │ 0      │ 0           │ 0          │ 0.055 │ 0.055    │ 0       │\n│ 1       │ 'late-behind' │ 'farm'              │ 200   │ 16   │ -0.015  │ 0.01  │ 0.005  │ 0      │ 0           │ 0          │ 0.055 │ 0.055    │ 0       │\n│ 2       │ 'late-behind' │ 'vision'            │ 200   │ 16   │ -0.015  │ 0.01  │ 0.005  │ 0      │ 0           │ 0          │ 0.06  │ 0.055    │ 0.5     │\n│ 3       │ 'late-behind' │ 'smoke'             │ 200   │ 190  │ 0.25    │ 1.22  │ 1.205  │ 0      │ 0.495       │ 0          │ 0.02  │ 0.055    │ -3.5    │\n│ 4       │ 'late-behind' │ 'counterSmoke'      │ 200   │ 658  │ 0.405   │ 1.295 │ 1.065  │ 0      │ 0           │ 0          │ 0.02  │ 0.055    │ -3.5    │\n│ 5       │ 'late-behind' │ 'rosh'              │ 200   │ 16   │ -0.015  │ 0.01  │ 0.005  │ 0      │ 0           │ 0          │ 0.06  │ 0.055    │ 0.5     │\n│ 6       │ 'late-behind' │ 'siege'             │ 200   │ -301 │ 0.185   │ 1.07  │ 1.38   │ 0      │ 0           │ 0          │ 0.055 │ 0.055    │ 0       │\n│ 7       │ 'late-behind' │ 'split'             │ 200   │ 16   │ -0.015  │ 0.01  │ 0.005  │ 0      │ 0           │ 0          │ 0.09  │ 0.055    │ 3.5     │\n│ 8       │ 'late-behind' │ 'defend'            │ 200   │ 1405 │ 0.455   │ 1.53  │ 0.745  │ 0      │ 0           │ 0          │ 0.045 │ 0.055    │ -1      │\n│ 9       │ 'late-behind' │ 'throne'            │ 200   │ -41  │ 0.215   │ 1.47  │ 1.48   │ 0      │ 0           │ 0          │ 0.075 │ 0.055    │ 2       │\n│ 10      │ 'late-behind' │ 'tactic:aggressive' │ 200   │ 950  │ 0.435   │ 1.89  │ 1.145  │ 0      │ 0           │ 0          │ 0.08  │ 0.055    │ 2.5     │\n│ 11      │ 'late-behind' │ 'tactic:control'    │ 200   │ 0    │ 0       │ 0     │ 0      │ 0      │ 0           │ 0          │ 0.055 │ 0.055    │ 0       │\n│ 12      │ 'late-behind' │ 'tactic:late'       │ 200   │ 950  │ 0.435   │ 1.89  │ 1.145  │ 0      │ 0           │ 0          │ 0.08  │ 0.055    │ 2.5     │\n│ 13      │ 'late-behind' │ 'tactic:pressure'   │ 200   │ 886  │ 0.435   │ 1.87  │ 1.175  │ 0      │ 0           │ 0          │ 0.075 │ 0.055    │ 2       │\n└─────────┴───────────────┴─────────────────────┴───────┴──────┴─────────┴───────┴────────┴────────┴─────────────┴────────────┴───────┴──────────┴─────────┘\nlate-entrenched: 50 paired seeds\nlate-entrenched: 100 paired seeds\nlate-entrenched: 150 paired seeds\nlate-entrenched: 200 paired seeds\n┌─────────┬───────────────────┬─────────────────────┬───────┬──────┬─────────┬────────┬────────┬────────┬─────────────┬────────────┬───────┬──────────┬─────────┐\n│ (index) │ context           │ action              │ seeds │ gold │ objects │ kills  │ deaths │ roshan │ smokeEvents │ wardEvents │ win   │ baseline │ deltaPP │\n├─────────┼───────────────────┼─────────────────────┼───────┼──────┼─────────┼────────┼────────┼────────┼─────────────┼────────────┼───────┼──────────┼─────────┤\n│ 0       │ 'late-entrenched' │ 'coach'             │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.295 │ 0.295    │ 0       │\n│ 1       │ 'late-entrenched' │ 'farm'              │ 200   │ 432  │ 0       │ -1.155 │ -0.9   │ -0.07  │ -0.01       │ -0.025     │ 0.155 │ 0.295    │ -14     │\n│ 2       │ 'late-entrenched' │ 'vision'            │ 200   │ -745 │ 0       │ -1.155 │ -0.9   │ -0.07  │ -0.01       │ 1.975      │ 0.145 │ 0.295    │ -15     │\n│ 3       │ 'late-entrenched' │ 'smoke'             │ 200   │ 558  │ 0       │ 0.15   │ -0.28  │ -0.06  │ 0.99        │ 0.005      │ 0.275 │ 0.295    │ -2      │\n│ 4       │ 'late-entrenched' │ 'counterSmoke'      │ 200   │ 769  │ 0       │ 0.215  │ -0.315 │ -0.055 │ -0.01       │ -0.005     │ 0.265 │ 0.295    │ -3      │\n│ 5       │ 'late-entrenched' │ 'rosh'              │ 200   │ -40  │ 0       │ 0.045  │ -0.27  │ 0.93   │ -0.01       │ -0.025     │ 0.515 │ 0.295    │ 22      │\n│ 6       │ 'late-entrenched' │ 'siege'             │ 200   │ 106  │ 0       │ 0.08   │ 0.055  │ -0.07  │ -0.01       │ -0.025     │ 0.27  │ 0.295    │ -2.5    │\n│ 7       │ 'late-entrenched' │ 'split'             │ 200   │ 103  │ 0.345   │ -0.515 │ -0.245 │ -0.07  │ -0.01       │ -0.025     │ 0.235 │ 0.295    │ -6      │\n│ 8       │ 'late-entrenched' │ 'defend'            │ 200   │ 707  │ 0       │ 0.295  │ -0.19  │ -0.07  │ -0.01       │ -0.025     │ 0.195 │ 0.295    │ -10     │\n│ 9       │ 'late-entrenched' │ 'throne'            │ 200   │ 106  │ 0       │ 0.08   │ 0.055  │ -0.07  │ -0.01       │ -0.025     │ 0.22  │ 0.295    │ -7.5    │\n│ 10      │ 'late-entrenched' │ 'tactic:aggressive' │ 200   │ -114 │ 0       │ -0.1   │ -0.085 │ -0.025 │ -0.01       │ -0.025     │ 0.285 │ 0.295    │ -1      │\n│ 11      │ 'late-entrenched' │ 'tactic:control'    │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.295 │ 0.295    │ 0       │\n│ 12      │ 'late-entrenched' │ 'tactic:late'       │ 200   │ -108 │ 0       │ -0.1   │ -0.085 │ -0.025 │ -0.01       │ -0.025     │ 0.29  │ 0.295    │ -0.5    │\n│ 13      │ 'late-entrenched' │ 'tactic:pressure'   │ 200   │ -41  │ 0       │ -0.05  │ -0.055 │ -0.04  │ -0.01       │ -0.025     │ 0.315 │ 0.295    │ 2       │\n└─────────┴───────────────────┴─────────────────────┴───────┴──────┴─────────┴────────┴────────┴────────┴─────────────┴────────────┴───────┴──────────┴─────────┘\nlate-race: 50 paired seeds\nlate-race: 100 paired seeds\nlate-race: 150 paired seeds\nlate-race: 200 paired seeds\n┌─────────┬─────────────┬─────────────────────┬───────┬──────┬─────────┬────────┬────────┬────────┬─────────────┬────────────┬───────┬──────────┬─────────┐\n│ (index) │ context     │ action              │ seeds │ gold │ objects │ kills  │ deaths │ roshan │ smokeEvents │ wardEvents │ win   │ baseline │ deltaPP │\n├─────────┼─────────────┼─────────────────────┼───────┼──────┼─────────┼────────┼────────┼────────┼─────────────┼────────────┼───────┼──────────┼─────────┤\n│ 0       │ 'late-race' │ 'coach'             │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.1   │ 0.1      │ 0       │\n│ 1       │ 'late-race' │ 'farm'              │ 200   │ -11  │ 0.32    │ 0.64   │ 0.51   │ 0      │ -0.005      │ 0          │ 0.485 │ 0.1      │ 38.5    │\n│ 2       │ 'late-race' │ 'vision'            │ 200   │ -69  │ 0.32    │ 0.64   │ 0.51   │ 0      │ -0.005      │ 0.12       │ 0.485 │ 0.1      │ 38.5    │\n│ 3       │ 'late-race' │ 'smoke'             │ 200   │ 494  │ 0.37    │ 0.655  │ 0.52   │ 0      │ 0           │ 0          │ 0.255 │ 0.1      │ 15.5    │\n│ 4       │ 'late-race' │ 'counterSmoke'      │ 200   │ 494  │ 0.37    │ 0.655  │ 0.52   │ 0      │ 0           │ 0          │ 0.255 │ 0.1      │ 15.5    │\n│ 5       │ 'late-race' │ 'rosh'              │ 200   │ -201 │ 0.32    │ 0.62   │ 0.48   │ 0.12   │ -0.005      │ 0          │ 0.48  │ 0.1      │ 38      │\n│ 6       │ 'late-race' │ 'siege'             │ 200   │ -28  │ 0.035   │ -0.175 │ -0.1   │ 0      │ -0.005      │ 0          │ 0.015 │ 0.1      │ -8.5    │\n│ 7       │ 'late-race' │ 'split'             │ 200   │ 100  │ 0.32    │ 0.635  │ 0.51   │ 0      │ -0.005      │ 0          │ 0.335 │ 0.1      │ 23.5    │\n│ 8       │ 'late-race' │ 'defend'            │ 200   │ 85   │ 0.32    │ 0.65   │ 0.54   │ 0      │ -0.005      │ 0          │ 0.495 │ 0.1      │ 39.5    │\n│ 9       │ 'late-race' │ 'throne'            │ 200   │ 531  │ 1.575   │ -0.635 │ -0.295 │ 0      │ -0.005      │ 0          │ 1     │ 0.1      │ 90      │\n│ 10      │ 'late-race' │ 'tactic:aggressive' │ 200   │ 44   │ 0.005   │ 0.015  │ 0      │ 0      │ -0.005      │ 0          │ 0.105 │ 0.1      │ 0.5     │\n│ 11      │ 'late-race' │ 'tactic:control'    │ 200   │ 0    │ 0       │ 0      │ 0      │ 0      │ 0           │ 0          │ 0.1   │ 0.1      │ 0       │\n│ 12      │ 'late-race' │ 'tactic:late'       │ 200   │ 44   │ 0.005   │ 0.015  │ 0      │ 0      │ -0.005      │ 0          │ 0.105 │ 0.1      │ 0.5     │\n│ 13      │ 'late-race' │ 'tactic:pressure'   │ 200   │ -1   │ -0.01   │ -0.03  │ -0.015 │ 0      │ -0.005      │ 0          │ 0.075 │ 0.1      │ -2.5    │\n└─────────┴─────────────┴─────────────────────┴───────┴──────┴─────────┴────────┴────────┴────────┴─────────────┴────────────┴───────┴──────────┴─────────┘\n┌───────────────────┬───────────────────┬───────┬─────────────────────┐\n│ (index)           │ context           │ win   │ alternativeMean     │\n├───────────────────┼───────────────────┼───────┼─────────────────────┤\n│ coach             │ 'late-race'       │ 0.1   │ 0.4227777777777778  │\n│ farm              │ 'late-ahead'      │ 0.765 │ 0.8794444444444446  │\n│ vision            │ 'late-entrenched' │ 0.145 │ 0.26944444444444443 │\n│ smoke             │ 'late-race'       │ 0.255 │ 0.40555555555555556 │\n│ counterSmoke      │ 'late-race'       │ 0.255 │ 0.40555555555555556 │\n│ rosh              │ 'early-behind'    │ 0.295 │ 0.344375            │\n│ siege             │ 'late-race'       │ 0.015 │ 0.4322222222222222  │\n│ split             │ 'late-ahead'      │ 0.695 │ 0.8872222222222222  │\n│ defend            │ 'early-ahead'     │ 0.615 │ 0.685               │\n│ throne            │ 'late-entrenched' │ 0.22  │ 0.26111111111111107 │\n│ tactic:aggressive │ 'late-race'       │ 0.105 │ 0.39049999999999996 │\n│ tactic:control    │ 'late-race'       │ 0.1   │ 0.39049999999999996 │\n│ tactic:late       │ 'late-race'       │ 0.105 │ 0.39049999999999996 │\n│ tactic:pressure   │ 'late-race'       │ 0.075 │ 0.39049999999999996 │\n└───────────────────┴───────────────────┴───────┴─────────────────────┘\nPASS paired A/B, four map tactics, entrenched high ground/base race and no dominant individual order\n\n"
+  }
+]

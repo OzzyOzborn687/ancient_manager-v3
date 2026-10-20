@@ -32,3 +32,44 @@
 A/B дополнен двумя ситуациями: укреплённая высокая земля и гонка открытых баз. Они проверяют цену необдуманной осады и пользу фокуса Древнего вместо сноса бараков. Старые четыре ситуации и строгая проверка отсутствия доминирующего приказа сохранены.
 
 Основные файлы: dist/match/v8/defense.js, movement.js, objectives.js, simulation.js, orders.js, ai.js, state.js, ui.js; dist/config/balance-v8.js; tests/defense-v8.cjs и fixtures-v8.cjs.
+
+## Полный прогон
+
+34/34 PASS. Включает все прежние проверки и нативный адаптер сохранений.
+
+| Тест | Результат | Время, с |
+| --- | --- | --- |
+| ai-tactics.cjs | PASS | 0.1 |
+| auto-fatigue-v26.cjs | PASS | 0.1 |
+| balance-v1.3.cjs | PASS | 11.3 |
+| balance-v26.cjs | PASS | 2.5 |
+| balance-v8.cjs | PASS | 37.5 |
+| career-v1.3.cjs | PASS | 10.8 |
+| career-v1.cjs | PASS | 0.4 |
+| coach-return.cjs | PASS | 0.1 |
+| comebacks.cjs | PASS | 70.6 |
+| decisions-v8.cis | PASS | 231.3 |
+| defense-v8.cjs | PASS | 0.1 |
+| development-v21.cjs | PASS | 15 |
+| difficulty.cjs | PASS | 4.1 |
+| engine-v6.cjs | PASS | 62 |
+| fatigue-v26.cjs | PASS | 0.2 |
+| interface-v2.cjs | PASS | 0.8 |
+| interface-v8.cjs | PASS | 0.3 |
+| match-rules.cjs | PASS | 2.2 |
+| match-v22.cjs | PASS | 1.7 |
+| match-v26.cjs | PASS | 0.1 |
+| model-v8.cjs | PASS | 1.3 |
+| native-adapter.cjs | PASS | 0 |
+| neon-tournaments.cjs | PASS | 0.1 |
+| neon-ui.cjs | PASS | 0.1 |
+| player-retirement.cjs | PASS | 0.2 |
+| recovery-v21.cjs | PASS | 0.8 |
+| recovery-v26.cjs | PASS | 0.9 |
+| reshuffle-positions.cjs | PASS | 0.3 |
+| startup.cjs | PASS | 8.1 |
+| tactics-mirror.cjs | PASS | 13.2 |
+| tactics-v1.1.cjs | PASS | 3.9 |
+| ti-event.cjs | PASS | 1.2 |
+| variation-v7.cjs | PASS | 12.3 |
+| world-v1.2.cjs | PASS | 6.6 |
