@@ -15,6 +15,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
   await page.setViewportSize({width,height:width===1440?1000:1280});
   for(const name of pages){
    await page.evaluate(name=>go(name),name);
+   await page.waitForFunction(()=>[...document.querySelectorAll('.neon-scene img')].every(img=>img.complete&&img.naturalWidth>0),null,{timeout:20000});
    const result=await page.evaluate(()=>{
     const bright=[],overflow=[];
     for(const el of document.querySelectorAll('#app *')){
@@ -30,7 +31,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
   }
  }
  await page.setViewportSize({width:590,height:1280});await page.evaluate(()=>go('squad'));
- assert(await page.locator('.neon-title-art img').first().evaluate(el=>el.complete&&el.naturalWidth>0),'Scene photography loaded');
+ await page.waitForFunction(()=>{const img=document.querySelector('.neon-title-art img');return img?.complete&&img.naturalWidth>0;},null,{timeout:20000});
  // Real profile, development purchase, navigation, save and bracket controls.
  await page.locator('.player-link20').first().click();assert(await page.evaluate(()=>page==='player'&&scrollY===0));
  await page.evaluate(()=>{S.budget=10000000;go('development');});
@@ -96,7 +97,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
  assert(await page.evaluate(()=>!!localStorage.getItem('ancient-manager-v1')));
  const beforeDay=await page.evaluate(()=>{fresh();S.events.forEach(e=>{if(e.day<=S.day)e.day=S.day+30});go('home');return S.day;});
  await page.locator('#advance').click();assert(await page.evaluate(day=>S.day>day,beforeDay));
- const report={graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','bracket fit/100%','model-8 farm order and tactic','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('16px "Russo One"'))};
+ const report={baseURL,graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','bracket fit/100%','model-8 farm order and tactic','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('16px "Russo One"'))};
  fs.writeFileSync(resultDir+'/report.json',JSON.stringify(report,null,2));
  console.log(JSON.stringify({...report,checks:checks.filter(c=>c.documentOverflow||c.bright.length)},null,2));
  assert.equal(errors.length,0);assert.equal(failures.length,0);assert(!checks.some(c=>c.documentOverflow),'No whole-page horizontal overflow');

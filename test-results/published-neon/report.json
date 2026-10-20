@@ -1,0 +1,603 @@
+{
+  "baseURL": "https://ozzyozborn687.github.io/ancient_manager-v3/",
+  "graphChecks": [
+    {
+      "key": "pgl",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "pgl",
+      "tab": "playoffs",
+      "issues": []
+    },
+    {
+      "key": "blast",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "blast",
+      "tab": "playoffs",
+      "issues": []
+    },
+    {
+      "key": "dreamSwiss",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "dreamSwiss",
+      "tab": "playoffs",
+      "issues": []
+    },
+    {
+      "key": "dreamGroup",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "dreamGroup",
+      "tab": "playoffs",
+      "issues": []
+    },
+    {
+      "key": "ti",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "ti",
+      "tab": "playoffs",
+      "issues": []
+    },
+    {
+      "key": "esl",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "esl",
+      "tab": "playoffs",
+      "issues": []
+    },
+    {
+      "key": "fissure",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "fissure",
+      "tab": "playoffs",
+      "issues": []
+    },
+    {
+      "key": "cup",
+      "tab": "groups",
+      "issues": []
+    },
+    {
+      "key": "cup",
+      "tab": "playoffs",
+      "issues": []
+    }
+  ],
+  "errors": [],
+  "failedLocalAssets": [],
+  "checks": [
+    {
+      "width": 390,
+      "page": "home",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 390,
+      "page": "match",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "squad",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 390,
+      "page": "players",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "development",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG.",
+        "TABLE.",
+        "THEAD.",
+        "TR.",
+        "TH.",
+        "TBODY.",
+        "TD."
+      ]
+    },
+    {
+      "width": 390,
+      "page": "tactics",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "market",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "reshuffles",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "patch",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "practice",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "ranking",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "calendar",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 390,
+      "page": "bracket",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 390,
+      "page": "clubs",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "trophies",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 390,
+      "page": "finance",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "history",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "saves",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "pools",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "model",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "settings",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "page": "menu21",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "home",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 590,
+      "page": "match",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "squad",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 590,
+      "page": "players",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "development",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 590,
+      "page": "tactics",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "market",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "reshuffles",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "patch",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "practice",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "ranking",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "calendar",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 590,
+      "page": "bracket",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 590,
+      "page": "clubs",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "trophies",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 590,
+      "page": "finance",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "history",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "saves",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "pools",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "model",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "settings",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 590,
+      "page": "menu21",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "home",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 1440,
+      "page": "match",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "squad",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 1440,
+      "page": "players",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "development",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 1440,
+      "page": "tactics",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "market",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "reshuffles",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "patch",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "practice",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "ranking",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "calendar",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 1440,
+      "page": "bracket",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 1440,
+      "page": "clubs",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "trophies",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": [
+        "IMG."
+      ]
+    },
+    {
+      "width": 1440,
+      "page": "finance",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "history",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "saves",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "pools",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "model",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "settings",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "page": "menu21",
+      "documentOverflow": false,
+      "bright": [],
+      "overflow": []
+    }
+  ],
+  "interactionChecks": [
+    "profile",
+    "upgrade and budget",
+    "bracket fit/100%",
+    "model-8 farm order and tactic",
+    "playoff tab",
+    "save persistence",
+    "next day"
+  ],
+  "fonts": true
+}
