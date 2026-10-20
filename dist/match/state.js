@@ -46,5 +46,5 @@ const migrateBase22=migrate;
 migrate=function(){
  migrateBase22();pauseLive4(false);S.gameVersion=BALANCE22.version;S.matchSchema22=26;
  const maps=[S.active?.live,S.active?.sim13?.live,S.practice13?.live];
- for(const m of maps)if(m?.sides){const old=m.simVersion!==BALANCE22.version;Match22.init(m);if(old)event4(m,'Карта перенесена в 2.6: состояние карты сохранено; новые механики ошибок и распределения убийств применяются со следующего тика.','migration');}
+ for(const m of maps)if(m?.sides&&m.modelVersion!==8&&m.legacyModel8!=='spatial'){const old=m.simVersion!==BALANCE22.version;Match22.init(m);if(old)event4(m,'Карта перенесена в 2.6: состояние карты сохранено; новые механики ошибок и распределения убийств применяются со следующего тика.','migration');}
 };

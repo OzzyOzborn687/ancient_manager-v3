@@ -1,0 +1,37 @@
+'use strict';
+// Spatial model. These are game-design coefficients, not fitted Dota probabilities.
+const BALANCE8={
+ version:8,step:10,think:60,orderDuration:180,commandCooldown:20,windowCooldown:90,
+ phases:[600,1500],windows:[300,720,1200],
+ movement:{walk:24,zoneDistance:7,tp:4,tpCooldown:80,assembly:15,regroup:35,rallyZone:1,retreatHealth:26,healReady:92},
+ vision:{wardCost:75,sentryCost:50,dewardGold:40,lifetime:360,interval:90,maxWards:6,knownFor:150,wardSight:.8,heroSight:1,smokeDuration:75,smokeRead:.25,smokeReadVision:.4,counterSmokeRead:.35,adjacentSight:.1,sentrySight:.2},
+ economy:{passive:100,farm:[510,470,390,205,180],lanePool:800,campPool:1200,resourceCap:2000,
+  farmSkillMin:.85,farmSkillMax:1.15,farmHeroReference:3,farmSkill:.0015,farmHero:.035,travelFactor:.18,combatFactor:0,xp:1.2,xpDivisor:42,lastHitGold:43,
+  healBase:6,healField:.18,healTower:.45,itemSlots:6,coreFarmWeight:5,supportFarmWeight:1},
+ power:{base:100,skillReference:85,skill:.02,level:.018,spentDivisor:12000,spentExponent:.42,
+  heroBase:.65,heroPhase:.12,role:[1.12,1.08,1,.78,.74],formReference:80,form:.001,morale:.001,energy:.0015,
+  masteryBase:.8,mastery:.2,healthBase:.65,health:.0035,
+  quality:{mechanics:.5,decisions:.3,teamwork:.2,reference:80,scale:.002},
+  ti:{tempo:[1.02,.99],late:[.99,1.02],steady:1.01,tempoAt:900,lateAt:1500},
+  items:{'Black King Bar':.09,'Blink Dagger':.06,'Aghanim’s Scepter':.07,'Force Staff':.04}},
+ combat:{skillWeight:1.8,position:.55,vision:.55,initiative:.18,surprise:.65,readiness:.3,
+  combo:.04,executionNoise:.22,executionErrorAt:.17,minProbability:.025,maxProbability:.975,duration:40,chip:.55,
+  lossFraction:.6,retaliation:.5,ultCooldown:140,encounterCooldown:90,
+  killBase:170,killLevel:9,killNet:.016,shutdown:90,shutdownMax:900,assist:.5,
+  deathBase:20,deathLevel:2.6,deathMax:125,deathGold:80,killWeights:[1.25,1.3,.95,.7,.65],
+  targetWeights:[1.2,1.15,1,.9,.85]},
+ objectives:{pushStart:300,dpsBase:2.7,dpsHero:.99,dpsSpent:.000072,defenderBlock:.65,
+  frontRate:.003,frontDefense:.002,front:[0,.12,.3,.55,.7,.78],glyphDuration:10,glyphCooldown:420,glyphThreshold:.45,buybackCooldown:480,buybackBase:500,buybackNetDivisor:13,
+  regroup:40,goldTower:125,goldRax:90,roshanStart:480,roshanHealth:8000,roshanTag:1.4,roshanReset:40,roshanRegen:160,roshanDps:.3,
+  roshanDamage:.22,roshanRespawn:[480,660],roshanGold:150,aegis:300,aegisRespawn:5},
+ ai:{temperature:.17,commit:180,continuity:.3,earlyFarm:.25,lateFarmPenalty:.25,latePush:.2,preferred:.04,danger:.9,opportunity:.65,roshan:.45,vision:.3,
+  farm:.4,push:1.2,smoke:.42,counterSmoke:1.2,split:.4,defend:.2,throne:.7,risk:.55,observationAge:.15,expertCommit:60,expertThroneDeaths:0,expertLaneStart:300,lateAt:1500,farmUntil:1200,aegisOpportunity:.5,defenseMultiplier:.5,visionUnknown:3,visionNeed:.2,roshanUnknownPenalty:.25,roshanContest:2,throneUnavailable:-.5,splitDiversion:.35,deathWindow:2,throneDeaths:3,threatGroup:3,farmThreat:2},
+ tactics:{aggressive:{label:'Агрессивная',preferred:'smoke'},control:{label:'Контроль карты',preferred:'vision'},late:{label:'Фарм до лейта',preferred:'farm'},pressure:{label:'Раннее давление',preferred:'siege'}},
+ tempo:{decay:.94,fight:.1,objective:.15,roshan:.12,max:1,controlBase:.25,zone:.07,ward:.02,minControl:.15,maxControl:.85},
+ smoke:{initial:2,max:3,interval:480,cooldown:180},
+ end:{surrenderAfter:2400,deficit:35000,ratio:.48,lostTowers:10,grace:240},
+ risk:{unknown:.12,noSight:.15,power:.3,min:.05,max:.95,high:.65,medium:.35},
+ orders:{minimumGroup:3,throneNetRatio:1.3,splitRoles:[2,3],farmRoles:[0,4],visionRoles:[3,4]},
+ tests:{seeds:200,ratingFavorite:90,ratingUnderdog:80,durationTarget:3600,durationTolerance:.1}
+};
+const Match8={B:BALANCE8};

@@ -1,0 +1,35 @@
+'use strict';
+// Requested .cis path; execute with: node tests/decisions-v8.cis
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {run}=require('./harness22.cjs')({modelVersion:8});run(require('./fixtures-v8.cjs'));
+const resultDir=process.env.RESULTS_DIR||'test-results';
+const count=200,contexts=['early-ahead','early-behind','late-ahead','late-behind'],rows=[];
+for(const context of contexts){
+ const batch=run(`(()=>{
+ const actions=['coach','farm','vision','smoke','counterSmoke','rosh','siege','split','defend','throne','tactic:aggressive','tactic:control','tactic:late','tactic:pressure'];
+ const sums=actions.map(action=>({context:'${context}',action,seeds:0,wins:0,baseWins:0,gold:0,objects:0,kills:0,deaths:0,roshan:0,smokeEvents:0,wardEvents:0}));
+ function arm(initial,action,seed){
+  const m=structuredClone(initial);S.seed=seed+1987;
+  if(action.startsWith('tactic:')){const key=action.split(':')[1];if(m.tactics22[0]!==key){m.tactics22[0]=key;m.v8.reformUntil=[m.clock+BALANCE8.movement.regroup,0];}}
+  else if(!Match8.issue(m,0,action,{manual:true}).ok)throw Error('Invalid A/B arm '+action);
+  const start=Match8.capture(m,0);for(let n=0;n<18&&m.finishedSide==null;n++)simulateTick4(m,10);const end=Match8.capture(m,0);
+  const r={gold:end.gold-start.gold,objects:end.objects-start.objects,kills:end.kills-start.kills,deaths:end.deaths-start.deaths,roshan:end.roshan-start.roshan,smokeEvents:m.v8.counts.smoke||0,wardEvents:m.v8.counts.vision||0};finish8(m);r.win=m.finishedSide===0;return r;
+ }
+ for(let i=0;i<${count};i++){
+  const seed=210000+i*617,initial=scenario8(seed,'${context}'),base=arm(initial,'coach',seed);
+  for(const sum of sums){const action=sum.action;if(!action.startsWith('tactic:')&&Match8.available(initial,0,action))continue;
+   const r=action==='coach'?base:arm(initial,action,seed);sum.seeds++;sum.wins+=r.win;sum.baseWins+=base.win;
+   for(const key of ['gold','objects','kills','deaths','roshan','smokeEvents','wardEvents'])sum[key]+=r[key]-base[key];
+  }
+  if((i+1)%50===0)console.log('${context}: '+(i+1)+' paired seeds');
+ }
+ return sums.map(({wins,baseWins,...r})=>{for(const key of ['gold','objects','kills','deaths','roshan','smokeEvents','wardEvents'])r[key]=r.seeds?r[key]/r.seeds:null;r.gold=r.gold==null?null:Math.round(r.gold);return {...r,win:r.seeds?wins/r.seeds:null,baseline:r.seeds?baseWins/r.seeds:null,deltaPP:r.seeds?100*(wins-baseWins)/r.seeds:null};});
+ })()`);rows.push(...batch);console.table(batch);
+}
+const weaknesses=Object.fromEntries([...new Set(rows.map(r=>r.action))].map(action=>{
+ const candidates=rows.filter(r=>r.action===action&&r.seeds).map(r=>{const alternatives=rows.filter(q=>q.context===r.context&&q.action!==action&&q.seeds&&!q.action.startsWith('tactic:'));return {context:r.context,win:r.win,alternativeMean:alternatives.reduce((n,q)=>n+q.win,0)/alternatives.length};});
+ return [action,candidates.sort((a,b)=>(a.win-a.alternativeMean)-(b.win-b.alternativeMean))[0]];
+}));
+console.table(weaknesses);fs.mkdirSync(resultDir,{recursive:true});fs.writeFileSync(resultDir+'/decisions-v8.json',JSON.stringify({seedsPerArm:count,rows,weaknesses},null,2));
+for(const [action,r] of Object.entries(weaknesses).filter(([a])=>!a.startsWith('tactic:')))assert(r.win<r.alternativeMean,action+' needs a valid counterexample');
+console.log('PASS paired A/B, four map tactics and no dominant individual order');

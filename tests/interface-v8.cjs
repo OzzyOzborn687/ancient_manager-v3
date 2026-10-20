@@ -1,0 +1,8 @@
+'use strict';
+const assert=require('node:assert/strict'),{run,elements}=require('./harness22.cjs')({modelVersion:8});
+run(`S.events=[{id:0,name:'FISSURE',series:'FISSURE',day:0,pool:1000000,qualified13:S.teams.slice(0,8).map(t=>t.id)}];startEvent();playMap();`);
+assert(run(`(()=>{const m=S.active.live,seed=S.seed,before=JSON.stringify(m),html=matchView();return html.includes('Риск:')&&html.includes('Цена:')&&Object.keys(ORDERS4).every(k=>html.includes("issueOrder4('"+k+"')"))&&!/undefined|NaN/.test(html)&&S.seed===seed&&before===JSON.stringify(m)})()`),'full match UI with pure forecasts and all buttons');
+assert(run(`(()=>{const m=S.active.live;changeMatchTactic22('late');return m.tactics22[0]==='late'&&m.v8.reformUntil[0]===m.clock+BALANCE8.movement.regroup})()`),'tactic button changes state and adds regroup travel');
+assert(run(`(()=>{const m=S.active.live;issueOrder4('farm',false);for(let i=0;i<18;i++)simulateTick4(m,10);Match8.closeDecision(m,0,'UI test');while(m.finishedSide==null&&m.clock<21600)simulateTick4(m,10);if(m.finishedSide==null)throw Error('UI map stalled');m.report13=buildReport13(m);const html=reportView13(m);return html.includes('Сводка решений менеджера')&&html.includes('Δ золота')&&html.includes('Δ объектов')})()`),'real postmatch report includes decisions and deltas');
+assert(run(`(()=>{const m=S.active.live,serialized=JSON.stringify(S),seed=S.seed;S=JSON.parse(serialized);migrate();return S.active.live.modelVersion===8&&S.seed===seed&&S.active.live.v8.decisionLog.length===m.v8.decisionLog.length&&validSave(S)})()`),'v8 map save/reload retains model and report');
+console.log('PASS model v8 interface: all commands, live risk/cost/conditions, pure render, regroup, report and saved map');
