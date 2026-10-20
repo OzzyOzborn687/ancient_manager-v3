@@ -1,0 +1,62 @@
+[
+  {
+    "mode": "mirror",
+    "maps": 200,
+    "wins": 105,
+    "rate": 0.525,
+    "meanMinutes": 56.41416666666667,
+    "stalls": 0,
+    "comebacks": 106,
+    "killsByRole": [
+      2652,
+      2791,
+      1984,
+      1417,
+      1225
+    ],
+    "errors": [
+      507,
+      489
+    ]
+  },
+  {
+    "mode": "favorite",
+    "maps": 200,
+    "wins": 138,
+    "rate": 0.69,
+    "meanMinutes": 51.5925,
+    "stalls": 0,
+    "comebacks": 84,
+    "killsByRole": [
+      2311,
+      2506,
+      1804,
+      1199,
+      1078
+    ],
+    "errors": [
+      511,
+      447
+    ]
+  },
+  {
+    "mode": "expert",
+    "maps": 200,
+    "wins": 94,
+    "rate": 0.47,
+    "meanMinutes": 52.839166666666664,
+    "stalls": 0,
+    "comebacks": 99,
+    "killsByRole": [
+      2754,
+      2694,
+      2002,
+      1308,
+      1092
+    ],
+    "errors": [
+      529,
+      516
+    ]
+  }
+]

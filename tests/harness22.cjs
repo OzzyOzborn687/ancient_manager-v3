@@ -9,7 +9,8 @@ module.exports=function(options={}){
  const html=fs.readFileSync(root+'/index.html','utf8');
  for(const [,src] of html.matchAll(/<script\s+src="([^"]+)"/g)){if(options.stopBefore&&src.split('?')[0]===options.stopBefore)break;if(src.startsWith('http'))throw Error('External runtime dependency '+src);vm.runInContext(fs.readFileSync(root+'/'+src.split('?')[0],'utf8'),c,{filename:src});}
  const run=code=>vm.runInContext(code,c);
- run('render=()=>{};save=()=>{};');
+ run('save=()=>{};');
+ if(!options.renderReal)run('render=()=>{};');
  if(options.modelVersion!==8)run('if(typeof Legacy26!=="undefined")makeLive4=Legacy26.make');
  run('fresh();S.seed=24680;');
  return {run,elements,c};
