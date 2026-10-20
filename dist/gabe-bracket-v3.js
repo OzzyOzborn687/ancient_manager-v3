@@ -50,8 +50,8 @@ function gabeSwissBoard(a,active){
   let pendingHtml=pending.length?'<div class="gabe-pending"><div class="gabe-col-head">ТЕКУЩИЙ РАУНД</div>'+pending.map(n=>gabeMatchBox(n,a,active)).join('')+'</div>':'';
   return '<div class="gabe-swiss"><div class="gabe-swiss-scroll">'+cols+'</div>'+pendingHtml+'</div>';
 }
-function gabePlayoffBoard(a,active){
-  let playoff=a.schedule.filter(n=>!n.groupMatch);
+function gabePlayoffBoard(a,active,nodes){
+  let playoff=nodes||(a.schedule||[]).filter(n=>!n.groupMatch);
   let stages={};
   for(let n of playoff){
     let key=n.label.replace(/ \d+$/,'');
@@ -86,8 +86,24 @@ function gabePlayoffBoard(a,active){
   return '<div class="gabe-playoffs">'+lane('UPPER BRACKET',upper)+lane('LOWER BRACKET',lower)+lane('GRAND FINALS',finals)+'</div>';
 }
 function gabeGroupBoard(a,active){
-  if(a.groupIds){
-    return '<div class="gabe-groups">'+a.groupIds.map((ids,i)=>'<div class="gabe-col"><div class="gabe-col-head">Группа '+String.fromCharCode(65+i)+'</div><div class="gabe-col-body">'+ranks6(a,ids).map(r=>'<div class="gabe-team-row '+(r.id===S.club?'gabe-own':'')+'">'+gabeCrest(r.id)+'<span>'+esc(S.teams[r.id].short)+'</span><b>'+r.w+'-'+r.d+'-'+r.l+'</b></div>').join('')+'</div></div>').join('')+'</div>';
+  if(a.groupIds&&a.groupIds.length){
+    return '<div class="gabe-groups">'+a.groupIds.map((ids,i)=>{
+      let matches=(a.schedule||[]).filter(n=>n.groupMatch&&n.group===i);
+      return '<div class="gabe-col"><div class="gabe-col-head">Группа '+String.fromCharCode(65+i)+'</div><div class="gabe-col-body">'+
+        ranks6(a,ids).map(r=>'<div class="gabe-team-row '+(r.id===S.club?'gabe-own':'')+'">'+gabeCrest(r.id)+'<span>'+esc(S.teams[r.id].short)+'</span><b>'+r.w+'-'+r.d+'-'+r.l+'</b></div>').join('')+
+        matches.filter(n=>n.score).map(n=>gabeMatchBox(n,a,active)).join('')+
+      '</div></div>';
+    }).join('')+'</div>';
+  }
+  if(a.gsl&&a.gsl.length){
+    return '<div class="gabe-groups">'+a.gsl.map((g,i)=>{
+      let label='GSL '+String.fromCharCode(65+i);
+      let nodes=(a.schedule||[]).filter(n=>n.groupMatch&&n.label&&n.label.indexOf(label)===0);
+      return '<div class="gabe-col"><div class="gabe-col-head">'+label+'</div><div class="gabe-col-body">'+
+        (g.ids||[]).map(id=>'<div class="gabe-team-row '+(id===S.club?'gabe-own':'')+'">'+gabeCrest(id)+'<span>'+esc(S.teams[id].short)+'</span></div>').join('')+
+        nodes.map(n=>gabeMatchBox(n,a,active)).join('')+
+      '</div></div>';
+    }).join('')+'</div>';
   }
   return gabeSwissBoard(a,active);
 }
@@ -95,24 +111,41 @@ function gabeGroupBoard(a,active){
 bracketView=function(){
   let available=S.events.filter(e=>e.done||e.id===S.active?.event);
   let e=available.find(e=>e.id===(selectedBracket??S.active?.event))||available.at(-1);
-  if(!e||e.format!=='circuit-v6')return bracketLegacy6();
+  if(!e||e.format!=='circuit-v6'){
+    if(typeof bracketBeforeV1==='function')return bracketBeforeV1();
+    if(typeof bracketLegacy6==='function')return bracketLegacy6();
+    return '';
+  }
   let active=S.active?.event===e.id?S.active:null;
-  let a=active||{schedule:e.schedule6||[],seeds:e.seeds6,entrants:e.entrants,groupIds:e.groupIds6,gsl:e.gsl6,swissRound:0,cursor:-1};
+  let a=active||{schedule:e.schedule6||[],seeds:e.seeds6,entrants:e.entrants,groupIds:e.groupIds6,gsl:e.gsl6,swissRound:0,cursor:-1,stage6:e.done?'playoffs':undefined};
   let f=format6(e);
-  let board='';
-  if(a.stage6==='playoffs'||(a.schedule||[]).some(n=>!n.groupMatch)||f.kind==='de'){
-    board=gabePlayoffBoard(a,active);
-    if((a.schedule||[]).some(n=>n.groupMatch)) board=gabeGroupBoard(a,active)+board;
+  let tab=(typeof bracketTabV1!=='undefined'&&bracketTabV1!=='auto')?bracketTabV1:(active?.stage6==='playoffs'||e.done||f.kind==='de'?'playoffs':'groups');
+  let hasGroups=f.kind!=='de'&&((a.schedule||[]).some(n=>n.groupMatch)||a.groupIds||a.gsl||f.kind==='swiss'||f.kind==='gsl'||f.kind==='rr');
+  let tabs='';
+  if(hasGroups){
+    tabs=(typeof btn==='function'?btn('Группы и отбор',"bracketTabV1='groups';render()",tab==='groups'):'')+
+         (typeof btn==='function'?btn('Плей-офф',"bracketTabV1='playoffs';render()",tab==='playoffs'):'');
   } else {
-    board=gabeGroupBoard(a,active);
+    tab='playoffs';
+  }
+  let board='';
+  if(tab==='playoffs'){
+    let actual=(a.schedule||[]).filter(n=>typeof isPlayoffV1==='function'?isPlayoffV1(n):!n.groupMatch);
+    let preview=!actual.length;
+    let b=preview&&typeof playoffPreviewV1==='function'?playoffPreviewV1(e.formatKey6):a;
+    let nodes=preview?(b.schedule||[]):actual;
+    if(preview) board+='<div class="notice">Сетка плей-офф уже определена. Команды займут слоты после групп.</div>';
+    board+=gabePlayoffBoard(b,active,nodes);
+  } else {
+    board+=gabeGroupBoard(a,active);
   }
   return head('ТУРНИРНЫЙ ЦЕНТР',e.name,active?active.stage:(e.champion!=null?'Чемпион — '+S.teams[e.champion].name:'Сетка'),active?btn('Мой матч →',"go('match')",true):'')+
-    '<div class="filters"><select aria-label="Турнир" onchange="selectedBracket=+this.value;render()">'+
+    '<div class="filters"><select aria-label="Турнир" onchange="selectedBracket=+this.value;bracketTabV1=\'auto\';render()">'+
     available.map(v=>'<option value="'+v.id+'" '+(v.id===e.id?'selected':'')+'>'+esc(v.name)+'</option>').join('')+
-    '</select></div>'+
+    '</select>'+tabs+'</div>'+
     '<section class="panel gabe-reg"><h2>Регламент</h2><p>'+f.label+'</p><p class="sub">'+f.note+(e.pairingFallback?' В одном из раундов применён резервный посев.':'')+'</p>'+
     (f.url?'<a href="'+f.url+'" target="_blank" rel="noopener">Источник формата ↗</a>':'')+'</section>'+
-    '<div class="gabe-board">'+board+'</div>'+restPanel6();
+    '<div class="gabe-board">'+board+'</div>'+(typeof restPanel6==='function'?restPanel6():'');
 };
 
 /* Series / map report: player photos instead of hero icons */
