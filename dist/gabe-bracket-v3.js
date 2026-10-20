@@ -103,3 +103,28 @@ bracketView=function(){
     (f.url?'<a href="'+f.url+'" target="_blank" rel="noopener">Источник формата ↗</a>':'')+'</section>'+
     '<div class="gabe-board">'+board+'</div>'+restPanel6();
 };
+
+/* Series / map report: player photos instead of hero icons */
+report=function(i){
+  let h=S.history[i],oppName=h.opponent;
+  let oppTeam=S.teams.find(t=>t.short===oppName||t.name===oppName);
+  function playerBlock(players){
+    return (players||[]).map(p=>{
+      let pl=S.players.find(x=>typeof nameKey4==='function'&&nameKey4(x.name)===nameKey4(p.name));
+      let photo=(typeof portrait20==='function'&&pl)?portrait20(pl):'<span class="portrait20"></span>';
+      return '<div class="gabe-player-row">'+photo+'<b>'+esc(p.name)+'</b><span class="gabe-kda">'+(p.k||0)+'-'+(p.d||0)+'-'+(p.a||0)+'</span></div>';
+    }).join('')||'<div class="gabe-player-row"><b>—</b></div>';
+  }
+  let mapsHtml=(h.maps||[]).map((m,j)=>{
+    let own=m.players||[];
+    let enemy=m.enemyPlayers||m.enemy||[];
+    return '<div class="round"><strong>Карта '+(j+1)+' · '+(m.win?'Победа':'Поражение')+'</strong>'+
+      '<p>'+(m.duration||Math.round((m.durationSec||0)/60)||'?')+' мин · '+(m.kills||0)+':'+(m.deaths||0)+'</p>'+
+      '<div class="gabe-series-result">'+
+        '<div class="gabe-series-team">'+(typeof clubAvatar12==='function'?clubAvatar12(my()):'')+'<h3>'+esc(my().name)+'</h3>'+playerBlock(own)+'</div>'+
+        '<div class="gabe-series-score">'+(m.win?'1':'0')+' – '+(m.win?'0':'1')+'<small>КАРТА</small></div>'+
+        '<div class="gabe-series-team">'+(oppTeam&&typeof clubAvatar12==='function'?clubAvatar12(oppTeam):'')+'<h3>'+esc(oppName)+'</h3>'+playerBlock(enemy)+'</div>'+
+      '</div></div>';
+  }).join('');
+  openModal('<h2>'+esc(my().name)+' — '+esc(oppName)+'</h2><div class="gabe-series-score" style="font-size:36px;margin:8px 0">'+(h.score||[]).join(' – ')+'<small>СЕРИЯ</small></div>'+mapsHtml+'<div class="actions">'+btn('Закрыть','closeModal()')+'</div>');
+};
