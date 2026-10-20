@@ -31,7 +31,7 @@ jobs:
         run: |
           APP=$(find native/out -maxdepth 3 -name 'Ancient Manager.app' -type d | head -1)
           test -n "$APP"
-          lipo -verify_arch x86_64 arm64 "$APP/Contents/MacOS/Ancient Manager"
+          lipo "$APP/Contents/MacOS/Ancient Manager" -verify_arch x86_64 arm64
           codesign --verify --deep --strict "$APP"
       - uses: actions/upload-artifact@v4
         with:
