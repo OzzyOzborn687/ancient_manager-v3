@@ -4,7 +4,7 @@ Match22.timers=function(m){
  for(let side of [0,1]){
   const s=m.sides[side],v=s.vision22;
   if(s.aegisUntil&&s.aegisUntil<=m.clock){s.aegisUntil=0;this.event(m,'Аегис истёк: бонус следующего файта потерян.','aegis',{side});}
-  if(s.nextSmoke<=m.clock){s.smokes=Math.min(3,s.smokes+1);s.nextSmoke=m.clock+B.actions.roshanStart;}
+  if(s.nextSmoke<=m.clock){s.smokes=Math.min(B.actions.smokeMax,s.smokes+1);s.nextSmoke=m.clock+B.actions.smokeInterval;}
   if(v.expires<=m.clock){v.wards=Math.max(0,v.wards-1);v.sentries=Math.max(0,v.sentries-1);v.expires=m.clock+B.map.wardLifetime;}
   if(v.nextWard<=m.clock){v.wards=Math.min(B.map.wardMax,v.wards+1);v.nextWard=m.clock+B.map.wardRefresh;}
   for(const p of s.heroes){
@@ -59,10 +59,13 @@ Match22.minute=function(m){
  // Economy uses the preceding minute's commitment. No reward is granted by clicking.
  for(let side of [0,1])this.economy(m,side,B.tick);
  m.clock+=B.tick;this.timers(m);this.refresh(m);
- const manual=!!m.pendingAction22||m.orders[0].until>m.clock&&m.orders[0].type!=='coach';
- const own=m.pendingAction22||(m.orders[0].until>m.clock&&m.orders[0].type!=='coach'?m.orders[0].type:this.ai(m,0,m.lastActions22[1]));
+ // Both coaches observe the same completed-minute snapshot. A manager's new
+ // order is committed simultaneously and is not revealed to the enemy early.
+ const observed=[...m.lastActions22];
+ const own=m.pendingAction22||(m.orders[0].until>m.clock&&m.orders[0].type!=='coach'?m.orders[0].type:this.ai(m,0,observed[1]));
  m.pendingAction22=null;
- const enemy=this.ai(m,1,manual?own:m.lastActions22[0]),actions=[own,enemy];m.plans=[...actions];
+ const enemy=this.ai(m,1,observed[0]),actions=[own,enemy];m.plans=[...actions];
+ m.orderInfo26={sec:m.clock,observed,committed:[...actions]};
  this.map(m,actions);
  for(const side of [0,1])autoBuyback6(m,side);
  this.skirmish(m,actions);

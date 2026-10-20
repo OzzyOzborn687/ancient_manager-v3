@@ -18,7 +18,7 @@ Match22.init = function(m) {
  if(m.counterSmoke11)m.counterSmoke11.pending=null;
  // Preserve all old economy, scores, cooldowns and objective damage.
  for(let side of [0,1]){
-  const s=m.sides[side];s.vision22={wards:B.map.wards,sentries:B.map.sentries,expires:m.clock+B.map.wardLifetime,nextWard:m.clock+B.map.wardRefresh,zones:Array(B.map.zoneCount).fill(s.control)};
+  const s=m.sides[side];if(m.clock===0)s.nextSmoke=B.actions.smokeInterval;s.vision22={wards:B.map.wards,sentries:B.map.sentries,expires:m.clock+B.map.wardLifetime,nextWard:m.clock+B.map.wardRefresh,zones:Array(B.map.zoneCount).fill(s.control)};
   for(const l of s.lanes){
    const fraction=l.rax.max?l.rax.hp/l.rax.max:1;
    l.melee??={hp:B.map.raxMelee*fraction,max:B.map.raxMelee};
@@ -41,7 +41,7 @@ Match22.refresh=function(m){
 };
 stage4=function(m){return ['Лайнинг · 0–10','Мидгейм · 10–25','Лейт · 25+'][Match22.phaseIndex(m)]};
 const makeBase22=makeLive4;
-makeLive4=function(...args){const m=makeBase22(...args);Match22.init(m);m.initialChance=positionScore4(m);return m};
+makeLive4=function(...args){const m=makeBase22(...args);Match22.init(m);Match22.selectDraftTactics(m);m.initialChance=positionScore4(m);return m};
 const migrateBase22=migrate;
 migrate=function(){
  migrateBase22();pauseLive4(false);S.gameVersion=BALANCE22.version;S.matchSchema22=26;

@@ -96,18 +96,25 @@ Match22.fight=function(m,side,assessment,{smoke=false,exposed=false,highground=f
  const p=clamp(this.probability(A,D)+tactical+(rng()*2-1)*C.noise,C.minProbability,1-C.minProbability),win=rng()<p,winner=win?side:1-side,loser=1-winner;
  const winning=win?own:enemy,losing=win?enemy:own;
  const superiority=Math.abs(assessment.fight.A-assessment.fight.D)/Math.max(1,assessment.fight.A+assessment.fight.D);
- const count=Math.min(losing.length,C.casualties[0]+Math.floor(superiority*C.casualties[1])+(smoke?0:1));
+ const count=Math.min(losing.length,C.casualties[0]+Math.floor(superiority*C.casualties[1]));
  const E=this.B.economy,pool=[...losing];
  const deathsBefore=m.sides.map(s=>s.heroes.reduce((n,p)=>n+p.d,0));
  for(let i=0;i<count&&pool.length;i++){
   const v=weighted4(pool,pool.map(q=>E.victimRole[q.role]*(1+Math.max(0,100-q.health)/100)/(q.items.some(j=>j.name==='Black King Bar')?1/E.victimBkb:1)*(smoke&&q===assessment.target?this.B.execution.targetCoreBonus:1)));
   pool.splice(pool.indexOf(v),1);this.kill(m,winner,v,winning.filter(p=>p.deadUntil<=m.clock));
  }
- if(rng()<C.retaliation*(1-superiority)&&losing.some(p=>p.deadUntil<=m.clock))this.kill(m,loser,weighted4(winning,winning.map(q=>this.B.economy.victimRole[q.role])),losing.filter(p=>p.deadUntil<=m.clock));
+ const winnerProbability=win?p:1-p,retaliationProbability=C.retaliation*(1-winnerProbability);
+ // Close fights cost the winner more. An unlikely upset can be a costly victory.
+ const returnTargets=[...winning];let returnKills=0;
+ while(returnTargets.length){
+  const v=weighted4(returnTargets,returnTargets.map(q=>E.victimRole[q.role]));returnTargets.splice(returnTargets.indexOf(v),1);
+  if(returnKills>=count||winning.filter(q=>q.deadUntil<=m.clock).length<=1||!losing.some(q=>q.deadUntil<=m.clock))break;
+  if(rng()<retaliationProbability){const before=v.d;this.kill(m,loser,v,losing.filter(q=>q.deadUntil<=m.clock));returnKills+=v.d-before;}
+ }
  for(const p of [...own,...enemy]){if(p.ultUntil<=m.clock)p.ultUntil=m.clock+C.ultCooldown;if(p.deadUntil<=m.clock)p.health=Math.max(1,p.health-C.healthLoss);}
  m.tempo22.initiator=side;m.tempo22.momentum[winner]=clamp(m.tempo22.momentum[winner]+C.momentumGain,-1,1);m.tempo22.momentum[loser]=clamp(m.tempo22.momentum[loser]-C.momentumGain,-1,1);
  const reason=assessment.factors.join('; ')+execution.filter(e=>e.error).map(e=>'; '+this.name(m,e.side)+': '+this.B.execution.labels[e.error]).join('');
- this.event(m,(smoke?(win?'Смоук нашёл цель':'Смоук провалился'):'Файт: победа '+this.name(m,winner))+': '+reason+'.','fight-end',{winner,side,pWin:p,A,D,expectedP:assessment.p,execution:execution.map(e=>({side:e.side,factor:e.factor,error:e.error})),comeback:net4(m.sides[winner])<net4(m.sides[loser])});
+ this.event(m,(smoke?(win?'Смоук нашёл цель':'Смоук провалился'):'Файт: победа '+this.name(m,winner))+': '+reason+'.','fight-end',{winner,side,pWin:p,A,D,expectedP:assessment.p,winnerProbability,retaliationProbability,execution:execution.map(e=>({side:e.side,factor:e.factor,error:e.error})),comeback:net4(m.sides[winner])<net4(m.sides[loser])});
  m.turningPoints6.push({sec:m.clock,started:m.clock-this.B.tick,stage:stage4(m),winner,kills:[m.sides[1].heroes.reduce((n,p)=>n+p.d,0)-deathsBefore[1],m.sides[0].heroes.reduce((n,p)=>n+p.d,0)-deathsBefore[0]],gold:net4(m.sides[0])-net4(m.sides[1]),highground});
  this.window(m,winner===0?'Выигранный файт: реализуйте преимущество':'Проигранный файт: перестройте план');
  m.lastFight=m.clock;return win;

@@ -1,7 +1,7 @@
 'use strict';
 Match22.commands=function(m){
  const open=m.window22.pending;
- return `<section class="panel decision-panel"><div class="eyebrow">ШТАБ · ${clock4(m.clock)}</div><h2>${esc(open?m.window22.reason:'Команда исполняет текущую тактику')}</h2><p>${stage4(m)} · текущий план: ${esc(ORDERS4[m.lastActions22[0]]?.[0]||'Старт')}. Решения доступны в ключевых окнах и после важных событий.</p><div class="command-grid">${Object.entries(ORDERS4).filter(([k])=>k!=='gg').map(([key,v])=>{
+ return `<section class="panel decision-panel"><div class="eyebrow">ШТАБ · ${clock4(m.clock)}</div><h2>${esc(open?m.window22.reason:'Команда исполняет текущую тактику')}</h2><p>${stage4(m)} · текущий план: ${esc(ORDERS4[m.lastActions22[0]]?.[0]||'Старт')}. Последний план соперника: ${esc(ORDERS4[m.lastActions22[1]]?.[0]||'Старт')}. Обе стороны видят завершённый отрезок; новые приказы раскрываются после исполнения. Решения доступны в ключевых окнах и после важных событий.</p><div class="command-grid">${Object.entries(ORDERS4).filter(([k])=>k!=='gg').map(([key,v])=>{
   const a=this.assess(m,0,key),disabled=!!a.reason||!open;
   const price=key==='smoke'||key==='counterSmoke'?'Цена: 1 смоук и минута фарма. ':key==='rosh'?'Цена: фарм, здоровье, слот Аегиса. ':key==='farm'?'Цена: уступаете контроль карты. ':key==='split'?'Цена: возврат '+this.B.map.splitReturn+' с. ':'Цена: минута исполнения, меньше фарма. ';
   return `<button onclick="issueOrder4('${key}')" ${disabled?'disabled':''} title="${esc(a.reason||a.factors.join('; '))}"><b>${esc(v[0])}</b><small>${a.reason?esc(a.reason):'Риск: '+a.risk+'. '+price+esc(a.factors.join('; '))}</small></button>`;
