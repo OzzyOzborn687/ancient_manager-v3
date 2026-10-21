@@ -92,4 +92,8 @@ console.log('PASS -35/-7 cadence, fame decay/idempotent official wins, scrim exc
 setup();run('S.day=50;eventQ().day=80;Qualifiers.complete(eventQ());S.day=10;seedBeforeRewind=S.seed;ensureTournamentCalendar();');
 assert(run('eventQ().qualification.status==="pending"&&!eventQ().qualified13&&S.seed===seedBeforeRewind'));
 console.log('PASS later qualification caches are invalidated when the TI chapter rewinds the career clock');
+setup();run('eventQ().day=0;eventQ().duration=1;skipFameBefore=S.teams[1].fame;skipJob={event:0,entrants:S.teams.map(t=>t.id),schedule:[{w:1}],placements:Object.fromEntries(S.teams.map(t=>[t.id,t.id===1?1:9])),seeds:{}};S.active=skipJob;finalizeSkipped12(skipJob);');
+assert(run('S.teams[1].fame===skipFameBefore+QUALIFIERS.fame.eventWin'));
+run('fameAfterSkip=S.teams[1].fame;Qualifiers.awardEventFame(eventQ());');assert(run('S.teams[1].fame===fameAfterSkip'));
+console.log('PASS event fame on the skipped/background path and a single idempotent event award');
 console.log('PASS qualifiers phase 1');

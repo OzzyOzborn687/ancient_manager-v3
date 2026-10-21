@@ -1,5 +1,5 @@
 'use strict';
-const QualifiersLegacy={qualify:qualify13,calendar:ensureTournamentCalendar,fresh,migrate,tick,start:startEvent,result:recordResult6,finish:finishEvent6,valid:validSave};
+const QualifiersLegacy={qualify:qualify13,calendar:ensureTournamentCalendar,fresh,migrate,tick,start:startEvent,result:recordResult6,finish:finishEvent6,skip:finalizeSkipped12,valid:validSave};
 ensureTournamentCalendar=function(){
  const previous=new Set(S?.events?.map(e=>e.id)||[]);QualifiersLegacy.calendar();
  if(S?.qualifiers)for(const e of S.events){
@@ -32,14 +32,21 @@ recordResult6=function(m){
  const upset=clamp((elos[1-m.finishedSide]-elos[m.finishedSide])/C.upsetEloScale,0,C.upsetCap);
  t.fame=clamp(t.fame+C.mapWin+upset*C.upsetWin,C.min,C.max);
 };
-finishEvent6=function(a){
- const e=S.events.find(e=>e.id===a.event),done=e?.done;QualifiersLegacy.finish(a);
- if(!e||done||!e.done||e.qualifiersFameApplied)return;
+Qualifiers.awardEventFame=function(e){
+ if(!e?.done||e.qualifiersFameApplied)return false;
  e.qualifiersFameApplied=true;Qualifiers.initFame();const C=QUALIFIERS.fame;
  for(const [id,place] of Object.entries(e.placements6||{})){
   const t=S.teams[+id];if(t)t.fame=clamp(t.fame+C.eventWin/place**C.placeExponent,C.min,C.max);
  }
- save();
+ save();return true;
+};
+finishEvent6=function(a){
+ const e=S.events.find(e=>e.id===a.event),done=e?.done;QualifiersLegacy.finish(a);
+ if(!done)Qualifiers.awardEventFame(e);
+};
+finalizeSkipped12=function(a){
+ const e=S.events.find(e=>e.id===a.event),done=e?.done;QualifiersLegacy.skip(a);
+ if(!done)Qualifiers.awardEventFame(e);
 };
 validSave=function(state){return QualifiersLegacy.valid(state)&&Qualifiers.valid(state);};
 const rankingBeforeQualifiers=rankingView13;
