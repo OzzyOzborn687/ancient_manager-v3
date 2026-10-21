@@ -1,0 +1,28 @@
+{
+  "command": "AM V4",
+  "project": "OzzyOzborn687/ancient_manager-v3",
+  "branch": "feature/qualifiers-p1",
+  "baseCommit": "679f76ffcfb9f2e9f2bde8d51e3310799a8ce4b5",
+  "stage": "audit-complete; phase-1-implementation",
+  "approval": "Only audit and phase 1 authorized; open PR and stop before phase 2",
+  "pr": null,
+  "weeklyLimit": {
+    "lastReportedRemainingPercent": 67,
+    "source": "user",
+    "date": "2026-10-21",
+    "currentRemainingPercent": null,
+    "note": "Usage cannot be read automatically. Ask for a new reading before estimating later phases."
+  },
+  "next": [
+    "Implement phase 1 modules and logic tests",
+    "Run full tests and browser checks outside test-results/",
+    "Open PR to main and add audit comment",
+    "Stop and wait for user approval"
+  ],
+  "constraints": [
+    "No direct main writes or merge",
+    "Do not modify Ancient-Manager-v2.1/ or test-results/",
+    "All balance in dist/config/qualifiers.js",
+    "Game/container/storage keys stay 2.6/v:1/unchanged"
+  ]
+}
