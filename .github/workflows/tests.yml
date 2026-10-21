@@ -36,8 +36,11 @@ jobs:
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 --directory dist > /tmp/ancient-http.log 2>&1 &
           node tests/browser/neon.cjs
+          node tests/browser/ti-festival.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: interface-screenshots
-          path: test-results/browser-neon/
+          path: |
+            test-results/browser-neon/
+            test-results/browser-ti-festival/

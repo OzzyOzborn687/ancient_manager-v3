@@ -1,0 +1,50 @@
+[
+  {
+    "a": "aggressive",
+    "b": "control",
+    "maps": 100,
+    "wins": 53,
+    "rate": 0.53,
+    "meanMinutes": 60.15
+  },
+  {
+    "a": "aggressive",
+    "b": "late",
+    "maps": 100,
+    "wins": 53,
+    "rate": 0.53,
+    "meanMinutes": 60.288333333333334
+  },
+  {
+    "a": "aggressive",
+    "b": "pressure",
+    "maps": 100,
+    "wins": 47,
+    "rate": 0.47,
+    "meanMinutes": 60.17166666666667
+  },
+  {
+    "a": "control",
+    "b": "late",
+    "maps": 100,
+    "wins": 51,
+    "rate": 0.51,
+    "meanMinutes": 60.29833333333333
+  },
+  {
+    "a": "control",
+    "b": "pressure",
+    "maps": 100,
+    "wins": 43,
+    "rate": 0.43,
+    "meanMinutes": 59.87833333333333
+  },
+  {
+    "a": "late",
+    "b": "pressure",
+    "maps": 100,
+    "wins": 40,
+    "rate": 0.4,
+    "meanMinutes": 60.465
+  }
+]

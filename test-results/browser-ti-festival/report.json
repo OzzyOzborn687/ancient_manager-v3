@@ -1,0 +1,122 @@
+{
+  "checks": [
+    {
+      "width": 320,
+      "tab": "arena",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 320,
+      "tab": "clubs",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 320,
+      "tab": "contracts",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 320,
+      "tab": "chronicle",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 390,
+      "tab": "arena",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 390,
+      "tab": "clubs",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 390,
+      "tab": "contracts",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 390,
+      "tab": "chronicle",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 590,
+      "tab": "arena",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 590,
+      "tab": "clubs",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 590,
+      "tab": "contracts",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 590,
+      "tab": "chronicle",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 1440,
+      "tab": "arena",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 1440,
+      "tab": "clubs",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 1440,
+      "tab": "contracts",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    },
+    {
+      "width": 1440,
+      "tab": "chronicle",
+      "pageOverflow": false,
+      "modalOverflow": false,
+      "bad": []
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "deepLink": true,
+  "originalRestored": true,
+  "rewards": true,
+  "reducedMotion": true
+}

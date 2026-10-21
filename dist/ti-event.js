@@ -7,20 +7,21 @@ function tiIdentity(s){return s.careerIdentityTI||JSON.stringify([s.club,s.playe
 function tiState(e){return e.tiEvent??={plan:null,prediction:null,mapWins:0,roshans:0,comebacks:0,claimed:{},chronicle:[],finished:false};}
 const freshTI=fresh;fresh=function(id=0){freshTI(id);S.tiRecovery={request:TI_REWIND,mode:'new-career'};save();};
 function tiExactSnapshot(target){return STORAGE_KEYS.map(readSnapshot).filter(Boolean).find(p=>{let s=p.state,e=ti2027(s);return tiIdentity(s)===tiIdentity(S)&&s.club===S.club&&e&&!e.done&&!s.active&&!s.practice13&&s.day===target.day&&e.day===target.day&&!s.history.some(h=>h.event===e.name);});}
-async function applyTIRewind(source=null){
- if(S.tiRecovery?.request===TI_REWIND)return false;
+async function applyTIRewind(source=null,options={}){
+ if(S.tiRecovery?.request===TI_REWIND&&!options.force)return false;
  let e=ti2027();
- if(!e){let day=Math.round((Date.UTC(2027,8,7)-Date.UTC(2026,9,15))/86400000);if(S.day<day)return false;e={id:Math.max(...S.events.map(e=>e.id))+1,name:'THE INTERNATIONAL 2027',series:'THE INTERNATIONAL',calendarKey:'circuit-2027-3-1',day,duration:14,pool:30000000,modeled:true,venue:'Арена Aegis'};S.events.push(e);}
- if(S.day<e.day)return false;
+ if(!e){let day=Math.round((Date.UTC(2027,8,7)-Date.UTC(2026,9,15))/86400000);if(S.day<day&&!options.allowAdvance)return false;e={id:Math.max(...S.events.map(e=>e.id))+1,name:'THE INTERNATIONAL 2027',series:'THE INTERNATIONAL',calendarKey:'circuit-2027-3-1',day,duration:14,pool:30000000,modeled:true,venue:'Арена Aegis'};S.events.push(e);}
+ if(S.day<e.day&&!options.allowAdvance)return false;
  let original=structuredClone(source?.state||S),targetDay=e.day,exact=tiExactSnapshot(e),raw=JSON.stringify(makePacket(original,'До возврата к TI 2027'));
  await saveQueue;
- let protectedCopy=await persist(TI_BACKUP,raw);
+ let protectedCopy=await persist(options.backupKey||TI_BACKUP,raw);
  if(!protectedCopy.ok){S.tiRecoveryError='Возврат к TI отложен: не удалось записать резервную копию. Скачай карьеру в разделе «Сохранения» и освободи место в браузере.';return false;}
  if(exact){S=structuredClone(exact.state);migrate();e=ti2027();}
  else{
   let affected=S.events.filter(x=>x.day>=targetDay),names=new Set(affected.map(x=>x.name)),removed=S.history.filter(h=>names.has(h.event)||h.day>=targetDay);
   S.wins=Math.max(0,S.wins-removed.filter(h=>h.win&&!h.draw).length);S.losses=Math.max(0,S.losses-removed.filter(h=>!h.win&&!h.draw).length);
-  for(let x of affected){if(x.done){let reward=x.reward||0;S.budget-=reward;S.prizes=Math.max(0,S.prizes-reward);if(x.place===1)S.trophies=Math.max(0,S.trophies-1);if(S.teams[x.champion])S.teams[x.champion].points=Math.max(0,S.teams[x.champion].points-100);if(x.place&&x.place!==1)my().points=Math.max(0,my().points-Math.max(5,70-x.place*7));
+  for(let x of affected){for(const goal of TI_FESTIVAL.goals)if(x.tiEvent?.claimed?.[goal.id])S.budget-=goal.reward;
+   if(x.done){let reward=x.reward||0;S.budget-=reward;S.prizes=Math.max(0,S.prizes-reward);if(x.place===1)S.trophies=Math.max(0,S.trophies-1);if(S.teams[x.champion])S.teams[x.champion].points=Math.max(0,S.teams[x.champion].points-100);if(x.place&&x.place!==1)my().points=Math.max(0,my().points-Math.max(5,70-x.place*7));
     for(let [id,place] of Object.entries(x.placements6||{})){let t=S.teams[+id];if(!t)continue;clubState13(t).seasonPoints=Math.max(0,clubState13(t).seasonPoints-Math.max(5,Math.round(120/place)));if(+id!==S.club){let shares={1:.36,2:.19,3:.11,4:.075,5:.04,7:.025,9:.006,13:.004,14:.003};clubState13(t).budget-=Math.round(x.pool*(shares[place]||.003));}}
    }
    for(let k of ['done','place','reward','champion','schedule6','placements6','seeds6','groupIds6','gsl6','pairingFallback','skippedV12','skipRequestedV12','notQualified13','qualification13','qualified13','entrants','format','formatKey6','groups','tiEvent'])delete x[k];
@@ -57,3 +58,4 @@ const tiSaves=savesView;savesView=function(){let backup=readSnapshot(TI_BACKUP),
 // An explicit load of the protected original opts out of the one-time rollback.
 const tiAskLoad=askLoad;askLoad=function(key){if(key!==TI_BACKUP)return tiAskLoad(key);let packet=readSnapshot(key);if(!packet)return toast('Резервная копия недоступна');let copy=structuredClone(packet);copy.state.tiRecovery={request:TI_REWIND,mode:'original-restored'};prepareLoad(copy);};
 const tiPrepareLoad=prepareLoad;prepareLoad=function(packet){if(!packet?.state||!validSave(packet.state))return tiPrepareLoad(packet);let copy=structuredClone(packet);copy.state.tiRecovery??={request:TI_REWIND,mode:'manual-load'};return tiPrepareLoad(copy);};
+

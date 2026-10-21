@@ -1,4 +1,6 @@
 'use strict';
+// The legacy screen named history() shadows window.history in some runtimes.
+window.ancientNavigationHistory=window.history;
 // Runs before the game scripts so failures do not leave an indefinite splash screen.
 window.ancientStartup={ready:false,running:false,error:null};
 function startupText(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -23,3 +25,4 @@ async function startAncientManager(){
  finally{state.running=false;}
 }
 window.addEventListener('error',event=>{if(window.ancientStartup.ready)return;if(event.target&&event.target!==window&&event.target.tagName!=='SCRIPT')return;let error=event.error||new Error(event.target?.src?'Не загрузился файл '+event.target.src:event.message||'Ошибка запуска');window.ancientStartup.error=String(error.message||error);if(document.getElementById('app'))showStartupError(error);},true);
+

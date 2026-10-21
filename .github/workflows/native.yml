@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'native/**'
+      - 'dist/**'
       - '.github/workflows/native.yml'
   workflow_dispatch:
 permissions:
