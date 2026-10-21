@@ -1,0 +1,187 @@
+[
+  {
+    "file": "ai-tactics.cjs",
+    "status": "PASS",
+    "seconds": 0.2
+  },
+  {
+    "file": "auto-fatigue-v26.cjs",
+    "status": "PASS",
+    "seconds": 0.2
+  },
+  {
+    "file": "balance-v1.3.cjs",
+    "status": "PASS",
+    "seconds": 20.9
+  },
+  {
+    "file": "balance-v26.cjs",
+    "status": "PASS",
+    "seconds": 2.6
+  },
+  {
+    "file": "balance-v8.cjs",
+    "status": "PASS",
+    "seconds": 52.3
+  },
+  {
+    "file": "career-v1.3.cjs",
+    "status": "PASS",
+    "seconds": 14.8
+  },
+  {
+    "file": "career-v1.cjs",
+    "status": "PASS",
+    "seconds": 0.4
+  },
+  {
+    "file": "coach-return.cjs",
+    "status": "PASS",
+    "seconds": 0.1
+  },
+  {
+    "file": "comebacks.cjs",
+    "status": "PASS",
+    "seconds": 70.5
+  },
+  {
+    "file": "decisions-v8.cis",
+    "status": "PASS",
+    "seconds": 234.5
+  },
+  {
+    "file": "defense-v8.cjs",
+    "status": "PASS",
+    "seconds": 0.1
+  },
+  {
+    "file": "development-v21.cjs",
+    "status": "PASS",
+    "seconds": 18.1
+  },
+  {
+    "file": "difficulty.cjs",
+    "status": "PASS",
+    "seconds": 4.3
+  },
+  {
+    "file": "engine-v6.cjs",
+    "status": "PASS",
+    "seconds": 60
+  },
+  {
+    "file": "fatigue-v26.cjs",
+    "status": "PASS",
+    "seconds": 0.5
+  },
+  {
+    "file": "interface-v2.cjs",
+    "status": "PASS",
+    "seconds": 1.5
+  },
+  {
+    "file": "interface-v8.cjs",
+    "status": "PASS",
+    "seconds": 0.9
+  },
+  {
+    "file": "match-rules.cjs",
+    "status": "PASS",
+    "seconds": 2.3
+  },
+  {
+    "file": "match-v22.cjs",
+    "status": "PASS",
+    "seconds": 1.8
+  },
+  {
+    "file": "match-v26.cjs",
+    "status": "PASS",
+    "seconds": 0.1
+  },
+  {
+    "file": "model-v8.cjs",
+    "status": "PASS",
+    "seconds": 1.3
+  },
+  {
+    "file": "native-adapter.cjs",
+    "status": "PASS",
+    "seconds": 0
+  },
+  {
+    "file": "neon-tournaments.cjs",
+    "status": "PASS",
+    "seconds": 0.1
+  },
+  {
+    "file": "neon-ui.cjs",
+    "status": "PASS",
+    "seconds": 0.1
+  },
+  {
+    "file": "player-retirement.cjs",
+    "status": "PASS",
+    "seconds": 0.3
+  },
+  {
+    "file": "qualifiers-performance.cjs",
+    "status": "PASS",
+    "seconds": 0.7
+  },
+  {
+    "file": "qualifiers.cjs",
+    "status": "PASS",
+    "seconds": 2.2
+  },
+  {
+    "file": "recovery-v21.cjs",
+    "status": "PASS",
+    "seconds": 0.9
+  },
+  {
+    "file": "recovery-v26.cjs",
+    "status": "PASS",
+    "seconds": 1.1
+  },
+  {
+    "file": "reshuffle-positions.cjs",
+    "status": "PASS",
+    "seconds": 0.3
+  },
+  {
+    "file": "startup.cjs",
+    "status": "PASS",
+    "seconds": 8.2
+  },
+  {
+    "file": "tactics-mirror.cjs",
+    "status": "PASS",
+    "seconds": 13.5
+  },
+  {
+    "file": "tactics-v1.1.cjs",
+    "status": "PASS",
+    "seconds": 3.9
+  },
+  {
+    "file": "ti-event.cjs",
+    "status": "PASS",
+    "seconds": 0.7
+  },
+  {
+    "file": "ti-festival.cjs",
+    "status": "PASS",
+    "seconds": 1.5
+  },
+  {
+    "file": "variation-v7.cjs",
+    "status": "PASS",
+    "seconds": 12.7
+  },
+  {
+    "file": "world-v1.2.cjs",
+    "status": "PASS",
+    "seconds": 7.1
+  }
+]
