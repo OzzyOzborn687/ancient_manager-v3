@@ -10,6 +10,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      RESULTS_DIR: /tmp/ancient-manager-tests
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,7 +22,7 @@ jobs:
         if: always()
         with:
           name: simulation-results
-          path: test-results/
+          path: /tmp/ancient-manager-tests/
 
   browser:
     runs-on: ubuntu-latest
@@ -35,12 +37,12 @@ jobs:
       - name: Inspect all screens and tournament formats
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 --directory dist > /tmp/ancient-http.log 2>&1 &
-          node tests/browser/neon.cjs
-          node tests/browser/ti-festival.cjs
+          BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/neon node tests/browser/neon.cjs
+          BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/ti-festival node tests/browser/ti-festival.cjs
+          BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/qualifiers node tests/browser/qualifiers.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: interface-screenshots
           path: |
-            test-results/browser-neon/
-            test-results/browser-ti-festival/
+            /tmp/ancient-manager-browser/
