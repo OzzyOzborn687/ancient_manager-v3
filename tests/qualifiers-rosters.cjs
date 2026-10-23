@@ -1,0 +1,37 @@
+'use strict';
+const assert=require('node:assert/strict'),harness=require('./harness22.cjs');
+const {run}=harness({modelVersion:8}),plain=code=>JSON.parse(run('JSON.stringify('+code+')'));
+run('S.calendar21.installedDay=100000;S.events=[{id:0,name:"Registered roster",series:"PGL WALLACHIA",day:50,duration:8,pool:1000000}];clubState13(my()).elo=200;my().fame=0;Qualifiers.markCareer(S.events[0]);Qualifiers.freeze(S.events[0]);const own=nextEvent();S.day=own.day-1;const original=roster()[0],bench=academy(null,original.role);bench.team=S.club;bench.active=false;bench.contract=365;promote(bench.id);');
+assert(run('roster()[0].id===bench.id'));
+run('S.day=own.day;Qualifiers.ensureRegistrations3();const registered=JSON.stringify(own.registration3),registeredIds=[...own.registration3.rosters[S.club]];promote(original.id);');
+assert.deepEqual(plain('roster().map(p=>p.id)'),plain('registeredIds'));assert.equal(run('JSON.stringify(own.registration3)'),run('registered'));
+assert(run('Qualifiers.registeredRoster3(S.club)'));assert(!run('locked()'),'Registration must not block unrelated manager actions between events');assert(run('validSave(S)'));
+run('S.budget=10000000;const oldBaseLevel=development21().base;');assert(run('upgradeDevelopment21("base")'));assert.equal(run('development21().base'),run('oldBaseLevel+1'));
+assert.deepEqual(plain('roster().map(p=>p.id)'),plain('registeredIds'));assert(run('Qualifiers.rosterContext3(()=>locked())'));
+console.log('PASS roster-only restrictions preserve training/development availability under normal event locks');
+run('const other=own.entrants.find(id=>id!==S.club),opponent=S.teams[other],protectedIds=roster(opponent).map(p=>p.id),expired=S.players[protectedIds[0]];expired.contract=-14;expired.morale=10;releasePlayerV1(expired);');
+assert.equal(run('expired.team'),run('other'));assert(run('transferTerms13(expired,"starter").reason.includes("зафиксирован")'));
+run('const protectedSnapshot=JSON.stringify(S.events.filter(e=>e.registration3).map(e=>e.registration3));for(let i=0;i<3;i++)tick();');
+assert.equal(run('expired.team'),run('other'));assert.equal(run('expired.contract'),-17);
+assert.deepEqual(plain('roster(opponent).map(p=>p.id)'),plain('protectedIds'));
+assert(run('S.teams.every(t=>roster(t).length===5)'));
+assert(run('validSave(S)'));
+run('S.active=null;for(const t of S.teams){clubState13(t).lastResults=[false,false,false,false,false];}const allProtected=Object.fromEntries(S.teams.filter(t=>Qualifiers.registeredRoster3(t.id)).map(t=>[t.id,roster(t).map(p=>p.id)]));runReshuffleV1();');
+assert(run('Object.entries(allProtected).every(([id,ids])=>JSON.stringify(roster(S.teams[id]).map(p=>p.id))===JSON.stringify(ids))'));
+assert(run('validSave(S)'));
+console.log('PASS lineup changes before qualification, immutable registration, player/AI transfer guards, real contract countdown and no duplicate academy replacement');
+run(`for(const e of [...S.events].filter(e=>e.qualifierFor===0)){
+ if(e.done)continue;const a=Qualifiers.regionalState(e);while(true){if(a.cursor>=a.schedule.length){if(phaseNext6(a))continue;break;}
+ const n=a.schedule[a.cursor],pair=n.pair.map(v=>resolve6(a,v));recordNode6(a,n,pair.includes(S.club)?pair[0]===S.club?'2:0':'0:2':Qualifiers.fastRegionalSeries(a,n));a.cursor++;}Qualifiers.finishRegional(a);
+ }S.day=S.events.find(e=>e.id===0).qualification.calendar.listDay;Qualifiers.complete(S.events.find(e=>e.id===0));const main=S.events.find(e=>e.id===0);`);
+assert(run('main.qualification.qualified.includes(S.club)'));
+assert.deepEqual(plain('main.registration3.rosters[S.club]'),plain('registeredIds'));
+assert(run('Qualifiers.registeredRoster3(S.club)'));
+run('const loser=own.entrants.find(id=>!main.qualification.qualified.includes(id)),released=roster(S.teams[loser])[0];');
+assert.equal(run('Qualifiers.registeredRoster3(loser)'),null);
+run('releasePlayerV1(released);academy(loser,released.role,released.id);');assert.equal(run('released.team'),null);assert(run('validSave(S)'));
+run('const corrupt=JSON.parse(JSON.stringify(S));corrupt.events.find(e=>e.id===0).registration3.rosters[S.club][0]=corrupt.events.find(e=>e.id===0).registration3.rosters[S.club][1];');assert(!run('validSave(corrupt)'));
+run('const prior=JSON.stringify(main.registration3);S=JSON.parse(JSON.stringify(S));migrate();Qualifiers.ensureRegistrations3();');
+assert.equal(run('JSON.stringify(S.events.find(e=>e.id===0).registration3)'),run('prior'));assert(run('validSave(S)'));
+run('S.events.find(e=>e.id===0).done=true;');assert.equal(run('Qualifiers.registeredRoster3(S.club)'),null);
+console.log('PASS qualified roster carries into main, eliminated teams unlock at final list, corrupt registrations fail validation and reload does not recapture lineups');

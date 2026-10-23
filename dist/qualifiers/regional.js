@@ -147,7 +147,7 @@ finalizeSkipped12=function(a){
 Qualifiers.backgroundRegionals=function(){
  if(this.backgroundBusy)return;this.backgroundBusy=true;
  try{for(const e of [...S.events]){
-  if(!this.isRegional(e)||e.done||e.id===S.active?.event||e.entrants.includes(S.club)||e.day>S.day)continue;
+  if(!this.isRegional(e)||e.done||e.id===S.active?.event||e.entrants.includes(S.club)||e.day>S.day||this.regionalPlayable3&&!this.regionalPlayable3(e))continue;
   const a=this.regionalState(e);let safety=0;
   while(safety++<100){
    if(a.cursor>=a.schedule.length){if(phaseNext6(a))continue;this.finishRegional(a);break;}

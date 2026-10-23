@@ -79,7 +79,7 @@ Qualifiers.validScene=function(x){
  for(const e of x.events){
   if(!this.isRegional(e))continue;
   const parent=x.events.find(p=>p.id===e.qualifierFor),f=FORMAT6[e.formatKey6];
-  if(!parent||!f||!['qualifier8','qualifier16'].includes(e.formatKey6)||!QUALIFIERS.regions.includes(e.qualifierRegion)||!Number.isInteger(e.quota)||e.quota<1||e.quota>QUALIFIERS.maxQuota||!Array.isArray(e.entrants)||e.entrants.length!==f.n||new Set(e.entrants).size!==f.n||e.entrants.some(id=>!idOK(id)||parent.qualification?.invited?.some(v=>v.team===id)))return false;
+  if(!parent||!f||!['qualifier8','qualifier16'].includes(e.formatKey6)||!QUALIFIERS.regions.includes(e.qualifierRegion)||!Number.isInteger(e.quota)||e.quota<1||e.quota>QUALIFIERS.maxQuota||!Array.isArray(e.entrants)||e.entrants.length!==f.n||new Set(e.entrants).size!==f.n||e.entrants.some(id=>!idOK(id)||parent.qualification?.invited?.some(v=>v.team===id)&&!Qualifiers.historicalInvite3?.(parent.qualification,id,e.id)))return false;
   if(e.done&&(!Array.isArray(e.inviteWinners)||e.inviteWinners.length!==e.quota||new Set(e.inviteWinners).size!==e.quota||e.inviteWinners.some(id=>!e.entrants.includes(id))))return false;
   const a=x.active?.event===e.id?x.active:e.regionalState;
   for(const n of a?.schedule||e.schedule6||[]){

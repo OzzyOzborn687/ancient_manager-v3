@@ -32,5 +32,7 @@ const QUALIFIERS=Object.freeze({
   prizeShares:{1:.45,2:.25,3:.15,4:.075,5:.025,7:.0125,9:0},
   pointsScale:.075,fameScale:.075,mainWinPoints:120,eloK:18,moraleDelta:1.5,
   skillEloWeight:.5,skillScale:18,skillReference:85,formWeight:2,formReference:75},
+ calendar:{version:3,preferredSegments:[7,18,3,7],minSegments:[1,4,1,2],
+  minRegionalDays:{qualifier8:4,qualifier16:5},maxDelay:120,noticeLimit:20},
  precision:1e-10
 });

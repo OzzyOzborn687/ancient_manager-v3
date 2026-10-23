@@ -41,6 +41,7 @@ jobs:
           BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/ti-festival node tests/browser/ti-festival.cjs
           BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/qualifiers node tests/browser/qualifiers.cjs
           BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/qualifiers-scene node tests/browser/qualifiers-scene.cjs
+          BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/qualifiers-calendar node tests/browser/qualifiers-calendar.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
