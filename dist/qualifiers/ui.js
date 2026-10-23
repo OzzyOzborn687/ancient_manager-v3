@@ -15,15 +15,17 @@ function qualifierCard(parent,compact=false){
  const q=parent.qualification,invite=q.invited?.find(v=>v.team===S.club);
  const child=S.events.find(e=>e.qualifierFor===parent.id&&e.entrants?.includes(S.club));
  let title='Приглашения ещё не объявлены',detail='Объявление '+date(parent.day-QUALIFIERS.snapshotLead)+'.',action=btn('Квалификации →','openQualifiers('+parent.id+')');
- if(invite){title='Ваш клуб приглашён на турнир';detail=invite.text+'. Квалификации пропускаются.';}
+ if(q.status==='blocked'){
+  title='Квалификация требует внимания';detail=q.reason;
+  if(!S.active&&nextEvent()?.id===parent.id)action+=btn('Пропустить без участия','skipTournament12()');
+ }else if(invite){title='Ваш клуб приглашён на турнир';detail=invite.text+'. Квалификации пропускаются.';}
  else if(child){
   const passed=child.inviteWinners?.includes(S.club);
   title=passed?'Инвайт завоёван':child.done?'Квалификация завершена без инвайта':'Ваш путь — региональная квалификация';
   detail=child.name+' · '+date(child.day)+' · '+child.quota+' '+(child.quota===1?'инвайт':'инвайта')+'.';
   action=btn(child.done?'Результаты →':S.active?.event===child.id?'Матч-центр →':'Открыть квалификацию →',S.active?.event===child.id?"go('match')":'showBracket('+child.id+')',true);
   if(!child.done&&!S.active&&nextEvent()?.id===child.id&&child.day<=S.day)action+=btn('Начать квалификацию','startEvent()',true);
- }else if(q.status==='blocked'){title='Квалификация требует внимания';detail=q.reason;}
- else if(q.status!=='pending'){title='Прямого приглашения нет';detail='Ваш индекс '+(q.player?.index??0).toFixed(4)+'. '+(q.mode==='provisional-p1'?'Этот отбор начат по прежней модели.':'Ваш клуб не вошёл в закрытую квалификацию.');}
+ }else if(q.status!=='pending'){title='Прямого приглашения нет';detail='Ваш индекс '+(q.player?.index??0).toFixed(4)+'. '+(q.mode==='provisional-p1'?'Этот отбор начат по прежней модели.':'Ваш клуб не вошёл в закрытую квалификацию.');}
  return '<section class="panel qualifier-invite '+(invite||child?.inviteWinners?.includes(S.club)?'invite-earned':'')+'" data-qualification-event="'+parent.id+'">'+inviteIcon()+'<div><span class="eyebrow">'+esc(title)+'</span><h2>'+esc(parent.name)+'</h2><p>'+esc(detail)+'</p>'+(compact?'':action)+'</div></section>';
 }
 function qualifiersView(){

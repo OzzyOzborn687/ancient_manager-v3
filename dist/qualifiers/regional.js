@@ -9,6 +9,11 @@ Qualifiers.markCareer=function(e){this.mark(e);if(e.qualification?.status==='pen
 Qualifiers.freeze=function(e){
  if(e.qualification?.sceneVersion!==QUALIFIERS.scene.version)return QualifierRegionalLegacy.freeze.call(this,e);
  if(e.qualification.status!=='pending')return e.qualification;
+ if(e.day-S.day<QUALIFIERS.snapshotLead){
+  e.originalDay13??=e.day;e.day=S.day+QUALIFIERS.snapshotLead;
+  log(e.name+' · позднее объявление: старт перенесён на '+date(e.day)+', чтобы провести полноценные квалификации.');
+  S.events.sort((a,b)=>a.day-b.day||a.id-b.id);
+ }
  const scene=this.ensureScene(),quota=this.seasonQuotas(format6(e).n-QUALIFIERS.invites),C=QUALIFIERS.regional;
  for(const r of QUALIFIERS.regions){
   const required=(quota.quotas[r]>=C.largeQuota?C.largeField:C.smallField)+QUALIFIERS.regionInviteCap;
@@ -34,8 +39,16 @@ Qualifiers.regionalState=function(e){
 };
 Qualifiers.regionalWindow=function(parent,own){
  const C=QUALIFIERS.regional,duration=C.duration,earliest=Math.max(S.day,parent.day-C.startLead),latest=parent.day-QUALIFIERS.listLead-duration;
+ const free=day=>!own||!S.events.some(e=>!e.done&&e.id!==parent.id&&this.overlap({day:day-C.minGap,duration:duration+C.minGap*2},e)&&(e.entrants||e.qualified13||e.qualification?.invited?.map(v=>v.team)||[]).includes(S.club));
  for(let day=earliest;day<=latest;day++){
-  if(!own||!S.events.some(e=>!e.done&&e.id!==parent.id&&this.overlap({day:day-C.minGap,duration:duration+C.minGap*2},e)&&(e.entrants||e.qualified13||e.qualification?.invited?.map(v=>v.team)||[]).includes(S.club)))return day;
+  if(free(day))return day;
+ }
+ // Keep the manager's official events disjoint. Historical template dates stay
+ // in plannedDay21; only career participation moves, as in the existing calendar.
+ for(let day=Math.max(earliest,latest+1);day<=earliest+C.maxWindowDelay;day++)if(free(day)){
+  parent.originalDay13??=parent.day;parent.day=day+duration+QUALIFIERS.listLead;
+  parent.qualification.eventDay=parent.day;
+  log(parent.name+' перенесён на '+date(parent.day)+': квалификация проходит после занятых официальных дат.');return day;
  }
  return null;
 };

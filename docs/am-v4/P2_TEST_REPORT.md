@@ -1,49 +1,49 @@
 # AM V4 — фаза 2: результаты проверок
 
-Команда полного прогона: `RESULTS_DIR=/tmp/am-v4-p2-final node tests/run.cjs` — **40/40 PASS**. Старые тесты не менялись. После последних уточнений проверки расширенного валидатора и текста причин повторены qualifiers-scene.cjs и qualifiers-tournaments.cjs; оба PASS.
+Команда полного прогона: `RESULTS_DIR=/tmp/am-v4-p2-publish-final node tests/run.cjs` — **40/40 PASS**. Старые тесты не менялись. После последних уточнений повторены профильные проверки и Chromium. Дополнительный end-to-end в qualifiers-tournaments.cjs прошёл: обычное начало новой карьеры → исходный основной турнир → перенесённая квалификация → тренерская симуляция → корректное сохранение. В таблице приведено время полного локального прогона до добавления этого последнего дополнительного сценария; конечный CI проверяет весь файл целиком.
 
 | Тест | Результат | Секунды |
 | --- | --- | ---: |
-| ai-tactics.cjs | PASS | 0.2 |
+| ai-tactics.cjs | PASS | 0.1 |
 | auto-fatigue-v26.cjs | PASS | 0.2 |
-| balance-v1.3.cjs | PASS | 15.9 |
-| balance-v26.cjs | PASS | 2.6 |
-| balance-v8.cjs | PASS | 43.6 |
-| career-v1.3.cjs | PASS | 12.5 |
+| balance-v1.3.cjs | PASS | 19.4 |
+| balance-v26.cjs | PASS | 3.7 |
+| balance-v8.cjs | PASS | 49.2 |
+| career-v1.3.cjs | PASS | 15 |
 | career-v1.cjs | PASS | 0.4 |
 | coach-return.cjs | PASS | 0.1 |
-| comebacks.cjs | PASS | 70.7 |
-| decisions-v8.cis | PASS | 230.6 |
+| comebacks.cjs | PASS | 70.4 |
+| decisions-v8.cis | PASS | 230.8 |
 | defense-v8.cjs | PASS | 0.1 |
-| development-v21.cjs | PASS | 24 |
-| difficulty.cjs | PASS | 4.3 |
-| engine-v6.cjs | PASS | 61.6 |
+| development-v21.cjs | PASS | 26.9 |
+| difficulty.cjs | PASS | 4.1 |
+| engine-v6.cjs | PASS | 59.2 |
 | fatigue-v26.cjs | PASS | 0.2 |
-| interface-v2.cjs | PASS | 0.5 |
-| interface-v8.cjs | PASS | 0.1 |
-| match-rules.cjs | PASS | 2.2 |
-| match-v22.cjs | PASS | 1.8 |
+| interface-v2.cjs | PASS | 0.7 |
+| interface-v8.cjs | PASS | 0.3 |
+| match-rules.cjs | PASS | 2 |
+| match-v22.cjs | PASS | 1.9 |
 | match-v26.cjs | PASS | 0.1 |
-| model-v8.cjs | PASS | 1.1 |
+| model-v8.cjs | PASS | 1.6 |
 | native-adapter.cjs | PASS | 0 |
 | neon-tournaments.cjs | PASS | 0.1 |
 | neon-ui.cjs | PASS | 0.1 |
 | player-retirement.cjs | PASS | 0.3 |
-| qualifiers-performance.cjs | PASS | 0.7 |
+| qualifiers-performance.cjs | PASS | 0.6 |
 | qualifiers-scene-performance.cjs | PASS | 5.5 |
-| qualifiers-scene.cjs | PASS | 2.1 |
-| qualifiers-tournaments.cjs | PASS | 0.3 |
+| qualifiers-scene.cjs | PASS | 2 |
+| qualifiers-tournaments.cjs | PASS | 0.5 |
 | qualifiers.cjs | PASS | 2.1 |
-| recovery-v21.cjs | PASS | 1 |
-| recovery-v26.cjs | PASS | 0.6 |
+| recovery-v21.cjs | PASS | 1.1 |
+| recovery-v26.cjs | PASS | 1.1 |
 | reshuffle-positions.cjs | PASS | 0.3 |
-| startup.cjs | PASS | 8.3 |
-| tactics-mirror.cjs | PASS | 13.1 |
+| startup.cjs | PASS | 7.9 |
+| tactics-mirror.cjs | PASS | 13.9 |
 | tactics-v1.1.cjs | PASS | 3.9 |
 | ti-event.cjs | PASS | 1.5 |
-| ti-festival.cjs | PASS | 2.2 |
-| variation-v7.cjs | PASS | 11.6 |
-| world-v1.2.cjs | PASS | 6.5 |
+| ti-festival.cjs | PASS | 2.3 |
+| variation-v7.cjs | PASS | 12 |
+| world-v1.2.cjs | PASS | 6.8 |
 
 ## Chromium
 
@@ -66,6 +66,7 @@
 - Сезонные квоты заморожены, сдвиг не больше ±1, сумма точная; проверены повышение, понижение и затухание очков.
 - Реальные карты модели 8 через прежние обработчики. Усталость +16 за серию и только один раз после JSON-перезагрузки.
 - Фоновые регионы не заменяют active игрока. Отказ сохраняет региональных участников, walkover не создаёт нагрузку.
+- Реальное начало новой карьеры: близкий первый турнир переносится с уведомлением и получает квалификации, сезон не блокируется. Для занятых окон предусмотрен ограниченный поиск следующей свободной даты.
 - Прямое приглашение освобождает от квалификации; инвайт выдаётся всем K прошедшим без увеличения чемпионских титулов.
 - Старое сохранение мигрирует лениво. Проверяются расширенные клубы, роли/границы/атрибуты/развитие и прежние правила патча.
 

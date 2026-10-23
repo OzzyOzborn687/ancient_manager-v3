@@ -28,7 +28,7 @@ const QUALIFIERS=Object.freeze({
   promotionWins:3,tier1Elo:1450,tier2Elo:1200,pointsDecay:.8,inactiveDays:120,reviewDays:30,
   promotionElo:25,demotionElo:1100,maxTier:3},
  regional:{smallField:8,largeField:16,largeQuota:4,bo:3,startLead:28,endLead:10,
-  slotDays:.5,duration:6,minGap:1,seriesFatigue:16,pool:30000,
+  slotDays:.5,duration:6,minGap:1,maxWindowDelay:120,seriesFatigue:16,pool:30000,
   prizeShares:{1:.45,2:.25,3:.15,4:.075,5:.025,7:.0125,9:0},
   pointsScale:.075,fameScale:.075,mainWinPoints:120,eloK:18,moraleDelta:1.5,
   skillEloWeight:.5,skillScale:18,skillReference:85,formWeight:2,formReference:75},

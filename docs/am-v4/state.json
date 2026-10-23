@@ -37,7 +37,8 @@
     "Home invitation, regional tournament events, DE8/GSL16 BO3, manual model-8/coaching and invite award",
     "Series fatigue exactly once, isolated background regions, small prizes and points",
     "Full local regression 40/40 PASS; four Chromium scripts PASS",
-    "95 protected committed files unchanged; old tests unmodified"
+    "95 protected committed files unchanged; old tests unmodified",
+    "Actual fresh-career opening and coach path verified; late/occupied windows reschedule with preserved historical dates"
   ],
   "reports": [
     "docs/am-v4/P2_SCOPE.md",

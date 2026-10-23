@@ -53,3 +53,24 @@ run('S.active.withdrawnV12=true;const ownNode=S.active.schedule[S.active.cursor]
 assert.deepEqual(plain('roster().map(p=>p.fatigue)'),plain('walkoverFatigue'));
 run('const movedParent=S.events.find(e=>e.id===0);movedParent.day=withdrawal.day-1;');assert.equal(run('nextEvent().id'),run('withdrawal.id'));
 console.log('PASS withdrawal retains regional entrants, walkovers add no workload and unfinished qualification precedes its parent');
+run('fresh();const originalFirst=S.events.find(e=>e.qualification?.sceneVersion===2).id;tick();');
+assert(!run('S.events.some(e=>e.qualification?.sceneVersion===2&&e.qualification.status==="blocked")'));
+assert(run('S.events.find(e=>e.id===originalFirst).qualification.regionalEvents'));
+assert(run('S.events.find(e=>e.id===originalFirst).originalDay13<S.events.find(e=>e.id===originalFirst).day'));
+assert(run('validSave(S)'));
+console.log('PASS actual fresh-career opening shifts late announcements instead of blocking the season');
+(async()=>{
+ run('fresh();S.seed=44;clubState13(my()).elo=200;my().fame=0;while(S.day<nextEvent().day)tick();startEvent();');
+ assert(run('S.active?.format6'));
+ await run('autoTournament13()');
+ assert.equal(run('S.active'),null,'The original opening main event must settle');assert(run('validSave(S)'));
+ run('const pendingOwnQualifier=S.events.find(e=>Qualifiers.isRegional(e)&&!e.done&&e.entrants.includes(S.club));');
+ assert(run('!!pendingOwnQualifier'));
+ assert.equal(run('nextEvent().id'),run('pendingOwnQualifier.id'));
+ run('while(S.day<nextEvent().day)tick();startEvent();');
+ assert(run('Qualifiers.isRegional(S.events.find(e=>e.id===S.active.event))'));
+ await run('autoTournament13()');
+ assert.equal(run('S.active'),null,'The next official regional tournament must settle');assert(run('validSave(S)'));
+ assert(run('S.events.find(e=>e.id===pendingOwnQualifier.id).done'));
+ console.log('PASS end-to-end fresh career: original opening tournament → rescheduled own qualification → real coach simulation and valid save');
+})().catch(error=>{console.error(error);process.exitCode=1;});
