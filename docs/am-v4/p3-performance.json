@@ -1,0 +1,22 @@
+{
+  "samples": 100,
+  "comparisonTeams": 64,
+  "registeredTeams": 83,
+  "p2Day": {
+    "medianMs": 1.6985939999999857,
+    "p95Ms": 3.0542919999999896
+  },
+  "p3Day": {
+    "medianMs": 1.6238120000000436,
+    "p95Ms": 3.0505260000000476
+  },
+  "addedOrdinaryMedianMs": -0.07478199999994217,
+  "compressedAnnouncement": {
+    "medianMs": 2.4543690000000424,
+    "p95Ms": 8.641670999999974
+  },
+  "registeredDay": {
+    "medianMs": 2.4298230000001695,
+    "p95Ms": 5.212866000000076
+  }
+}
