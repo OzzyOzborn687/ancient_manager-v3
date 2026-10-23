@@ -72,6 +72,6 @@
       "docs/am-v4/p3-performance.json"
     ],
     "localFullBaselineCommit": "b25106361c507c595690444ee2dc4a247cfa8f8c",
-    "followup": "Roster-only locks: roster/development/calendar targeted checks and all five Chromium scripts rerun; complete final head verified by live CI"
+    "followup": "Roster-only locks and backwards-calendar/TI registration cleanup: roster/development/calendar/TI targeted checks and all five Chromium scripts rerun; full final head verified by live CI"
   }
 }

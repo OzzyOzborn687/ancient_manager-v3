@@ -1,6 +1,41 @@
 'use strict';
 const QualifierRuntime3Legacy={fresh,migrate,mark:Qualifiers.markCareer,calendar:ensureTournamentCalendar,
- next:nextEvent,start:startEvent,update:Qualifiers.update,background:Qualifiers.backgroundRegionals,valid:validSave};
+ next:nextEvent,start:startEvent,update:Qualifiers.update,background:Qualifiers.backgroundRegionals,valid:validSave,
+ invalidate:Qualifiers.invalidateFuture,rewind:applyTIRewind};
+Qualifiers.invalidateFuture=function(e){
+ const before=e.qualification;
+ if(before?.calendarVersion===QUALIFIERS.calendar.version&&S.active?.qualifierFor===e.id)return;
+ QualifierRuntime3Legacy.invalidate.call(this,e);
+ if(before?.calendarVersion!==QUALIFIERS.calendar.version||e.done||e.id===S.active?.event)return;
+ const childIds=new Set(Object.values(before.regionalEvents||{})),children=S.events.filter(v=>childIds.has(v.id));
+ const broken=before.regionalEvents&&(children.length!==childIds.size||children.some(v=>!Array.isArray(v.entrants)||!v.formatKey6));
+ if(before===e.qualification&&!broken)return;
+ // A reconstruction has no trustworthy intermediate snapshot of this future
+ // family. Keep its old data as read-only evidence, then restart the family.
+ S.qualifiers.rewindArchive3??=[];
+ S.qualifiers.rewindArchive3.push({parent:e.id,day:S.day,qualification:structuredClone(before),events:structuredClone(children)});
+ S.qualifiers.rewindArchive3=S.qualifiers.rewindArchive3.slice(-QUALIFIERS.calendar.noticeLimit);
+ S.events=S.events.filter(v=>!childIds.has(v.id));
+ for(const key of ['qualification','qualification13','qualified13','registration3','registrationHistory3','rosterLock'])delete e[key];
+ this.markCareer(e);
+};
+applyTIRewind=async function(...args){
+ const result=await QualifierRuntime3Legacy.rewind(...args);
+ if(!result||S.tiRecovery?.mode!=='restart')return result;
+ ensureTournamentCalendar();
+ // The retained TI reconstruction explicitly keeps the current real rosters.
+ // Rebase only registration metadata; exact snapshots and TI rules stay intact.
+ for(const e of S.events){
+  const parent=Qualifiers.isRegional(e)?S.events.find(v=>v.id===e.qualifierFor):e;
+  if(!Qualifiers.isCalendar3(parent)||parent.done||parent.day<S.day||!e.registration3)continue;
+  if(Object.entries(e.registration3.rosters).every(([id,ids])=>Qualifiers.rosterMatches3(+id,ids)))continue;
+  e.registrationHistory3=structuredClone(e.registration3);
+  e.registration3={...e.registration3,day:S.day,reconstructedTI:true,
+   rosters:Object.fromEntries(Object.keys(e.registration3.rosters).map(id=>[id,roster(S.teams[+id]).map(p=>p.id)]))};
+  e.rosterLock=structuredClone(e.registration3.rosters);
+ }
+ return result;
+};
 Qualifiers.installPhase3=function(){
  if(!S?.qualifiers)return;
  S.qualifiers.phase3=true;

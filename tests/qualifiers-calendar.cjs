@@ -109,4 +109,18 @@ console.log('PASS active P2 model-8 map and frozen P2 event continue exactly on 
  assert.equal(run('S.active'),null);assert(run('S.events.some(e=>e.qualifierFor===0&&e.done&&e.entrants.includes(S.club))'));assert(run('validSave(S)'));
  assert(run('S.events.filter(e=>e.qualifierFor===0&&e.done).every(e=>e.schedule6.every(n=>n.slot13+QUALIFIERS.regional.slotDays<=e.day+e.duration))'));
  console.log('PASS full real model-8/coaching GSL16→DE8 qualification, official series ledger and valid saved calendar');
+ run('fresh();S.calendar21.installedDay=100000;S.day=100;S.events=[{id:0,name:"Future P3 rewind",series:"PGL WALLACHIA",day:140,duration:8,pool:1000000}];clubState13(my()).seasonPoints=100000;Qualifiers.markCareer(S.events[0]);Qualifiers.freeze(S.events[0]);S.day=125;Qualifiers.backgroundRegionals();S.day=133;Qualifiers.complete(S.events.find(e=>e.id===0));');
+ assert(run('validSave(S)&&!!S.events.find(e=>e.id===0).registration3'));
+ run('const seedBeforeCalendarRewind=S.seed;S.day=50;ensureTournamentCalendar();');
+ assert(run('validSave(S)&&S.events.find(e=>e.id===0).qualification.status==="pending"&&S.events.find(e=>e.id===0).qualification.calendarVersion===3'));
+ assert(!run('S.events.some(e=>e.registration3||Qualifiers.isRegional(e))'));assert.equal(run('S.seed'),run('seedBeforeCalendarRewind'));
+ assert.equal(run('S.qualifiers.rewindArchive3.length'),1);
+ console.log('PASS backwards calendar reset archives future family data, drops stale registrations/orphan brackets and keeps pending P3 plus unchanged RNG');
+ setup();run('clubState13(my()).seasonPoints=100000;Qualifiers.freeze(S.events[0]);S.day=35;Qualifiers.backgroundRegionals();S.day=43;Qualifiers.complete(S.events.find(e=>e.id===0));S.day=70;S.events.find(e=>e.id===0).done=true;const priorStarter=roster()[0],newStarter=academy(null,priorStarter.role);newStarter.team=S.club;newStarter.active=false;newStarter.contract=365;promote(newStarter.id);S.events.push({id:999,name:"THE INTERNATIONAL 2027",series:"THE INTERNATIONAL",day:45,duration:14,pool:30000000});S.day=100;readSnapshot=()=>null;persist=async()=>({ok:true});saveQueue=Promise.resolve();');
+ assert(run('validSave(S)'));
+ assert(await run('applyTIRewind(null,{force:true,backupKey:"test-p3-rewind"})'));
+ assert(run('S.tiRecovery.mode==="restart"&&validSave(S)&&roster()[0].id===newStarter.id'));
+ assert(run('S.events.find(e=>e.id===0).registration3.rosters[S.club][0]===newStarter.id'));
+ assert(run('!!S.events.find(e=>e.id===0).registrationHistory3'));
+ console.log('PASS real TI reconstruction retains current lineup, rebases registration metadata and leaves known qualification history valid');
 })().catch(error=>{console.error(error);process.exitCode=1;});
