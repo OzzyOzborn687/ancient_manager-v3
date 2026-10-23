@@ -1,0 +1,58 @@
+{
+  "command": "AM V4",
+  "project": "OzzyOzborn687/ancient_manager-v3",
+  "branch": "feature/qualifiers-p1",
+  "baseCommit": "679f76ffcfb9f2e9f2bde8d51e3310799a8ce4b5",
+  "stage": "phase-1-complete; awaiting-p1-approval",
+  "approval": "Only audit and phase 1 authorized; open PR and stop before phase 2",
+  "pr": {
+    "head": "feature/qualifiers-p1",
+    "base": "main",
+    "lookupUrl": "https://github.com/OzzyOzborn687/ancient_manager-v3/pulls?q=is%3Apr+head%3Afeature%2Fqualifiers-p1",
+    "requireLiveLookup": true
+  },
+  "weeklyLimit": {
+    "lastReportedRemainingPercent": 67,
+    "source": "user",
+    "date": "2026-10-21",
+    "currentRemainingPercent": null,
+    "note": "Usage cannot be read automatically. Ask for a new reading before estimating later phases."
+  },
+  "next": [
+    "Locate PR by head branch; create it if interrupted before opening",
+    "Inspect latest PR/CI state",
+    "Wait for explicit approval before merging P1 or starting P2"
+  ],
+  "constraints": [
+    "No direct main writes or merge",
+    "Do not modify Ancient-Manager-v2.1/ or test-results/",
+    "All balance in dist/config/qualifiers.js",
+    "Game/container/storage keys stay 2.6/v:1/unchanged"
+  ],
+  "completed": [
+    "Audit recorded",
+    "Phase 1 implementation committed",
+    "Full regression 37/37 PASS",
+    "Chromium: 66 screens, 16 brackets, 16 TI views, 15 P1 checks PASS",
+    "Protected directories: all 238 hashes unchanged"
+  ],
+  "reports": [
+    "QUALIFIERS.md",
+    "QUALIFIERS_AUDIT.md",
+    "docs/am-v4/P1_TEST_REPORT.md"
+  ],
+  "knownLimitations": [
+    "Provisional instant regional BO3 in p1; live DE qualification and series fatigue are p3",
+    "16–24 existing clubs: capacity-based quota adjustments or explicit blocked state until scene p2",
+    "Tier shares on 200 seasons have not been measured; p5"
+  ],
+  "roadmap": {
+    "audit": "complete",
+    "p1": "complete; open PR / approval boundary",
+    "p2": "not started",
+    "p3": "not started",
+    "p3b": "not started",
+    "p4": "not started",
+    "p5": "not started"
+  }
+}
