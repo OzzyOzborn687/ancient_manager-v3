@@ -118,7 +118,7 @@ Qualifiers.valid=function(state){
   if(new Set([...q.invited.map(v=>v.team),...regional]).size!==q.fieldSize||regional.some(id=>!q.qualified.includes(id))||q.invited.some(v=>!q.qualified.includes(v.team)))return false;
   for(const r of QUALIFIERS.regions){
    const region=q.regions[r];
-   if(!Array.isArray(region.candidates)||new Set(region.candidates).size!==region.candidates.length||region.candidates.some(id=>!idOK(id)||q.invited.some(v=>v.team===id))||!Array.isArray(region.matches))return false;
+   if(!Array.isArray(region.candidates)||new Set(region.candidates).size!==region.candidates.length||region.candidates.some(id=>!idOK(id)||q.invited.some(v=>v.team===id)&&!Qualifiers.historicalInvite3?.(q,id,region.event))||!Array.isArray(region.matches))return false;
    if(region.qualified.some(id=>!region.candidates.includes(id)))return false;
    for(const match of region.matches){
     if(!Array.isArray(match.pair)||match.pair.length!==2||match.pair[0]===match.pair[1]||match.pair.some(id=>!region.candidates.includes(id))||!match.pair.includes(match.w)||!Array.isArray(match.maps))return false;
