@@ -1,6 +1,8 @@
 'use strict';
 const QualifierRosterLegacy={locked,release:releasePlayerV1,academy,options:reshuffleOptions13,
- sign:signReshuffle13,replacement:signReplacement12,terms:transferTerms13,tick};
+ sign:signReshuffle13,replacement:signReplacement12,terms:transferTerms13,tick,
+ promote,buy,sell,offer,canRetire:canRetirePlayer,profile,playerView:playerView20,market};
+let qualifierRosterContext3=false;
 Qualifiers.registrationHeld3=function(state,parent,team){
  const q=parent?.qualification;
  if(!q||parent.done||q.status==='blocked'&&!q.calendarBlock3)return false;
@@ -44,8 +46,25 @@ Qualifiers.registeredRoster3=function(team,state=S){
 Qualifiers.rosterMatches3=function(team,ids){return JSON.stringify(roster(S.teams[team]).map(p=>p.id))===JSON.stringify(ids);};
 locked=function(){
  if(QualifierRosterLegacy.locked())return true;
- Qualifiers.ensureRegistrations3();return !!Qualifiers.registeredRoster3(S.club);
+ return qualifierRosterContext3&&!!Qualifiers.registeredRoster3(S.club);
 };
+Qualifiers.rosterContext3=function(callback){
+ this.ensureRegistrations3();const previous=qualifierRosterContext3;qualifierRosterContext3=true;
+ try{return callback();}finally{qualifierRosterContext3=previous;}
+};
+Qualifiers.rosterAction3=function(callback,args){
+ this.ensureRegistrations3();
+ if(this.registeredRoster3(S.club)){toast('Состав зафиксирован в турнирной заявке. Продление контрактов доступно.');return false;}
+ return callback(...args);
+};
+promote=function(...args){return Qualifiers.rosterAction3(QualifierRosterLegacy.promote,args);};
+buy=function(...args){return Qualifiers.rosterAction3(QualifierRosterLegacy.buy,args);};
+sell=function(...args){return Qualifiers.rosterAction3(QualifierRosterLegacy.sell,args);};
+offer=function(...args){return Qualifiers.rosterAction3(QualifierRosterLegacy.offer,args);};
+canRetirePlayer=function(...args){Qualifiers.ensureRegistrations3();return !Qualifiers.registeredRoster3(S.club)&&QualifierRosterLegacy.canRetire(...args);};
+profile=function(...args){return Qualifiers.rosterContext3(()=>QualifierRosterLegacy.profile(...args));};
+playerView20=function(...args){return Qualifiers.rosterContext3(()=>QualifierRosterLegacy.playerView(...args));};
+market=function(...args){return Qualifiers.rosterContext3(()=>QualifierRosterLegacy.market(...args));};
 transferTerms13=function(p,...args){
  const terms=QualifierRosterLegacy.terms(p,...args);
  if(p.team!==null&&Qualifiers.registeredRoster3(p.team))return {...terms,reason:'Состав клуба зафиксирован в заявке квалификаций или основного турнира.'};

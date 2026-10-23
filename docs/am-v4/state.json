@@ -64,13 +64,14 @@
     "browserScriptsPassed": 5,
     "oldTestsUnchanged": 48,
     "protectedBlobsUnchanged": 95,
-    "codeCommit": "b25106361c507c595690444ee2dc4a247cfa8f8c",
     "ci": "Read current PR head and live CI; no guessed result",
     "reports": [
       "docs/am-v4/P3_TEST_REPORT.md",
       "docs/am-v4/p3-checks.json",
       "docs/am-v4/p3-browser.json",
       "docs/am-v4/p3-performance.json"
-    ]
+    ],
+    "localFullBaselineCommit": "b25106361c507c595690444ee2dc4a247cfa8f8c",
+    "followup": "Roster-only locks: roster/development/calendar targeted checks and all five Chromium scripts rerun; complete final head verified by live CI"
   }
 }

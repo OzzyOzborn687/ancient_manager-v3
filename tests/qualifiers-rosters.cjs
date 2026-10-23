@@ -5,7 +5,10 @@ run('S.calendar21.installedDay=100000;S.events=[{id:0,name:"Registered roster",s
 assert(run('roster()[0].id===bench.id'));
 run('S.day=own.day;Qualifiers.ensureRegistrations3();const registered=JSON.stringify(own.registration3),registeredIds=[...own.registration3.rosters[S.club]];promote(original.id);');
 assert.deepEqual(plain('roster().map(p=>p.id)'),plain('registeredIds'));assert.equal(run('JSON.stringify(own.registration3)'),run('registered'));
-assert(run('locked()'));assert(run('validSave(S)'));
+assert(run('Qualifiers.registeredRoster3(S.club)'));assert(!run('locked()'),'Registration must not block unrelated manager actions between events');assert(run('validSave(S)'));
+run('S.budget=10000000;const oldBaseLevel=development21().base;');assert(run('upgradeDevelopment21("base")'));assert.equal(run('development21().base'),run('oldBaseLevel+1'));
+assert.deepEqual(plain('roster().map(p=>p.id)'),plain('registeredIds'));assert(run('Qualifiers.rosterContext3(()=>locked())'));
+console.log('PASS roster-only restrictions preserve training/development availability under normal event locks');
 run('const other=own.entrants.find(id=>id!==S.club),opponent=S.teams[other],protectedIds=roster(opponent).map(p=>p.id),expired=S.players[protectedIds[0]];expired.contract=-14;expired.morale=10;releasePlayerV1(expired);');
 assert.equal(run('expired.team'),run('other'));assert(run('transferTerms13(expired,"starter").reason.includes("зафиксирован")'));
 run('const protectedSnapshot=JSON.stringify(S.events.filter(e=>e.registration3).map(e=>e.registration3));for(let i=0;i<3;i++)tick();');
