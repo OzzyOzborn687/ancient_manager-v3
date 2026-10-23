@@ -1,27 +1,29 @@
 {
   "command": "AM V4",
   "project": "OzzyOzborn687/ancient_manager-v3",
-  "branch": "feature/qualifiers-p1",
+  "branch": "feature/qualifiers-p2",
   "baseCommit": "679f76ffcfb9f2e9f2bde8d51e3310799a8ce4b5",
-  "stage": "phase-1-complete; awaiting-p1-approval",
-  "approval": "Only audit and phase 1 authorized; open PR and stop before phase 2",
+  "stage": "phase-2-implemented-and-locally-verified; dependent-PR-awaiting-review",
+  "approval": "Phase 2 and home invitation / full qualifier tournament additions authorized. Automatic approval review rejected merging PR 1; no separate merge approval received. Do not merge P1/P2 or start P3 without confirmation.",
   "pr": {
-    "head": "feature/qualifiers-p1",
-    "base": "main",
-    "lookupUrl": "https://github.com/OzzyOzborn687/ancient_manager-v3/pulls?q=is%3Apr+head%3Afeature%2Fqualifiers-p1",
+    "head": "feature/qualifiers-p2",
+    "base": "feature/qualifiers-p1",
+    "lookupUrl": "https://github.com/OzzyOzborn687/ancient_manager-v3/pulls?q=is%3Apr+head%3Afeature%2Fqualifiers-p2",
     "requireLiveLookup": true
   },
   "weeklyLimit": {
-    "lastReportedRemainingPercent": 67,
+    "lastReportedRemainingPercent": 61,
+    "previousReportedRemainingPercent": 67,
+    "observedDecreasePercentagePoints": 6,
     "source": "user",
     "date": "2026-10-21",
     "currentRemainingPercent": null,
-    "note": "Usage cannot be read automatically. Ask for a new reading before estimating later phases."
+    "note": "Historical reading only; no automatic meter access and no exclusive attribution of the prior decrease."
   },
   "next": [
-    "Locate PR by head branch; create it if interrupted before opening",
-    "Inspect latest PR/CI state",
-    "Wait for explicit approval before merging P1 or starting P2"
+    "Inspect live PR 2, final head and CI; read latest checkpoint comments",
+    "Await explicit confirmation to merge PR 1 into main; retarget P2 only after the dependency lands",
+    "Await P2 approval before merging it or starting remaining P3 work"
   ],
   "constraints": [
     "No direct main writes or merge",
@@ -30,29 +32,46 @@
     "Game/container/storage keys stay 2.6/v:1/unchanged"
   ],
   "completed": [
-    "Audit recorded",
-    "Phase 1 implementation committed",
-    "Full regression 37/37 PASS",
-    "Chromium: 66 screens, 16 brackets, 16 TI views, 15 P1 checks PASS",
-    "Protected directories: all 238 hashes unchanged"
+    "Audit and P1 complete; PR 1 open, CI success",
+    "P2: permanent Tier 2/3, regions, annual quotas, promotion/relegation",
+    "Home invitation, regional tournament events, DE8/GSL16 BO3, manual model-8/coaching and invite award",
+    "Series fatigue exactly once, isolated background regions, small prizes and points",
+    "Full local regression 40/40 PASS; four Chromium scripts PASS",
+    "95 protected committed files unchanged; old tests unmodified",
+    "Actual fresh-career opening and coach path verified; late/occupied windows reschedule with preserved historical dates"
   ],
   "reports": [
+    "docs/am-v4/P2_SCOPE.md",
     "QUALIFIERS.md",
     "QUALIFIERS_AUDIT.md",
-    "docs/am-v4/P1_TEST_REPORT.md"
+    "docs/am-v4/P2_TEST_REPORT.md"
   ],
   "knownLimitations": [
-    "Provisional instant regional BO3 in p1; live DE qualification and series fatigue are p3",
-    "16–24 existing clubs: capacity-based quota adjustments or explicit blocked state until scene p2",
-    "Tier shares on 200 seasons have not been measured; p5"
+    "P3: proportional compression of dense calendar windows and final full roster/conflict policy remain",
+    "P3b wildcard requests/operator relationships remain",
+    "200-season Tier balance targets not measured; P5",
+    "Other regions use documented fast probability-based BO3; manager maps use the real engine",
+    "Stacked PR until separately approved P1 merge; website remains main"
   ],
   "roadmap": {
     "audit": "complete",
-    "p1": "complete; open PR / approval boundary",
-    "p2": "not started",
-    "p3": "not started",
+    "p1": "complete; PR1 open, merge approval blocked",
+    "p2": "implemented and locally verified; dependent PR pending review",
+    "p3": "partial core pulled into P2 by user addition; final calendar/roster work remains",
     "p3b": "not started",
-    "p4": "not started",
+    "p4": "home status, 3-tab screen and invite awards pulled into P2; final acceptance remains",
     "p5": "not started"
+  },
+  "dependency": {
+    "pr": 1,
+    "branch": "feature/qualifiers-p1",
+    "head": "345dbb11922a83ccdd05c31b61415816b314bd78",
+    "merged": false
+  },
+  "mergeBlock": {
+    "action": "Merge PR 1 into main",
+    "source": "automatic approval review",
+    "reason": "Approval to proceed to phase 2 was not accepted as separate confirmation to merge.",
+    "safeAlternative": "Dependent P2 PR against feature/qualifiers-p1; main and Pages unchanged."
   }
 }
