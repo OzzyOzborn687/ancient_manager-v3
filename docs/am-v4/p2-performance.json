@@ -1,0 +1,27 @@
+{
+  "samples": 100,
+  "coreTeams": 24,
+  "expandedTeams": 64,
+  "regionalTeams": 83,
+  "baseline": {
+    "medianMs": 1.1942390000000103,
+    "p95Ms": 2.328989000000007
+  },
+  "ordinary": {
+    "medianMs": 1.6358260000000087,
+    "p95Ms": 2.4046500000000037
+  },
+  "snapshot": {
+    "medianMs": 4.214227000000051,
+    "p95Ms": 9.13015699999994
+  },
+  "regionalDay": {
+    "medianMs": 5.369191000000001,
+    "p95Ms": 8.706341000000066
+  },
+  "allRegions": {
+    "medianMs": 33.990635999999995,
+    "p95Ms": 47.70247299999983
+  },
+  "addedOrdinaryMedianMs": 0.4415869999999984
+}
