@@ -2,7 +2,7 @@
   "command": "AM V4",
   "project": "OzzyOzborn687/ancient_manager-v3",
   "branch": "feature/qualifiers-p4",
-  "stage": "phase-4-in-progress",
+  "stage": "phase-4-complete-review-pending",
   "approval": "User explicitly authorized the next phase, P4. Implement/test/open a dependent PR; leave phase PRs open until separate merge confirmation per SPEC.",
   "main": "465881b082bbc52b2f785bfd334fbb99f5619d4f",
   "dependency": {
@@ -19,7 +19,8 @@
     "head": "feature/qualifiers-p4",
     "base": "feature/qualifiers-p3b",
     "requireLiveLookup": true,
-    "mergeApprovalRequired": true
+    "mergeApprovalRequired": true,
+    "lookup": "https://github.com/OzzyOzborn687/ancient_manager-v3/pulls?q=is%3Apr+head%3Afeature%2Fqualifiers-p4"
   },
   "weeklyLimit": {
     "lastReportedRemainingPercent": 61,
@@ -32,17 +33,17 @@
     "p2": "published",
     "p3": "complete, CI green, PR3 open",
     "p3b": "complete, final CI 45/45 Node and 6/6 Chromium green; PR4 draft open",
-    "p4": "in progress: final UI acceptance",
+    "p4": "complete; local 46/46 Node and 7/7 Chromium PASS; final head/CI in live PR checkpoint",
     "p5": "not started; 200-season balance not measured"
   },
   "current": [
-    "Frozen invitation index/cutoff/factors, regional selection and DE/GSL preview",
-    "Nearest home event independent of history selection, return navigation and keyboard controls",
-    "Final full Node and seven-browser verification in progress"
+    "P4 interface completed: saved index/cutoff/factors, region selection and DE/GSL preview",
+    "Home event independent of history; back navigation and keyboard controls",
+    "All local checks green; read exact final head and CI from live PR checkpoint"
   ],
   "next": [
-    "Complete P4 tests/report and open dependent PR",
-    "Preserve P3/P3b/P4 for separate merge confirmation, dependency first",
+    "Read live P4 PR/checkpoint and preserve P3/P3b/P4 until separate merge confirmation",
+    "Merge approved dependencies in order, retarget P4 to main and recheck before separately approved P4 merge",
     "P5 minimum 200-season Tier balance after next user authorization"
   ],
   "constraints": [
@@ -53,7 +54,19 @@
     "Existing frozen models and active maps stay intact"
   ],
   "checks": {
-    "current": "P4 verification in progress; previous phase results in P3b checkpoint",
-    "tierBalance200SeasonsRun": false
+    "node": {
+      "passed": 46,
+      "total": 46,
+      "report": "docs/am-v4/p4-checks.json"
+    },
+    "browser": {
+      "passed": 7,
+      "total": 7,
+      "report": "docs/am-v4/p4-browser.json"
+    },
+    "baselineTestsUnchanged": 56,
+    "protectedFilesUnchanged": 95,
+    "tierBalance200SeasonsRun": false,
+    "ci": "Read exact final head and result in live PR checkpoint"
   }
 }
