@@ -1,0 +1,9 @@
+.operator-grid3b{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.operator-card3b{min-width:0;padding:16px}
+.operator-card3b h3{color:var(--green,#b5ff45);margin:12px 0}
+.operator-selected3b{border-color:#b5ff45;box-shadow:inset 0 0 15px #b5ff4515}
+.operator-section3b,.wildcard-request3b{margin-top:18px}
+.wildcard-request3b p,.operator-card3b p{overflow-wrap:anywhere}
+.wildcard-home3b{font-size:13px}
+.wildcard-home3b button{margin-top:8px}
+@media(max-width:590px){.operator-grid3b{grid-template-columns:minmax(0,1fr)}}

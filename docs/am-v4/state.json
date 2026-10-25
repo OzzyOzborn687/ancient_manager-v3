@@ -2,7 +2,7 @@
   "command": "AM V4",
   "project": "OzzyOzborn687/ancient_manager-v3",
   "branch": "feature/qualifiers-p3b",
-  "stage": "phase-3b-in-progress",
+  "stage": "phase-3b-complete-review-pending",
   "approval": "User explicitly authorized the next phase, P3b. Implement/test/open a dependent PR; existing phase PRs remain open until separate merge confirmation per SPEC.",
   "main": "465881b082bbc52b2f785bfd334fbb99f5619d4f",
   "dependency": {
@@ -17,7 +17,9 @@
   "pr": {
     "head": "feature/qualifiers-p3b",
     "base": "feature/qualifiers-p3",
-    "requireLiveLookup": true
+    "requireLiveLookup": true,
+    "lookup": "https://github.com/OzzyOzborn687/ancient_manager-v3/pulls?q=is%3Apr+head%3Afeature%2Fqualifiers-p3b",
+    "mergeApprovalRequired": true
   },
   "weeklyLimit": {
     "lastReportedRemainingPercent": 61,
@@ -29,20 +31,19 @@
     "p1": "published",
     "p2": "published",
     "p3": "complete, CI green, PR3 open",
-    "p3b": "in progress",
+    "p3b": "complete, local 45/45 Node and 6/6 Chromium green; dependent PR retained for review; final CI in live PR checkpoint",
     "p4": "final UI acceptance remains",
     "p5": "not started; 200-season balance not measured"
   },
   "current": [
-    "Operator relationships 0–100 with idempotent official-result journal",
-    "One wildcard request per career season across all operators, for a closed regional qualifier slot",
-    "Saved outcome, fixed fields/quotas and no reload reroll",
-    "Neon UI, migration/validation, tests and separate dependent PR"
+    "Operator relationships and once-per-career-year wildcard completed",
+    "All local checks green; P3 dependency still open",
+    "Final CI and PR head must be read from live GitHub checkpoint"
   ],
   "next": [
-    "Complete P3b and required checks",
-    "Open dependent P3b PR and preserve both PRs for review",
-    "Retarget only after approved P3 merge; do not merge P3b without confirmation"
+    "Read final P3b PR/checkpoint and verify its current head/CI",
+    "Keep P3 and P3b open until separate merge approval; merge dependency first, then retarget P3b to main",
+    "Next implementation phase P4 after user authorization; then P5 minimum 200-season balance"
   ],
   "constraints": [
     "No direct main writes or force-push",
@@ -50,5 +51,21 @@
     "All balance in dist/config/qualifiers.js",
     "Game 2.6/container v:1/storage keys unchanged",
     "Existing frozen models and active maps stay intact"
-  ]
+  ],
+  "checks": {
+    "node": {
+      "passed": 45,
+      "total": 45,
+      "report": "docs/am-v4/p3b-checks.json"
+    },
+    "browser": {
+      "passed": 6,
+      "total": 6,
+      "report": "docs/am-v4/p3b-browser.json"
+    },
+    "baselineTestsUnchanged": 52,
+    "protectedFilesUnchanged": 95,
+    "tierBalance200SeasonsRun": false,
+    "ci": "Read exact final head and result in live PR checkpoint"
+  }
 }
