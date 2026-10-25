@@ -34,5 +34,8 @@ const QUALIFIERS=Object.freeze({
   skillEloWeight:.5,skillScale:18,skillReference:85,formWeight:2,formReference:75},
  calendar:{version:3,preferredSegments:[7,18,3,7],minSegments:[1,4,1,2],
   minRegionalDays:{qualifier8:4,qualifier16:5},maxDelay:120,noticeLimit:20},
+ operatorRelations:{version:1,min:0,max:100,initial:40,qualificationFinish:1,qualifiedBonus:2,
+  mainFinish:3,mainPlace:{1:6,2:3,3:2,4:1},withdrawal:-6,historyLimit:40},
+ wildcardRequest:{perSeason:1,minProbability:.10,maxProbability:.75,relationshipCost:2},
  precision:1e-10
 });

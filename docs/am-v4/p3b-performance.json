@@ -1,0 +1,23 @@
+{
+  "samples": 100,
+  "comparisonTeams": 64,
+  "requestTeams": 70,
+  "p3": {
+    "medianMs": 1.601965999999976,
+    "p95Ms": 2.109521000000001
+  },
+  "p3b": {
+    "medianMs": 1.5939829999999802,
+    "p95Ms": 2.241090999999983
+  },
+  "addedMedianMs": -0.007982999999995855,
+  "request": {
+    "medianMs": 0.06831499999998414,
+    "p95Ms": 0.12400900000000092
+  },
+  "status": {
+    "medianMs": 0.010196000000064487,
+    "p95Ms": 0.02965500000004795
+  },
+  "note": "Sequential cloud microbenchmark on identical saved worlds; setup outside timing. No acceleration claim; differences below 1 ms can be measurement noise."
+}
