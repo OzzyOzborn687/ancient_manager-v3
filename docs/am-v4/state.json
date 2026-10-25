@@ -1,24 +1,24 @@
 {
   "command": "AM V4",
   "project": "OzzyOzborn687/ancient_manager-v3",
-  "branch": "feature/qualifiers-p3b",
-  "stage": "phase-3b-complete-review-pending",
-  "approval": "User explicitly authorized the next phase, P3b. Implement/test/open a dependent PR; existing phase PRs remain open until separate merge confirmation per SPEC.",
+  "branch": "feature/qualifiers-p4",
+  "stage": "phase-4-in-progress",
+  "approval": "User explicitly authorized the next phase, P4. Implement/test/open a dependent PR; leave phase PRs open until separate merge confirmation per SPEC.",
   "main": "465881b082bbc52b2f785bfd334fbb99f5619d4f",
   "dependency": {
-    "pr": 3,
-    "branch": "feature/qualifiers-p3",
-    "head": "1dc77c3c36dda628ea085f837550c20c146d12b2",
+    "pr": 4,
+    "branch": "feature/qualifiers-p3b",
+    "head": "fe3fbc9657d10bc99b4b73d1900cb67c092e8477",
     "merged": false,
-    "ci": "https://github.com/OzzyOzborn687/ancient_manager-v3/actions/runs/39998675631",
-    "ciConclusion": "success"
+    "ci": "https://github.com/OzzyOzborn687/ancient_manager-v3/actions/runs/40174394005",
+    "ciConclusion": "success",
+    "alsoRequiresOpenPR": 3
   },
-  "branchOrigin": "Created from current main, then fast-forwarded to the P3 dependency. Stacked PR will show only P3b changes; retarget to main after approved P3 merge.",
+  "branchOrigin": "Created from current main, fast-forwarded to P3b dependency. Retarget to main only after approved P3/P3b merges.",
   "pr": {
-    "head": "feature/qualifiers-p3b",
-    "base": "feature/qualifiers-p3",
+    "head": "feature/qualifiers-p4",
+    "base": "feature/qualifiers-p3b",
     "requireLiveLookup": true,
-    "lookup": "https://github.com/OzzyOzborn687/ancient_manager-v3/pulls?q=is%3Apr+head%3Afeature%2Fqualifiers-p3b",
     "mergeApprovalRequired": true
   },
   "weeklyLimit": {
@@ -31,19 +31,19 @@
     "p1": "published",
     "p2": "published",
     "p3": "complete, CI green, PR3 open",
-    "p3b": "complete, local 45/45 Node and 6/6 Chromium green; dependent PR retained for review; final CI in live PR checkpoint",
-    "p4": "final UI acceptance remains",
+    "p3b": "complete, final CI 45/45 Node and 6/6 Chromium green; PR4 draft open",
+    "p4": "in progress: final UI acceptance",
     "p5": "not started; 200-season balance not measured"
   },
   "current": [
-    "Operator relationships and once-per-career-year wildcard completed",
-    "All local checks green; P3 dependency still open",
-    "Final CI and PR head must be read from live GitHub checkpoint"
+    "Frozen invitation index/cutoff/factors, regional selection and DE/GSL preview",
+    "Nearest home event independent of history selection, return navigation and keyboard controls",
+    "Final full Node and seven-browser verification in progress"
   ],
   "next": [
-    "Read final P3b PR/checkpoint and verify its current head/CI",
-    "Keep P3 and P3b open until separate merge approval; merge dependency first, then retarget P3b to main",
-    "Next implementation phase P4 after user authorization; then P5 minimum 200-season balance"
+    "Complete P4 tests/report and open dependent PR",
+    "Preserve P3/P3b/P4 for separate merge confirmation, dependency first",
+    "P5 minimum 200-season Tier balance after next user authorization"
   ],
   "constraints": [
     "No direct main writes or force-push",
@@ -53,19 +53,7 @@
     "Existing frozen models and active maps stay intact"
   ],
   "checks": {
-    "node": {
-      "passed": 45,
-      "total": 45,
-      "report": "docs/am-v4/p3b-checks.json"
-    },
-    "browser": {
-      "passed": 6,
-      "total": 6,
-      "report": "docs/am-v4/p3b-browser.json"
-    },
-    "baselineTestsUnchanged": 52,
-    "protectedFilesUnchanged": 95,
-    "tierBalance200SeasonsRun": false,
-    "ci": "Read exact final head and result in live PR checkpoint"
+    "current": "P4 verification in progress; previous phase results in P3b checkpoint",
+    "tierBalance200SeasonsRun": false
   }
 }
