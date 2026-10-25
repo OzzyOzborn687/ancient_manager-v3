@@ -1,77 +1,54 @@
 {
   "command": "AM V4",
   "project": "OzzyOzborn687/ancient_manager-v3",
-  "branch": "feature/qualifiers-p3",
-  "baseCommit": "465881b082bbc52b2f785bfd334fbb99f5619d4f",
-  "stage": "phase-3-implemented-and-locally-verified; PR-awaiting-review",
-  "approval": "User explicitly requested the next phase with AM V4. Phase 3 implementation/tests/PR authorized; leave its PR open until separate merge confirmation as required by SPEC.",
-  "published": {
-    "p1": 1,
-    "p2": 2,
-    "main": "465881b082bbc52b2f785bfd334fbb99f5619d4f",
-    "checkpoint": "https://github.com/OzzyOzborn687/ancient_manager-v3/pull/2#issuecomment-6365522765"
+  "branch": "feature/qualifiers-p3b",
+  "stage": "phase-3b-in-progress",
+  "approval": "User explicitly authorized the next phase, P3b. Implement/test/open a dependent PR; existing phase PRs remain open until separate merge confirmation per SPEC.",
+  "main": "465881b082bbc52b2f785bfd334fbb99f5619d4f",
+  "dependency": {
+    "pr": 3,
+    "branch": "feature/qualifiers-p3",
+    "head": "1dc77c3c36dda628ea085f837550c20c146d12b2",
+    "merged": false,
+    "ci": "https://github.com/OzzyOzborn687/ancient_manager-v3/actions/runs/39998675631",
+    "ciConclusion": "success"
   },
+  "branchOrigin": "Created from current main, then fast-forwarded to the P3 dependency. Stacked PR will show only P3b changes; retarget to main after approved P3 merge.",
   "pr": {
-    "head": "feature/qualifiers-p3",
-    "base": "main",
-    "requireLiveLookup": true,
-    "lookupUrl": "https://github.com/OzzyOzborn687/ancient_manager-v3/pulls?q=is%3Apr+head%3Afeature%2Fqualifiers-p3"
+    "head": "feature/qualifiers-p3b",
+    "base": "feature/qualifiers-p3",
+    "requireLiveLookup": true
   },
   "weeklyLimit": {
     "lastReportedRemainingPercent": 61,
-    "date": "2026-10-21",
+    "reportedOn": "2026-10-21",
     "currentRemainingPercent": null,
-    "note": "Historical user reading; no automatic meter."
+    "note": "Historical user reading; current meter unavailable."
   },
-  "completed": [
-    "Audit and P1/P2 merged and published",
-    "Persistent Tier 2/3, seasonal quotas and promotion/relegation",
-    "Real regional BO3 tournaments, match-center/coaching, series fatigue, prizes, invite awards and three-tab UI",
-    "Main CI 40/40 Node plus all four Chromium scripts passed",
-    "P3 compressed calendar, complete known participant conflicts and tournament roster registrations",
-    "43/43 final local Node PASS; five Chromium scripts PASS",
-    "Four-event calendar, real GSL16 coaching and exact active P2 compatibility verified",
-    "48 prior test files and 95 protected blobs unchanged"
-  ],
-  "current": [],
   "roadmap": {
-    "p1": "complete,published",
-    "p2": "complete,published",
-    "p3": "complete in feature/qualifiers-p3; PR pending review, not merged",
-    "p3b": "not started",
-    "p4": "UI in p2; final acceptance remains",
+    "p1": "published",
+    "p2": "published",
+    "p3": "complete, CI green, PR3 open",
+    "p3b": "in progress",
+    "p4": "final UI acceptance remains",
     "p5": "not started; 200-season balance not measured"
   },
+  "current": [
+    "Operator relationships 0–100 with idempotent official-result journal",
+    "One wildcard request per career season across all operators, for a closed regional qualifier slot",
+    "Saved outcome, fixed fields/quotas and no reload reroll",
+    "Neon UI, migration/validation, tests and separate dependent PR"
+  ],
   "next": [
-    "Find the live P3 PR, verify exact head and CI and read latest checkpoint comments",
-    "Await separate user confirmation before merging P3",
-    "After P3 is approved/published, continue P3b only with next-phase authorization; then P4/P5 per SPEC"
+    "Complete P3b and required checks",
+    "Open dependent P3b PR and preserve both PRs for review",
+    "Retarget only after approved P3 merge; do not merge P3b without confirmation"
   ],
   "constraints": [
     "No direct main writes or force-push",
     "Do not modify Ancient-Manager-v2.1/ or test-results/",
     "All balance in dist/config/qualifiers.js",
     "Game 2.6/container v:1/storage keys unchanged",
-    "Existing layers and functions retained"
-  ],
-  "testflight": {
-    "status": "blocked pending publisher account/signing",
-    "userHas": "ordinary Apple ID",
-    "note": "Independent of qualifiers. iOS compilation succeeds, no TestFlight publication; no paid enrollment authorized."
-  },
-  "verification": {
-    "localNodePassed": 43,
-    "browserScriptsPassed": 5,
-    "oldTestsUnchanged": 48,
-    "protectedBlobsUnchanged": 95,
-    "ci": "Read current PR head and live CI; no guessed result",
-    "reports": [
-      "docs/am-v4/P3_TEST_REPORT.md",
-      "docs/am-v4/p3-checks.json",
-      "docs/am-v4/p3-browser.json",
-      "docs/am-v4/p3-performance.json"
-    ],
-    "localFullBaselineCommit": "b25106361c507c595690444ee2dc4a247cfa8f8c",
-    "followup": "Roster-only locks and backwards-calendar/TI registration cleanup: roster/development/calendar/TI targeted checks and all five Chromium scripts rerun; full final head verified by live CI"
-  }
+    "Existing frozen models and active maps stay intact"
+  ]
 }
