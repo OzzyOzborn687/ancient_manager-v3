@@ -98,12 +98,14 @@ const fs=require('fs'),assert=require('node:assert/strict');
  }
  // Actual model-8 controls keep changing the real match beneath the new skin.
  await page.evaluate(()=>{fresh();S.events=[{id:0,name:'FISSURE',series:'FISSURE',day:0,pool:1000000,qualified13:S.teams.slice(0,8).map(t=>t.id)}];startEvent();playMap();go('match');});
+ await page.getByRole('button',{name:'Начать матч',exact:true}).click();
  assert(await page.evaluate(()=>S.active.live.modelVersion===8));
  const beforeDifficulty=await page.evaluate(()=>({level:S.active.live.difficulty.level,power:Match8.strength(S.active.live,1)}));
  await page.evaluate(()=>go('settings'));
  await page.locator('[onclick="setCareerDifficulty(\'impossible\')"]').click();
  assert(await page.evaluate(before=>S.active.live.difficulty.level===before.level&&Match8.strength(S.active.live,1)===before.power,beforeDifficulty));
  await page.evaluate(()=>{S.active.live=null;playMap();});
+ await page.getByRole('button',{name:'Начать матч',exact:true}).click();
  assert(await page.evaluate(()=>S.active.live.difficulty.level==='impossible'&&S.active.live.difficulty.multipliers[1]===1.2));
  assert(await page.locator('.difficulty-match').count());
  for(const width of [390,590,1440]){
@@ -136,3 +138,4 @@ const fs=require('fs'),assert=require('node:assert/strict');
  assert.equal(errors.length,0);assert.equal(failures.length,0);assert(!checks.some(c=>c.documentOverflow),'No whole-page horizontal overflow');
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});
+

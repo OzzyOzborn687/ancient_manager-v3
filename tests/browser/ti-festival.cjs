@@ -54,7 +54,7 @@ const fs=require('node:fs'),assert=require('node:assert/strict');
  assert.equal(await page.locator('.ti-clubs [aria-pressed="true"]').count(),1);
  await page.evaluate(()=>openTIHub('arena'));
  await page.locator('[onclick="startTIFestival()"]').first().click();
- await page.evaluate(()=>{playMap();const m=S.active.live;m.finishedSide=0;m.tiTrailed=true;recordResult6(m);openTIHub('contracts');});
+ await page.evaluate(()=>{playMap();confirmDraftUpdate();const m=S.active.live;m.finishedSide=0;m.tiTrailed=true;recordResult6(m);openTIHub('contracts');});
  const cash=await page.evaluate(()=>S.budget);
  await page.locator('[onclick="claimTIReward(\'first\')"]').click();
  assert.equal(await page.evaluate(()=>S.budget),cash+10000);
@@ -74,3 +74,4 @@ const fs=require('node:fs'),assert=require('node:assert/strict');
  console.log('PASS TI browser: 16 responsive views, explicit return, ceremony, plan, oracle, sponsor reward, original restore and reduced motion');
  await browser.close();
 })().catch(error=>{console.error(error);process.exit(1);});
+
