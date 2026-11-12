@@ -1,0 +1,83 @@
+#modal:has(.draft-prematch) {
+ width:min(1040px,calc(100vw - 24px));
+ max-width:none;
+ max-height:min(88dvh,900px);
+ border:1px solid #394542;
+ border-radius:16px;
+ padding:0;
+ background:#101417;
+ box-shadow:0 32px 100px #000c;
+ overflow:auto;
+}
+.draft-update-report {
+ --draft-accent:#cafa5c;
+ --draft-away:#cbb2ff;
+ --draft-muted:#aab5ba;
+ color:#f2f5ef;
+ background:#101417;
+}
+.draft-header {
+ position:relative;
+ padding:26px clamp(14px,4vw,36px) 22px;
+ border-bottom:1px solid #ffffff19;
+ background:linear-gradient(120deg,#27331e,#161e20 48%,#28233d);
+}
+.draft-header::before {
+ content:""; position:absolute; inset:0;
+ background:repeating-linear-gradient(125deg,transparent 0 38px,#ffffff08 39px 40px);
+ pointer-events:none;
+}
+.draft-header h2,.draft-header p {position:relative;margin:0;}
+.draft-header h2 {font-size:clamp(26px,5vw,48px);line-height:1.04;letter-spacing:-.045em;}
+.draft-header p {margin-top:8px;color:#e3ebd8;font-size:13px;}
+.draft-sides {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:16px clamp(10px,3vw,24px);}
+.draft-side {min-width:0;border:1px solid #ffffff20;border-radius:12px;background:#171d21;overflow:hidden;}
+.draft-side:nth-child(2) {--draft-accent:var(--draft-away);}
+.draft-side-header {
+ display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;
+ padding:14px;border-top:3px solid var(--draft-accent);
+}
+.draft-team-name {display:flex;gap:8px;align-items:center;min-width:0;}
+.draft-team-name h3 {margin:0;font-size:clamp(14px,2vw,20px);overflow-wrap:anywhere;}
+.draft-team-name .club-avatar12 {flex:0 0 36px;width:36px;height:36px;}
+.draft-team-name img {width:100%;height:100%;object-fit:contain;}
+.draft-rating {text-align:right;white-space:nowrap;color:var(--draft-accent);font-weight:800;font-size:clamp(20px,4vw,36px);line-height:1;}
+.draft-rating small {display:block;margin-top:4px;color:var(--draft-muted);font-size:11px;font-weight:500;}
+.draft-picks {list-style:none;margin:0;padding:0 10px;}
+.draft-pick {
+ display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:center;
+ border-top:1px solid #ffffff13;padding:6px 0;min-height:47px;
+}
+.draft-pick strong {display:block;overflow-wrap:anywhere;font-size:13px;}
+.draft-pick small {display:block;color:var(--draft-muted);font-size:11px;}
+.draft-pick-value {font-weight:700;color:#e0e9de;font-variant-numeric:tabular-nums;}
+.draft-hero-portrait {
+ position:relative;display:grid;place-items:center;overflow:hidden;
+ width:44px;height:32px;border-radius:4px;background:#283337;color:#e1eae5;font-size:10px;
+}
+.draft-hero-portrait img {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.draft-breakdown {border-top:1px solid #ffffff18;margin-top:8px;padding:10px 12px 12px;}
+.draft-breakdown summary {color:var(--draft-accent);cursor:pointer;font-size:13px;font-weight:700;}
+.draft-breakdown h4 {margin:12px 0 4px;font-size:13px;}
+.draft-breakdown ul {margin:0;padding-inline-start:18px;color:#d3dad8;font-size:12px;}
+.draft-breakdown li {margin-block:4px;overflow-wrap:anywhere;}
+.draft-breakdown p {margin:0;color:var(--draft-muted);font-size:12px;}
+.draft-disclaimer {margin:0;padding:0 clamp(10px,3vw,24px) 16px;color:var(--draft-muted);font-size:12px;}
+#modal .draft-actions {
+ position:sticky;bottom:0;display:flex;justify-content:flex-end;padding:12px clamp(10px,3vw,24px);
+ border-top:1px solid #ffffff20;background:#111619;z-index:1;
+}
+#modal .draft-actions .primary {min-height:44px;background:#cafa5c;color:#111814;font-weight:800;}
+@media(max-width:600px) {
+ .draft-sides {gap:6px;}
+ .draft-side-header {grid-template-columns:1fr;gap:8px;padding:9px 7px;}
+ .draft-rating {text-align:left;}
+ .draft-team-name .club-avatar12 {display:none;}
+ .draft-picks {padding:0 5px;}
+ .draft-pick {grid-template-columns:29px minmax(0,1fr) auto;gap:4px;}
+ .draft-hero-portrait {width:29px;height:29px;}
+ .draft-pick strong {font-size:11px;}
+ .draft-pick small,.draft-pick-value {font-size:10px;}
+ .draft-breakdown {padding:8px 6px;}
+ #modal .draft-actions .primary {width:100%;}
+}

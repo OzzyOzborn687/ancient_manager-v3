@@ -63,34 +63,34 @@ function fitNeonBracket(){
 if(typeof addEventListener==='function')addEventListener('resize',fitNeonBracket);
 
 function neonSwissData(a,f){
- const ids=[...a.entrants],history=new Map(),records=new Map(ids.map(id=>[id,{w:0,l:0}])),rounds=f.rounds||5,threshold=f.threshold||null;
+ const ids=[...a.entrants],history=new Map(),records=new Map(ids.map(id=>[id,{w:0,l:0}])),rounds=f.rounds||5;
  const add=(key,id)=>{if(!history.has(key))history.set(key,new Set());history.get(key).add(id);};
  ids.forEach(id=>add('0-0',id));
  for(let round=1;round<=rounds;round++){
   for(const n of a.schedule.filter(n=>n.groupMatch&&n.swissRound===round&&n.score)){
    const pair=n.pair.map(v=>neonSlot(a,v).id),scores=n.score.split(':').map(Number);
    if(scores[0]===scores[1])continue; // Current Swiss formats are BO3 without draws.
-   pair.forEach((id,i)=>{const r=records.get(id);if(!r)return;r[scores[i]>scores[1-i]?'w':'l']++;add(r.w+'-'+r.l,id);});
+   pair.forEach((id,i)=>{const r=records.get(id);if(!r||(r.w===4&&r.l===0))return;r[scores[i]>scores[1-i]?'w':'l']++;add(r.w+'-'+r.l,id);});
   }
  }
  const ranked=ranks6(a,ids),complete=a.schedule.filter(n=>n.groupMatch).length>0&&a.schedule.filter(n=>n.groupMatch).every(n=>n.score)&&((a.swissRound||0)>=rounds||a.stage6!=='groups');
- const qualified=new Set(threshold?ranked.filter(r=>r.w>=threshold).map(r=>r.id):complete?ranked.slice(0,a.formatKey6==='ti'?3:8).map(r=>r.id):[]);
+ const qualified=new Set((complete?swissSeeds6(a,a.formatKey6==='ti'?3:8):ranked.filter(r=>r.swissQualified)).map(r=>r.id));
  const capacities=new Map([['0-0',ids.length]]);
- for(let round=0;round<rounds;round++)for(let losses=0;losses<=round;losses++){const wins=round-losses;if(threshold&&(wins>=threshold||losses>=threshold))continue;const count=capacities.get(wins+'-'+losses)||0;for(const key of [(wins+1)+'-'+losses,wins+'-'+(losses+1)])capacities.set(key,(capacities.get(key)||0)+count/2);}
+ for(let round=0;round<rounds;round++)for(let losses=0;losses<=round;losses++){const wins=round-losses;if(swissStatus6(f,wins,losses))continue;const count=capacities.get(wins+'-'+losses)||0;for(const key of [(wins+1)+'-'+losses,wins+'-'+(losses+1)])capacities.set(key,(capacities.get(key)||0)+count/2);}
  const columns=[];
  for(let round=0;round<=rounds;round++){
   const col=[];
   for(let losses=0;losses<=round;losses++){
    const wins=round-losses;
-   if(threshold&&(wins>threshold||losses>threshold))continue;
+   if(losses===0&&wins>4||f.lossThreshold&&losses>f.lossThreshold)continue;
    const key=wins+'-'+losses,list=[...(history.get(key)||[])];
-   const status=threshold?(wins===threshold?'qualified':losses===threshold?'eliminated':null):null;
+   const status=swissStatus6(f,wins,losses);
    const slots=Math.max(list.length,Math.ceil(capacities.get(key)||0),2),h=48+slots*18;
    col.push({slots,key,w:wins,l:losses,round,ids:list,h,status,footprint:h+(status?68:0)});
   }
   columns.push(col);
  }
- return {columns,ranked,qualified,complete,threshold,rounds};
+ return {columns,ranked,qualified,complete,rounds};
 }
 function neonSwissBoard(a,f,active){
  const data=neonSwissData(a,f),cardWidth=164,gap=32,pad=66;
@@ -98,13 +98,6 @@ function neonSwissBoard(a,f,active){
  const width=pad*2+data.columns.length*cardWidth+(data.columns.length-1)*gap;
  const all=[],positions=new Map();let boxes='';
  data.columns.forEach((col,i)=>{
-  if(data.threshold===3&&i===data.columns.length-1){
-   const x=pad+i*(cardWidth+gap),win=col.find(b=>b.w===3),loss=col.find(b=>b.l===3),hh=Math.max(216,56+Math.max(win?.slots||3,loss?.slots||3)*22),yy=(height-hh)/2;
-   for(const b of col){b.x=x;b.y=yy+(b.w===3?20:hh/2);b.h=hh/2;positions.set(b.key,b);all.push(b);}
-   const renderList=b=>b.ids.length?b.ids.map(id=>'<div class="neon-bucket-team '+(id===S.club?'own-team':'')+'">'+neonCrest(id)+'<span>'+esc(neonTeamName(id,a))+'</span></div>').join(''):Array.from({length:b.slots},()=>'<div class="neon-placeholder-line"></div>').join('');
-   boxes+='<div class="neon-node neon-terminal" style="left:'+x+'px;top:'+(yy-80)+'px;width:'+cardWidth+'px;height:64px"><div class="neon-node-inner"><div class="neon-node-head">QUALIFIED</div><p>Выход в плей-офф</p></div></div><article class="neon-node neon-elimination-round" style="left:'+x+'px;top:'+yy+'px;width:'+cardWidth+'px;height:'+hh+'px"><div class="neon-node-inner"><div class="neon-elimination-caption">ELIMINATION<br>ROUND</div><div class="neon-elimination-columns"><div data-record="3-2"><div class="neon-node-head">3-2</div><div class="neon-node-body">'+renderList(win)+'</div></div><div data-record="2-3"><div class="neon-node-head">2-3</div><div class="neon-node-body">'+renderList(loss)+'</div></div></div></div></article><div class="neon-node neon-terminal eliminated" style="left:'+x+'px;top:'+(yy+hh+18)+'px;width:'+cardWidth+'px;height:64px"><div class="neon-node-inner"><div class="neon-node-head">ELIMINATED</div><p>Турнир завершён</p></div></div>';
-   return;
-  }
   let y=(height-col.reduce((n,b)=>n+b.footprint,0)-(col.length-1)*20)/2;
   for(const b of col){
    const x=pad+i*(cardWidth+gap),before=b.status==='qualified'?68:0;
@@ -126,8 +119,9 @@ function neonSwissBoard(a,f,active){
   }
  }
  const svg='<svg class="neon-connectors" viewBox="0 0 '+width+' '+height+'" aria-hidden="true">'+edges+'</svg>';
- const hint=data.threshold?'Swiss BO3: три победы — выход, три поражения — вылет. Каждый блок показывает команды, прошедшие через этот счёт.':'Swiss BO3: '+data.rounds+' полных раундов. Три победы или поражения не останавливают участие; выход определяется итоговой таблицей.';
- let html=neonGraphFrame('SWISS · '+(data.threshold?'3 ПОБЕДЫ / 3 ПОРАЖЕНИЯ':data.rounds+' РАУНДОВ'),width,height,svg+boxes,hint);
+ const hint='Swiss BO3: при 4–0 команда выходит в плей-офф. '+(f.lossThreshold?'Три поражения завершают швейцарку для команды. ':'')+
+  'Остальные места распределяются по итоговой таблице.';
+ let html=neonGraphFrame('SWISS · ДО '+data.rounds+' РАУНДОВ',width,height,svg+boxes,hint);
  const current=a.schedule.filter(n=>n.groupMatch&&n.swissRound===(a.swissRound||1));
  if(current.length)html+='<section class="neon-round-strip"><h3>Раунд '+(a.swissRound||1)+' · реальные пары</h3><div class="neon-round-matches">'+current.map(n=>neonInlineMatch(n,a,active)).join('')+'</div></section>';
  return html;
