@@ -101,9 +101,11 @@ Qualifiers.fastRegionalSeries=function(a,n){
  const pair=n.pair.map(v=>resolve6(a,v)),score=[0,0],maps=[],C=QUALIFIERS.regional;
  while(score.every(v=>v<Math.floor(C.bo/2)+1)){
   const stats=this.stats(),level=Difficulty.current(),multipliers=Difficulty.multipliers(level,S.club,pair);
+  const lineups=pair.map(id=>roster(S.teams[id]));
+  const synergy=lineups.map(players=>amSynergyFactor(amSynergy(players).score));
   const ratings=pair.map(id=>clubState13(S.teams[id]).elo*C.skillEloWeight+
    (strength(S.teams[id])-C.skillReference)*C.skillScale+(stats[id].form-C.formReference)*C.formWeight);
-  const p=clamp(1/(1+QUALIFIERS.provisional.eloBase**((ratings[1]-ratings[0])/QUALIFIERS.provisional.eloScale)*multipliers[1]/multipliers[0]),QUALIFIERS.provisional.minProbability,QUALIFIERS.provisional.maxProbability);
+  const p=clamp(1/(1+QUALIFIERS.provisional.eloBase**((ratings[1]-ratings[0])/QUALIFIERS.provisional.eloScale)*multipliers[1]*synergy[1]/(multipliers[0]*synergy[0])),QUALIFIERS.provisional.minProbability,QUALIFIERS.provisional.maxProbability);
   const winner=rng()<p?0:1;score[winner]++;maps.push({winner:pair[winner],difficulty:{level,club:S.club,multipliers},pWin:p});
   const clubs=pair.map(id=>clubState13(S.teams[id])),expected=1/(1+10**((clubs[1].elo-clubs[0].elo)/QUALIFIERS.provisional.eloScale));
   const change=C.eloK*(Number(winner===0)-expected);clubs[0].elo+=change;clubs[1].elo-=change;
@@ -111,7 +113,8 @@ Qualifiers.fastRegionalSeries=function(a,n){
   team.fame=clamp(team.fame+F.mapWin,F.min,F.max);
   for(let side=0;side<pair.length;side++){
    const c=clubs[side],win=side===winner;c.maps++;c.wins+=Number(win);c.lastResults.push(win);c.lastResults=c.lastResults.slice(-10);
-   for(const p of roster(S.teams[pair[side]])){formRecord21(p,win,a.event);p.morale=clamp(p.morale+(win?C.moraleDelta:-C.moraleDelta));}
+   amRecordLineup(lineups[side].map(p=>p.id),1);
+   for(const p of lineups[side]){formRecord21(p,win,a.event);p.morale=clamp(p.morale+(win?C.moraleDelta:-C.moraleDelta));}
   }
  }
  n.maps=maps;return score.join(':');
