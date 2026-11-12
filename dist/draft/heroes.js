@@ -16,7 +16,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Batrider"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Alchemist": {
@@ -34,9 +33,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [
-   "Ancient Apparition"
-  ],
   "conditional_counters": {}
  },
  "Ancient Apparition": {
@@ -59,7 +55,6 @@ const DRAFT_HEROES = {
    "Dazzle",
    "Oracle"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Anti-Mage": {
@@ -76,11 +71,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Medusa",
    "Storm Spirit"
-  ],
-  "countered_by": [
-   "Faceless Void",
-   "Legion Commander",
-   "Shadow Shaman"
   ],
   "conditional_counters": {
    "Zeus": "Зависит от стадии и предметов: магическая защита и Mana Void против раннего давления Zeus"
@@ -101,15 +91,10 @@ const DRAFT_HEROES = {
   "counters": [
    "Dazzle"
   ],
-  "countered_by": [
-   "Outworld Destroyer",
-   "Ursa",
-   "Venomancer"
-  ],
   "conditional_counters": {
    "Sniper": "Только при успешном доступе к задней линии; дистанция и обзор могут помешать",
-   "Phantom Lancer": "Culling Blade против Shallow Grave; массовый контроль и Counter Helix против иллюзий. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется.",
-   "Naga Siren": "Culling Blade против Shallow Grave; массовый контроль и Counter Helix против иллюзий. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
+   "Phantom Lancer": "Массовый контроль и Counter Helix задевают иллюзии. Эффект зависит от позиции и стадии.",
+   "Naga Siren": "Counter Helix задевает сгруппированные иллюзии. Эффект зависит от того, как Naga Siren разводит иллюзии."
   }
  },
  "Bane": {
@@ -128,7 +113,6 @@ const DRAFT_HEROES = {
    "Ursa",
    "Lifestealer"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Batrider": {
@@ -149,10 +133,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Templar Assassin"
   ],
-  "countered_by": [
-   "Oracle",
-   "Abaddon"
-  ],
   "conditional_counters": {}
  },
  "Beastmaster": {
@@ -170,7 +150,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Lifestealer"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Bounty Hunter": {
@@ -185,7 +164,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Weaver"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Brewmaster": {
@@ -200,7 +178,6 @@ const DRAFT_HEROES = {
    "frontline"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Ursa": "Циклон позволяет выключить ближнего керри на время усиления. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -221,9 +198,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phantom Lancer"
   ],
-  "countered_by": [
-   "Hoodwink"
-  ],
   "conditional_counters": {}
  },
  "Broodmother": {
@@ -239,10 +213,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Kunkka",
-   "Sand King"
-  ],
   "conditional_counters": {}
  },
  "Centaur Warrunner": {
@@ -259,9 +229,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Windranger"
   ],
-  "countered_by": [
-   "Lifestealer"
-  ],
   "conditional_counters": {}
  },
  "Chaos Knight": {
@@ -277,14 +244,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Earthshaker",
-   "Lich",
-   "Sven",
-   "Underlord",
-   "Warlock",
-   "Winter Wyvern"
-  ],
   "conditional_counters": {}
  },
  "Chen": {
@@ -300,7 +259,6 @@ const DRAFT_HEROES = {
    "save"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Bane": "Дополнительные юниты могут прервать Fiend’s Grip. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -323,7 +281,6 @@ const DRAFT_HEROES = {
    "Sniper",
    "Tinker"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Crystal Maiden": {
@@ -339,7 +296,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Ursa": "Frostbite помогает держать дистанцию; результат зависит от развеиваний и предметов Ursa"
   }
@@ -358,7 +314,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Terrorblade"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Dark Willow": {
@@ -374,7 +329,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Spirit Breaker": "Контроль мешает прямолинейному врыву. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -392,7 +346,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Faceless Void": "Solar Guardian может поддержать союзников в Chronosphere; зависит от позиции и своевременного применения"
   }
@@ -408,10 +361,6 @@ const DRAFT_HEROES = {
    "physical_damage"
   ],
   "counters": [],
-  "countered_by": [
-   "Ancient Apparition",
-   "Axe"
-  ],
   "conditional_counters": {
    "Faceless Void": "Shallow Grave может спасти союзника внутри Chronosphere извне. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -430,7 +379,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Timbersaw": "Spirit Siphon помогает против героя с большим запасом здоровья. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -452,7 +400,6 @@ const DRAFT_HEROES = {
    "Storm Spirit",
    "Slark"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Doom": {
@@ -471,7 +418,6 @@ const DRAFT_HEROES = {
    "Ember Spirit",
    "Timbersaw"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Dragon Knight": {
@@ -488,7 +434,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Phantom Assassin": "Высокая броня помогает пережить физический урон; преимущество зависит от стадии и предметов"
   }
@@ -504,10 +449,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Magnus",
-   "Mars"
-  ],
   "conditional_counters": {}
  },
  "Earth Spirit": {
@@ -526,7 +467,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Sniper"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Earthshaker": {
@@ -549,7 +489,6 @@ const DRAFT_HEROES = {
    "Naga Siren",
    "Chaos Knight"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Ember Spirit": {
@@ -566,10 +505,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phantom Lancer"
   ],
-  "countered_by": [
-   "Doom",
-   "Lion"
-  ],
   "conditional_counters": {}
  },
  "Enchantress": {
@@ -584,7 +519,6 @@ const DRAFT_HEROES = {
    "push"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Ursa": "Untouchable затрудняет серии обычных атак. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -607,10 +541,6 @@ const DRAFT_HEROES = {
    "Lifestealer",
    "Juggernaut"
   ],
-  "countered_by": [
-   "Rubick",
-   "Vengeful Spirit"
-  ],
   "conditional_counters": {}
  },
  "Faceless Void": {
@@ -630,10 +560,6 @@ const DRAFT_HEROES = {
    "Anti-Mage",
    "Weaver"
   ],
-  "countered_by": [
-   "Shadow Demon",
-   "Tusk"
-  ],
   "conditional_counters": {}
  },
  "Grimstroke": {
@@ -650,7 +576,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Phantom Lancer": "Soulbind затрудняет уход, Stroke of Fate поражает скопления. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -671,7 +596,6 @@ const DRAFT_HEROES = {
    "Phantom Lancer",
    "Naga Siren"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Hoodwink": {
@@ -691,7 +615,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Bristleback"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Huskar": {
@@ -705,9 +628,6 @@ const DRAFT_HEROES = {
    "sustain"
   ],
   "counters": [],
-  "countered_by": [
-   "Ancient Apparition"
-  ],
   "conditional_counters": {
    "Ember Spirit": "Магическое сопротивление и давление на линии. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -728,7 +648,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Medusa"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Io": {
@@ -742,9 +661,6 @@ const DRAFT_HEROES = {
    "sustain"
   ],
   "counters": [],
-  "countered_by": [
-   "Ancient Apparition"
-  ],
   "conditional_counters": {}
  },
  "Jakiro": {
@@ -764,7 +680,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Templar Assassin"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Juggernaut": {
@@ -779,9 +694,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Enigma"
-  ],
   "conditional_counters": {
    "Venomancer": "Blade Fury помогает пережить магическое давление. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -800,7 +712,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phantom Lancer"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Kez": {
@@ -815,7 +726,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {},
   "notes": "Подтверждённые устойчивые контрсвязи в этой редакции не заданы: требуется отдельная проверка актуальной версии способностей. Нулевые списки не означают отсутствие контрпиков в игре."
  },
@@ -837,7 +747,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Broodmother"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Legion Commander": {
@@ -855,10 +764,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Anti-Mage",
    "Weaver"
-  ],
-  "countered_by": [
-   "Outworld Destroyer",
-   "Shadow Demon"
   ],
   "conditional_counters": {}
  },
@@ -880,9 +785,6 @@ const DRAFT_HEROES = {
    "Phantom Lancer",
    "Naga Siren"
   ],
-  "countered_by": [
-   "Nyx Assassin"
-  ],
   "conditional_counters": {}
  },
  "Lich": {
@@ -899,7 +801,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Chaos Knight"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Lifestealer": {
@@ -917,11 +818,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Centaur Warrunner",
    "Primal Beast"
-  ],
-  "countered_by": [
-   "Bane",
-   "Beastmaster",
-   "Enigma"
   ],
   "conditional_counters": {}
  },
@@ -944,7 +840,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phoenix"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Lion": {
@@ -963,7 +858,6 @@ const DRAFT_HEROES = {
    "Storm Spirit",
    "Ember Spirit"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Lone Druid": {
@@ -981,7 +875,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Bane": "Медведь может прервать длительный контроль. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1001,7 +894,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Phantom Lancer": "Moon Glaives помогают зачищать иллюзии. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1021,7 +913,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Sniper"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Magnus": {
@@ -1040,7 +931,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Drow Ranger"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Marci": {
@@ -1059,7 +949,6 @@ const DRAFT_HEROES = {
    "save"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Sniper": "Быстрое сближение с уязвимой задней линией. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1078,7 +967,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Drow Ranger"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Medusa": {
@@ -1095,10 +983,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [
-   "Anti-Mage",
-   "Invoker"
-  ],
   "conditional_counters": {}
  },
  "Mirana": {
@@ -1115,7 +999,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Enigma": "Дальняя Sacred Arrow может прервать канал извне. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1137,7 +1020,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Underlord"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Morphling": {
@@ -1152,9 +1034,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Ancient Apparition"
-  ],
   "conditional_counters": {
    "Juggernaut": "Waveform помогает уклониться от Omnislash. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1175,7 +1054,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phantom Assassin"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Naga Siren": {
@@ -1192,12 +1070,6 @@ const DRAFT_HEROES = {
    "save"
   ],
   "counters": [],
-  "countered_by": [
-   "Earthshaker",
-   "Gyrocopter",
-   "Leshrac",
-   "Underlord"
-  ],
   "conditional_counters": {
    "Night Stalker": "Иллюзии затрудняют фокус одной цели. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1218,9 +1090,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Spirit Breaker"
-  ],
   "conditional_counters": {
    "Bane": "Призванные юниты могут прервать канал. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1241,7 +1110,6 @@ const DRAFT_HEROES = {
    "Puck",
    "Storm Spirit"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Nyx Assassin": {
@@ -1259,7 +1127,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Leshrac"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Ogre Magi": {
@@ -1276,7 +1143,6 @@ const DRAFT_HEROES = {
    "frontline"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Phantom Assassin": "Магический урон обходит уклонение, но преимущество зависит от стадии и защиты от магии"
   }
@@ -1293,9 +1159,6 @@ const DRAFT_HEROES = {
   ],
   "counters": [
    "Batrider"
-  ],
-  "countered_by": [
-   "Ancient Apparition"
   ],
   "conditional_counters": {}
  },
@@ -1317,7 +1180,6 @@ const DRAFT_HEROES = {
    "Axe",
    "Legion Commander"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Pangolier": {
@@ -1333,7 +1195,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Naga Siren": "Массовые способности помогают против иллюзий. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1352,10 +1213,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Sniper"
   ],
-  "countered_by": [
-   "Muerta",
-   "Slardar"
-  ],
   "conditional_counters": {}
  },
  "Phantom Lancer": {
@@ -1369,18 +1226,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Bristleback",
-   "Earthshaker",
-   "Ember Spirit",
-   "Gyrocopter",
-   "Keeper of the Light",
-   "Leshrac",
-   "Sand King",
-   "Sven",
-   "Tiny",
-   "Zeus"
-  ],
   "conditional_counters": {}
  },
  "Phoenix": {
@@ -1399,12 +1244,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Templar Assassin"
   ],
-  "countered_by": [
-   "Snapfire",
-   "Troll Warlord",
-   "Visage",
-   "Lina"
-  ],
   "conditional_counters": {}
  },
  "Primal Beast": {
@@ -1422,9 +1261,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Sniper"
   ],
-  "countered_by": [
-   "Lifestealer"
-  ],
   "conditional_counters": {}
  },
  "Puck": {
@@ -1440,9 +1276,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [
-   "Night Stalker"
-  ],
   "conditional_counters": {
    "Storm Spirit": "Dream Coil и безмолвие мешают уходу. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1462,7 +1295,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Ursa": "Decrepify может защитить цель от атак; зависит от развеиваний и предметов"
   }
@@ -1478,7 +1310,6 @@ const DRAFT_HEROES = {
    "waveclear"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Templar Assassin": "Продолжительный урон Shadow Strike снимает Refraction. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1500,7 +1331,6 @@ const DRAFT_HEROES = {
    "Ursa",
    "Sven"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Ringmaster": {
@@ -1515,7 +1345,6 @@ const DRAFT_HEROES = {
    "magic_damage"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Legion Commander": "Escape Act позволяет спасти цель Duel. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1537,7 +1366,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Enigma"
   ],
-  "countered_by": [],
   "conditional_counters": {
    "Magnus": "Преимущество зависит от доступного для кражи заклинания и позиции Rubick"
   }
@@ -1560,7 +1388,6 @@ const DRAFT_HEROES = {
    "Phantom Lancer",
    "Broodmother"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Shadow Demon": {
@@ -1578,7 +1405,6 @@ const DRAFT_HEROES = {
    "Legion Commander",
    "Faceless Void"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Shadow Fiend": {
@@ -1596,7 +1422,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Templar Assassin": "Shadowraze может создавать давление на линии, но результат зависит от уровня Refraction и исполнения"
   }
@@ -1616,7 +1441,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Anti-Mage"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Silencer": {
@@ -1632,7 +1456,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Enigma": "Global Silence прерывает канал при отсутствии защиты. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1653,7 +1476,6 @@ const DRAFT_HEROES = {
    "Weaver",
    "Phantom Assassin"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Slark": {
@@ -1668,9 +1490,6 @@ const DRAFT_HEROES = {
    "sustain"
   ],
   "counters": [],
-  "countered_by": [
-   "Disruptor"
-  ],
   "conditional_counters": {
    "Batrider": "Dark Pact снимает накопленные Sticky Napalm. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1693,7 +1512,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phoenix"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Sniper": {
@@ -1709,16 +1527,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Clockwerk",
-   "Earth Spirit",
-   "Lycan",
-   "Phantom Assassin",
-   "Primal Beast",
-   "Spectre",
-   "Storm Spirit",
-   "Void Spirit"
-  ],
   "conditional_counters": {}
  },
  "Spectre": {
@@ -1735,7 +1543,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Sniper"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Spirit Breaker": {
@@ -1754,7 +1561,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Nature's Prophet"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Storm Spirit": {
@@ -1772,13 +1578,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Sniper",
    "Tinker"
-  ],
-  "countered_by": [
-   "Anti-Mage",
-   "Disruptor",
-   "Doom",
-   "Lion",
-   "Night Stalker"
   ],
   "conditional_counters": {}
  },
@@ -1799,9 +1598,6 @@ const DRAFT_HEROES = {
    "Phantom Lancer",
    "Chaos Knight"
   ],
-  "countered_by": [
-   "Razor"
-  ],
   "conditional_counters": {}
  },
  "Techies": {
@@ -1818,7 +1614,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Templar Assassin": "Частый магический урон снимает Refraction. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1837,11 +1632,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Batrider",
-   "Jakiro",
-   "Phoenix"
-  ],
   "conditional_counters": {}
  },
  "Terrorblade": {
@@ -1856,9 +1646,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Dark Seer"
-  ],
   "conditional_counters": {
    "Anti-Mage": "Сильный физический урон и иллюзии в прямом бою. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1875,9 +1662,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [
-   "Ursa"
-  ],
   "conditional_counters": {
    "Phantom Lancer": "Anchor Smash и Ravage работают по иллюзиям. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1899,10 +1683,6 @@ const DRAFT_HEROES = {
    "Treant Protector",
    "Undying"
   ],
-  "countered_by": [
-   "Ancient Apparition",
-   "Doom"
-  ],
   "conditional_counters": {}
  },
  "Tinker": {
@@ -1917,10 +1697,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Clockwerk",
-   "Storm Spirit"
-  ],
   "conditional_counters": {}
  },
  "Tiny": {
@@ -1942,7 +1718,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phantom Lancer"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Treant Protector": {
@@ -1960,9 +1735,6 @@ const DRAFT_HEROES = {
    "frontline"
   ],
   "counters": [],
-  "countered_by": [
-   "Timbersaw"
-  ],
   "conditional_counters": {
    "Storm Spirit": "Overgrowth ограничивает мобильность. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -1981,7 +1753,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phoenix"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Tusk": {
@@ -2001,7 +1772,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Faceless Void"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Underlord": {
@@ -2020,9 +1790,6 @@ const DRAFT_HEROES = {
    "Naga Siren",
    "Chaos Knight"
   ],
-  "countered_by": [
-   "Monkey King"
-  ],
   "conditional_counters": {}
  },
  "Undying": {
@@ -2037,9 +1804,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [
-   "Timbersaw"
-  ],
   "conditional_counters": {
    "Centaur Warrunner": "Decay снижает силу на линии. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -2058,10 +1822,6 @@ const DRAFT_HEROES = {
    "Axe",
    "Tidehunter"
   ],
-  "countered_by": [
-   "Bane",
-   "Razor"
-  ],
   "conditional_counters": {}
  },
  "Vengeful Spirit": {
@@ -2079,7 +1839,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Enigma"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Venomancer": {
@@ -2098,7 +1857,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Axe"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Viper": {
@@ -2112,7 +1870,6 @@ const DRAFT_HEROES = {
    "physical_damage"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Bristleback": "Viper Strike подавляет важные пассивные способности. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется.",
    "Huskar": "Viper Strike подавляет важные пассивные способности. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
@@ -2135,7 +1892,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phoenix"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Void Spirit": {
@@ -2153,7 +1909,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Sniper"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Warlock": {
@@ -2171,7 +1926,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Chaos Knight"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Weaver": {
@@ -2187,12 +1941,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [
-   "Bounty Hunter",
-   "Faceless Void",
-   "Legion Commander",
-   "Slardar"
-  ],
   "conditional_counters": {
    "Lifestealer": "Мобильность помогает держать дистанцию от ближнего керри. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -2211,9 +1959,6 @@ const DRAFT_HEROES = {
    "catch"
   ],
   "counters": [],
-  "countered_by": [
-   "Centaur Warrunner"
-  ],
   "conditional_counters": {
    "Ursa": "Windrun затрудняет серии обычных атак. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -2234,7 +1979,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Chaos Knight"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  },
  "Witch Doctor": {
@@ -2251,7 +1995,6 @@ const DRAFT_HEROES = {
    "teamfight"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Timbersaw": "Maledict и Death Ward угрожают герою, принимающему длительный урон. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -2271,7 +2014,6 @@ const DRAFT_HEROES = {
    "farm_dependent"
   ],
   "counters": [],
-  "countered_by": [],
   "conditional_counters": {
    "Faceless Void": "Reincarnation даёт вторую жизнь после Chronosphere. Зависит от позиции, стадии, предметов или версии способностей; численный бонус не начисляется."
   }
@@ -2289,7 +2031,6 @@ const DRAFT_HEROES = {
   "counters": [
    "Phantom Lancer"
   ],
-  "countered_by": [],
   "conditional_counters": {}
  }
 };
@@ -2303,7 +2044,7 @@ const DRAFT_COUNTER_REASONS = {
  "Ancient Apparition|Oracle": "Ice Blast ограничивает восстановление здоровья",
  "Anti-Mage|Medusa": "Выжигание маны и Mana Void против зависимости от маны",
  "Anti-Mage|Storm Spirit": "Выжигание маны и Mana Void против зависимости от маны",
- "Axe|Dazzle": "Culling Blade против Shallow Grave; массовый контроль и Counter Helix против иллюзий",
+ "Axe|Dazzle": "Culling Blade позволяет добить цель под Shallow Grave",
  "Bane|Ursa": "Контроль сквозь невосприимчивость к эффектам",
  "Bane|Lifestealer": "Контроль сквозь невосприимчивость к эффектам",
  "Batrider|Templar Assassin": "Частый урон снимает Refraction",
@@ -2394,3 +2135,9 @@ const DRAFT_COUNTER_REASONS = {
  "Abaddon|Batrider": "Aphotic Shield даёт сильное развеивание для спасения союзника от Flaming Lasso",
  "Lina|Phoenix": "Fiery Soul позволяет быстро атаковать Supernova"
 };
+
+// Derive reverse links from the directed matchups.
+for (const hero of Object.values(DRAFT_HEROES)) hero.countered_by=[];
+for (const [name,hero] of Object.entries(DRAFT_HEROES)) {
+ for (const target of hero.counters) DRAFT_HEROES[target]?.countered_by.push(name);
+}

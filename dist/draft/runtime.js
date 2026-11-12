@@ -24,7 +24,7 @@ function draftReportUpdate(m){
   const details=team.details,bonus=d.bonuses[side],name=esc(S.teams[m.sides[side].team].name);
   return '<section class="panel"><h3>'+name+'</h3><p><b>'+(bonus>0?'Бафф':bonus<0?'Штраф':'Равный драфт')+': '+number(bonus)+' силы</b> · оценка '+number(team.score)+'</p>'+
    '<h4>Герои и позиции · '+number(team.parts.roles)+'</h4>'+list(details.positions.map(p=>esc(p.hero)+' · '+DraftUpdate.roleLabels[p.role]+' · '+p.fit+' ('+number(p.points)+')'))+
-   (team.picks.map(p=>DRAFT_HEROES[p.hero].notes).filter(Boolean).map(n=>'<p class="sub">'+esc(n)+'</p>').join(''))+'<h4>Контрпики · '+number(team.parts.counters)+' (предел +5)</h4>'+list(details.counters.map(p=>esc(p.hero)+' → '+esc(p.target)+': '+esc(p.reason)))+
+   (team.picks.map(p=>DRAFT_HEROES[p.hero].notes).filter(Boolean).map(n=>'<p class="sub">'+esc(n)+'</p>').join(''))+'<h4>Контрпики · '+number(team.parts.counters)+' (предел +5)</h4>'+list(details.counters.map(p=>esc(p.hero)+' → '+esc(p.target)+' ('+number(p.points)+'): '+esc(p.reason)))+
    '<h4>Сочетания · '+number(team.parts.synergy)+' (предел +3)</h4>'+list(details.combinations.map(p=>esc(p.label)+': '+p.heroes.map(esc).join(' + ')))+
    '<h4>Пробелы · '+number(-team.parts.gaps)+'</h4>'+list(details.gaps.map(p=>esc(p.label)+' ('+number(p.points)+')'))+
    (details.conditional.length?'<h4>Условные взаимодействия · без очков</h4>'+list(details.conditional.map(p=>esc(p.hero)+' → '+esc(p.target)+': '+esc(p.reason))):'')+'</section>';
