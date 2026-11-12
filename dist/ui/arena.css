@@ -1,0 +1,104 @@
+:root {
+ --bg:#090f19; --bg-deep:#070c15; --panel:#101a2a; --panel-2:#152136;
+ --panel-elevated:#18243a; --panel-light:#101a2a; --panel-light-2:#142137;
+ --text:#f0f5ff; --text-dark:#f0f5ff; --muted:#b9c8dd; --muted-2:#95a9c3;
+ --line:#344a67; --accent:#48e4ff; --accent-glow:#48e4ff44;
+ --pink:#48e4ff; --lime:#7fe7ba; --green:#7fe7ba; --red:#ff8197;
+ --yellow:#f5d682; --teal:#48e4ff; --radius:12px;
+ --font-head:'Roboto Condensed',Arial,sans-serif;
+}
+html {background:#070c15}
+body {
+ background:radial-gradient(ellipse at 85% 0,#26386565,transparent 45%),#090f19;
+ color:var(--text);
+}
+body::before,body::after {display:none}
+* {scrollbar-color:#4d6d8b #111a29}
+h1,h2,h3,h4 {color:var(--text)}
+a {color:var(--accent)}
+.shell21 .club-top21,.shell21 .section-bar21,.shell21 aside {
+ border-color:#344a67;
+ background-color:#101927;
+}
+.shell21 .panel,.shell21 .stat,.shell21 .club-card,.club-home-summary {
+ background:linear-gradient(155deg,#162337,#0d1523 72%);
+ border:1px solid #344a67;
+ box-shadow:0 6px 20px #02071166;
+}
+.shell21 button,.shell21 select,.shell21 input,.shell21 textarea,dialog button {
+ color:#edf7ff;
+ border-color:#456382;
+ background-color:#142339;
+}
+.shell21 button:not(.primary),dialog button:not(.primary) {
+ background-image:linear-gradient(180deg,#20334d,#101a2a);
+ box-shadow:none;
+}
+.shell21 button:hover,.shell21 button.active,.shell21 button.primary,
+.shell21 [aria-pressed="true"],dialog button:hover {
+ border-color:#48e4ff;
+ box-shadow:inset 0 0 14px #48e4ff22,0 0 8px #48e4ff33;
+}
+.shell21 button.primary,.shell21 nav button.active {
+ color:#effaff;
+ background:linear-gradient(180deg,#16465c,#11283b);
+}
+:focus-visible {outline:2px solid #65eaff;outline-offset:3px}
+.neon-bracket-shell,.neon-bracket-toolbar,.neon-bracket-viewport {
+ border-color:#344a67;
+ background-color:#0a1220;
+}
+.neon-node-inner,.neon-node-body,.neon-match-team {
+ border-color:#456382;
+}
+.neon-match-team.own-team,.neon-bucket-team.own-team {
+ color:#f1fbff;
+ background:#14394e;
+ box-shadow:inset 3px 0 #48e4ff;
+}
+.neon-edge {stroke:#88a8c8}
+.neon-edge.lower {stroke:#9b87c7}
+.club-home-summary,.club-banner {padding:clamp(14px,2.5vw,28px);border-radius:12px;margin-bottom:18px}
+.club-banner {
+ background:linear-gradient(90deg,#0b1528 14%,#14264be0 60%,#18274188),url('../assets/neon/home-reference.jpg') center/cover;
+ border:1px solid #344a67;
+}
+.club-banner .title-row {margin:0}
+.club-metrics {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 18px}
+.club-metrics .stat {min-width:0;border-color:#387a91}
+.club-metrics .stat:nth-child(2) {border-color:#8268bf}
+.club-metrics .stat strong {font-size:clamp(18px,3vw,32px);overflow-wrap:anywhere}
+.club-picker {display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:12px 0}
+.club-picker select {max-width:100%}
+.club-fan-chart {display:block;width:100%;max-height:240px;margin:12px 0}
+.club-fan-chart path {fill:none;stroke:#334b66}
+.club-fan-chart polyline {fill:none;stroke:#48e4ff;stroke-width:2}
+.club-fan-chart circle {fill:#b5f7ff}
+.club-result {display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #344a67}
+.club-result b {white-space:nowrap}
+.club-offers {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.club-offers .club-offer {border-color:#387a91}
+.club-offers .club-offer:nth-child(2) {border-color:#8268bf}
+.club-offer strong {font-size:clamp(21px,4vw,34px)}
+.club-offer details {border-top:1px solid #344a67;padding-top:12px}
+.club-offer summary {cursor:pointer;color:var(--accent)}
+@media(max-width:580px) {
+ .club-metrics {grid-template-columns:1fr;gap:8px}
+ .club-metrics .stat {padding:10px 14px}
+}
+.shell21 .home-scene-backdrop .neon-scene img,
+.shell21 .heading-photo-neon .neon-scene img,
+.shell21 .home-tools-art .neon-scene img {filter:hue-rotate(-70deg) saturate(.72)}
+.shell21 #advance.primary {
+ background:linear-gradient(180deg,#18475e,#101f31);
+ border-color:#48e4ff;
+ box-shadow:0 0 10px #48e4ff44;
+}
+.neon-bracket-toolbar h2,.neon-graph-label {color:#b5d7eb}
+.neon-graph-label.lower {color:#c4b2f3}
+.neon-node .neon-node-head {background:#1c3d53;color:#edf8ff}
+.neon-node.eliminated .neon-node-head {background:#332a53;color:#f0eaff}
+.neon-node.playing .neon-node-head {background:#12617a;color:#fff}
+.neon-node.neon-champion-card .neon-node-head {background:#16493d;color:#dcfff3}
+.neon-match-team.is-winner {color:#a2f5cb}
+.neon-match-team.own-team {color:#edfbff}
