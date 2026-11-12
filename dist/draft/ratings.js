@@ -3,56 +3,51 @@
 const AM_RATING_KEYS = ['lane', 'mechanics', 'teamfight', 'macro', 'decisions', 'versatility'];
 const AM_RATING_LABELS = ['Линия', 'Механика', 'Командный бой', 'Макро', 'Игровые решения', 'Пул героев'];
 const AM_RATING_WEIGHTS = [[.20, .23, .22, .15, .15, .05], [.13, .15, .28, .21, .18, .05]];
-// OpenDota, 2025-05-01 through 2026-11-12. Rows follow positions 1 through 5.
-const AM_RATING_SEEDS = [
- {club:'TS', maps:45, pairs:[337,68,147,391,68,137,337,59,68,137], players:[
-  ['Yatoro',321580662,'UA','ru',401,86.51871048,[84.8,87.4,85,86.9,85.7,97.4]],
-  ['Larl',106305042,'RU','ru',337,85.23776837,[83.3,85.7,84.4,84.4,85.6,96]],
-  ['Batyuk',140835095,'UA','ru',348,87.01671910,[85.7,89.7,85.9,87.3,84.5,96.8]],
-  ['not me',218231587,'RU','ru',262,85.89115731,[83.6,88.2,84.6,88.3,82.2,95.6]],
-  ['rue',847565596,'RU','ru',391,85.11080407,[83.8,87.4,85.4,79.8,86.7,96.5]]
- ]},
- {club:'XG', maps:15, pairs:[139,23,125,23,15,240,15,23,125,23], players:[
-  ['Ame',898754153,'CN','zh',394,85.85384293,[85.2,85.6,84.3,86.4,84.9,97.4]],
-  ['Xm',137129583,'CN','zh',331,85.65023545,[86.7,84.7,84.1,85.2,85,95.4]],
-  ['zeal',147767183,'MY',null,235,84.28980543,[83,83.3,84,84.3,83.3,96.1]],
-  ['XinQ',157475523,'CN','zh',248,84.92417641,[84.7,86,86.4,78.3,86.6,95.9]],
-  ['BoBoKa',207829314,'CN','zh',283,84.68925854,[87.1,85.4,84.7,79.1,85.2,97.7]]
- ]}
-];
-const AM_SEED_BY_NAME = new Map(AM_RATING_SEEDS.flatMap(group =>
- group.players.map(row => [nameKey4(row[0]), row])));
-const AM_COUNTRY_CODES = {'Россия':'RU','Китай':'CN','Украина':'UA','Малайзия':'MY'};
-const AM_LANGUAGES = {RU:'ru', CN:'zh'};
+const AM_SEED_BY_NAME = new Map(AM_OPEN_DOTA_ROWS.map(row => [nameKey4(row[0]), row]));
+const AM_LEGACY_LANGUAGE = new Map(AM_OPEN_DOTA_ROWS.slice(0,10)
+ .filter(row=>row[0]!=='zeal').map((row,i)=>[nameKey4(row[0]),i<4?'zh':'ru']));
 const amRatingNumber = new Intl.NumberFormat('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1});
 function amWeightedRating(values,role){
  const weights=AM_RATING_WEIGHTS[role<2?0:1];
  return values.reduce((total,value,i)=>total+value*weights[i],0);
 }
 function amPlayerRating(p){
- if(p.amRating)return p.amRating;
+ const previous=p.amRating;
  const seed=p.fiction?null:AM_SEED_BY_NAME.get(nameKey4(p.name));
- const values=seed?seed[6].slice():AM_RATING_KEYS.map(()=>p.skill);
- const initial=seed&&S.amRatingHistory?.seedRatings?seed[5]:p.skill;
+ if(previous&&(!seed||previous.maps))return previous;
+ const values=seed?seed[4].map((value,i)=>clamp(value+(previous?previous.values[i]-previous.initial:0),40,99)):
+  AM_RATING_KEYS.map(()=>p.skill);
+ const initial=seed&&!previous&&S.amRatingHistory?.seedRatings?seed[3]:p.skill;
  p.skill=initial;
  p.potential=Math.max(initial,p.potential??initial);
- return p.amRating={values,offset:initial-amWeightedRating(values,p.role),focus:null,maps:seed?.[4]??0,initial};
+ return p.amRating={...previous,values,offset:initial-amWeightedRating(values,p.role),focus:previous?.focus??null,maps:seed?.[2]??0,initial};
 }
 function amPairKeys(ids){
  return ids.flatMap((a,i)=>ids.slice(i+1).map(b=>[a,b].sort((x,y)=>x-y).join(':')));
 }
 function amLineupKey(ids){return ids.slice().sort((a,b)=>a-b).join(':');}
 function amRatingHistory(seedRatings=false){
- if(S.amRatingHistory)return S.amRatingHistory;
- const history=S.amRatingHistory={seedRatings,pairs:{},lineups:{}};
- for(const group of AM_RATING_SEEDS){
-  const players=group.players.map(row=>S.players.find(p=>!p.fiction&&nameKey4(p.name)===nameKey4(row[0])));
-  if(players.some(p=>!p))continue;
-  const ids=players.map(p=>p.id);
-  history.lineups[amLineupKey(ids)]=group.maps;
-  amPairKeys(ids).forEach((key,i)=>{history.pairs[key]=group.pairs[i];});
+ const existing=S.amRatingHistory;
+ if(existing?.version===2)return existing;
+ const history=existing??{seedRatings,pairs:{},lineups:{}};
+ const idsByName=new Map(S.players.filter(p=>!p.fiction).map(p=>[nameKey4(p.name),p.id]));
+ const ids=AM_OPEN_DOTA_ROWS.map(row=>idsByName.get(nameKey4(row[0])));
+ const isLegacyPair=(a,b)=>(a<5&&b<5)||(a>=5&&a<10&&b>=5&&b<10);
+ for(let i=0;i<AM_OPEN_DOTA_PAIRS.length;i+=3){
+  const [a,b,maps]=AM_OPEN_DOTA_PAIRS.slice(i,i+3);
+  if(ids[a]==null||ids[b]==null||(existing&&isLegacyPair(a,b)))continue;
+  const key=amLineupKey([ids[a],ids[b]]);
+  history.pairs[key]=(history.pairs[key]??0)+maps;
  }
- return history;
+ for(const [a,b,c,d,e,maps] of AM_OPEN_DOTA_LINEUPS){
+  if(existing&&(a===0&&e===4||a===5&&e===9))continue;
+  const lineup=[a,b,c,d,e].map(i=>ids[i]);
+  if(lineup.some(id=>id==null))continue;
+  const key=amLineupKey(lineup);
+  history.lineups[key]=(history.lineups[key]??0)+maps;
+ }
+ history.version=2;
+ return S.amRatingHistory=history;
 }
 function amSynergy(players){
  const history=amRatingHistory();
@@ -60,10 +55,8 @@ function amSynergy(players){
  const ids=players.map(p=>p.id);
  const pairKeys=amPairKeys(ids);
  const identity=players.map(p=>{
-  const seed=p.fiction?null:AM_SEED_BY_NAME.get(nameKey4(p.name));
-  const listed=p.profile13?.country??bio20(p)?.country;
-  const country=seed?.[2]??AM_COUNTRY_CODES[listed]??listed;
-  return {country,language:seed?.[3]??AM_LANGUAGES[country]};
+  const country=p.profile13?.country??bio20(p)?.country;
+  return {country,language:p.fiction?null:AM_LEGACY_LANGUAGE.get(nameKey4(p.name))};
  });
  const communications=identity.reduce((sum,a,i)=>sum+identity.slice(i+1).filter(b=>
   (a.country&&a.country===b.country)||(a.language&&a.language===b.language)).length,0);
@@ -119,10 +112,16 @@ resultImpact13=function(m){
   const key=amLineupKey(ids);
   if(counted.has(key))continue;
   counted.add(key);
-  history.lineups[key]=(history.lineups[key]??0)+1;
-  for(const pair of amPairKeys(ids))history.pairs[pair]=(history.pairs[pair]??0)+1;
+  amRecordLineup(ids,1,history);
  }
 };
+function amRecordLineup(ids,maps,history=amRatingHistory()){
+ if(ids.length!==5||new Set(ids).size!==5||!ids.every(Number.isInteger))return;
+ const key=amLineupKey(ids);
+ history.lineups[key]=(history.lineups[key]??0)+maps;
+ for(const pair of amPairKeys(ids))history.pairs[pair]=(history.pairs[pair]??0)+maps;
+}
+function amSynergyFactor(score){return 1+clamp((score-75)*.0012,-.03,.03);}
 const amMakeMapBase=makeLive4;
 makeLive4=function(...args){
  const m=amMakeMapBase(...args);
@@ -137,7 +136,7 @@ Match8.careerFactor=function(m,p){
  const base=amCareerFactorBase.call(this,m,p);
  if(!m.amSynergy)return base;
  const side=m.sides.findIndex(s=>s.heroes.includes(p));
- return base*(1+clamp((m.amSynergy[side].score-75)*.0012,-.03,.03));
+ return base*amSynergyFactor(m.amSynergy[side].score);
 };
 
 function amChangeFocus(id,focus){
