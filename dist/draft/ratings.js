@@ -95,6 +95,9 @@ playerGrowth13=function(p,mode,facility,focus){
  const index=AM_RATING_KEYS.indexOf(selected);
  amGrowthBase(p,mode,facility,selected==='teamfight'?'teamwork':selected);
  if(index<0||p.skill<=before)return;
+ const previousWeighted=amWeightedRating(rating.values,p.role);
+ const expected=Math.min(p.potential,previousWeighted+rating.offset);
+ if(Math.abs(before-expected)>1e-8)rating.offset=before-previousWeighted;
  const recent=rating.recent??=[];
  while(recent.length&&recent[0][0]<S.day-30)recent.shift();
  const weight=AM_RATING_WEIGHTS[p.role<2?0:1][index];
