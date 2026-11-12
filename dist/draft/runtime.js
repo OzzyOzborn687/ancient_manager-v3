@@ -16,23 +16,56 @@ Match8.unit=function(m,p){
  // Stored skill, career synergy, form, mastery, difficulty and economy are untouched.
  return base*Math.exp((m.draftUpdate?.bonuses[side]||0)*this.B.power.skill);
 };
+const DRAFT_HERO_IMAGE_IDS={
+ 'Shadow Fiend':'nevermore','Vengeful Spirit':'vengefulspirit','Windranger':'windrunner',
+ Zeus:'zuus',Necrophos:'necrolyte','Queen of Pain':'queenofpain','Wraith King':'skeleton_king',
+ Clockwerk:'rattletrap',"Nature's Prophet":'furion',Lifestealer:'life_stealer',
+ Doom:'doom_bringer','Outworld Destroyer':'obsidian_destroyer','Outworld Devourer':'obsidian_destroyer',
+ 'Treant Protector':'treant',Io:'wisp','Centaur Warrunner':'centaur',Magnus:'magnataur',
+ Timbersaw:'shredder',Underlord:'abyssal_underlord',Ringmaster:'ringmaster','Ring Master':'ringmaster'
+};
+function draftPortrait(hero){
+ const initials=hero.split(' ').map(word=>word[0]).join('').slice(0,3).toUpperCase();
+ const id=DRAFT_HERO_IMAGE_IDS[hero]??hero.toLowerCase().replace(/[^a-z0-9 ]/g,'').replaceAll(' ','_');
+ const url='https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/'+encodeURIComponent(id)+'.png';
+ return '<span class="draft-hero-portrait" aria-hidden="true">'+esc(initials)+
+  '<img src="'+url+'" alt="" loading="lazy" onerror="this.hidden=true"></span>';
+}
+const draftNumber=new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2,signDisplay:'exceptZero'});
 function draftReportUpdate(m){
- const d=m?.draftUpdate;if(!d)return '<p>Эта карта начата по прежним правилам драфта.</p>';
- const number=n=>(n>0?'+':'')+Number(n.toFixed(2));
- const list=items=>items.length?'<ul>'+items.map(t=>'<li>'+t+'</li>').join('')+'</ul>':'<p class="sub">Нет.</p>';
- return '<section class="panel draft-update-report"><h2>AM - Draft update · итоги драфта</h2><p>Поправка действует только на эту карту. Предел: −5…+5 очков силы на команду.</p><div class="roster-grid">'+d.teams.map((team,side)=>{
-  const details=team.details,bonus=d.bonuses[side],name=esc(S.teams[m.sides[side].team].name);
-  return '<section class="panel"><h3>'+name+'</h3><p><b>'+(bonus>0?'Бафф':bonus<0?'Штраф':'Равный драфт')+': '+number(bonus)+' силы</b> · оценка '+number(team.score)+'</p>'+
-   '<h4>Герои и позиции · '+number(team.parts.roles)+'</h4>'+list(details.positions.map(p=>esc(p.hero)+' · '+DraftUpdate.roleLabels[p.role]+' · '+p.fit+' ('+number(p.points)+')'))+
-   (team.picks.map(p=>DRAFT_HEROES[p.hero].notes).filter(Boolean).map(n=>'<p class="sub">'+esc(n)+'</p>').join(''))+'<h4>Контрпики · '+number(team.parts.counters)+' (предел +5)</h4>'+list(details.counters.map(p=>esc(p.hero)+' → '+esc(p.target)+' ('+number(p.points)+'): '+esc(p.reason)))+
-   '<h4>Сочетания · '+number(team.parts.synergy)+' (предел +3)</h4>'+list(details.combinations.map(p=>esc(p.label)+': '+p.heroes.map(esc).join(' + ')))+
-   '<h4>Пробелы · '+number(-team.parts.gaps)+'</h4>'+list(details.gaps.map(p=>esc(p.label)+' ('+number(p.points)+')'))+
-   (details.conditional.length?'<h4>Условные взаимодействия · без очков</h4>'+list(details.conditional.map(p=>esc(p.hero)+' → '+esc(p.target)+': '+esc(p.reason))):'')+'</section>';
- }).join('')+'</div><p class="sub">Оценка = позиции + контрпики + сочетания − пробелы. Разница: '+number(d.difference)+'. Поправка A = clamp(0,5 × разница, −5, +5); поправка B противоположна.</p></section>';
+ const d=m?.draftUpdate;
+ if(!d)return '<p>Эта карта начата по прежним правилам драфта.</p>';
+ const list=(label,items)=>items.length?'<h4>'+label+'</h4><ul>'+items.map(t=>'<li>'+t+'</li>').join('')+'</ul>':'';
+ const leading=d.difference===0?null:S.teams[m.sides[d.difference>0?0:1].team];
+ const sides=d.teams.map((team,side)=>{
+  const club=S.teams[m.sides[side].team],details=team.details,bonus=d.bonuses[side];
+  const picks=details.positions.map(p=>'<li class="draft-pick">'+draftPortrait(p.hero)+
+   '<div><strong>'+esc(p.hero)+'</strong><small>'+esc(DraftUpdate.roleLabels[p.role])+
+   ' · '+esc(p.fit)+'</small></div><span class="draft-pick-value">'+draftNumber.format(p.points)+'</span></li>').join('');
+  const breakdown=list('Контрпики · '+draftNumber.format(team.parts.counters),details.counters.map(p=>
+   esc(p.hero)+' → '+esc(p.target)+' ('+draftNumber.format(p.points)+') · '+esc(p.reason)))+
+   list('Сочетания · '+draftNumber.format(team.parts.synergy),details.combinations.map(p=>
+    esc(p.label)+' · '+p.heroes.map(esc).join(' + ')))+
+   list('Пробелы · '+draftNumber.format(-team.parts.gaps),details.gaps.map(p=>
+    esc(p.label)+' ('+draftNumber.format(p.points)+')'))+
+   list('Условные взаимодействия',details.conditional.map(p=>esc(p.hero)+' → '+esc(p.target)+' · '+esc(p.reason)))+
+   list('Особенности героев',team.picks.map(p=>DRAFT_HEROES[p.hero]?.notes).filter(Boolean).map(esc));
+  return '<article class="draft-side"><header class="draft-side-header"><div class="draft-team-name">'+
+   clubAvatar12(club,true)+'<h3>'+esc(club.name)+'</h3></div><div class="draft-rating">'+
+   draftNumber.format(bonus)+'<small>'+(bonus>0?'Бафф':bonus<0?'Штраф':'Равный драфт')+' · оценка '+
+   draftNumber.format(team.score)+'</small></div></header><ol class="draft-picks">'+picks+'</ol>'+
+   '<details class="draft-breakdown"><summary>Разбор драфта</summary>'+
+   (breakdown||'<p>Оценку определили позиции героев.</p>')+'</details></article>';
+ }).join('');
+ return '<section class="draft-update-report"><header class="draft-header"><h2>Итоги драфта</h2><p>'+
+  (leading?'Преимущество · '+esc(leading.name):'Равный драфт')+
+  '</p></header><div class="draft-sides">'+sides+
+  '</div><p class="draft-disclaimer">Поправка к силе действует на одну карту и ограничена диапазоном от −5 до +5.</p></section>';
 }
 function showDraftUpdate(){
  const m=S.active?.live;if(!m)return;
- openModal(draftReportUpdate(m)+'<div class="actions">'+btn(m.draftUpdatePending?'Начать матч':'Закрыть','confirmDraftUpdate()',true)+'</div>');
+ openModal('<div class="draft-prematch">'+draftReportUpdate(m)+'<div class="draft-actions">'+
+  btn(m.draftUpdatePending?'Начать матч':'Закрыть','confirmDraftUpdate()',true)+'</div></div>');
 }
 function confirmDraftUpdate(){
  const m=S.active?.live;if(m)m.draftUpdatePending=false;

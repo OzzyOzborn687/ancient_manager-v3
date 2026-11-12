@@ -12,16 +12,35 @@ for(const key of keys){
 }
 run('var pgl=neonDisplayEvent({id:992,name:"PGL",formatKey6:"pgl"});var swiss=neonSwissData(pgl.a,pgl.f);var swissHTML=neonSwissBoard(pgl.a,pgl.f,false);');
 assert.equal(run('swiss.columns.length'),6);
-assert.equal(run('swiss.columns.flat().length'),15);
-assert.equal((run('swissHTML').match(/>QUALIFIED</g)||[]).length,3);
+assert.equal(run('swiss.columns.flat().length'),17);
+assert.equal((run('swissHTML').match(/>QUALIFIED</g)||[]).length,1);
 assert.equal((run('swissHTML').match(/>ELIMINATED</g)||[]).length,3);
-assert(run('swissHTML.includes("ELIMINATION<br>ROUND")&&swissHTML.includes(\'data-record="3-2"\')&&swissHTML.includes(\'data-record="2-3"\')'));
+assert(run('swiss.columns.flat().some(b=>b.key==="4-0"&&b.status==="qualified")'));
 for(const [key,rounds,n] of [['dreamSwiss',6,24],['ti',5,16]]){
  run('var fixed=neonDisplayEvent({id:993,name:"Swiss",formatKey6:'+JSON.stringify(key)+'});var fixedData=neonSwissData(fixed.a,fixed.f);var fixedHTML=neonSwissBoard(fixed.a,fixed.f,false);');
  assert.equal(run('fixedData.columns.length'),rounds+1);
  assert.equal(run('fixed.a.schedule.length'),n/2);
- assert(!run('fixedHTML').includes('>QUALIFIED<'),'No early exit in fixed-round Swiss');
+  assert(run('fixedData.columns.flat().some(b=>b.key==="4-0"&&b.status==="qualified")'));
+ assert(!/data-record="[56]-0"/.test(run('fixedHTML')));
  assert(run('fixedData.columns.flat().some(b=>b.key==="0-3"&&!b.status)'));
+}
+for(const key of ['pgl','dreamSwiss','ti']){
+ const result=run(`(()=>{
+  const {a,f}=neonDisplayEvent({id:994,name:'Swiss test',formatKey6:${JSON.stringify(key)}});
+  a.placements={};
+  while(a.stage6==='groups'){
+   const already=new Set(ranks6(a).filter(r=>r.swissQualified).map(r=>r.id));
+   for(const n of a.schedule.filter(n=>n.groupMatch&&!n.score)){
+    if(n.pair.some(id=>already.has(id)))throw Error('Scheduled a team after 4–0');
+    n.score='2:0';n.w=n.pair[0];n.l=n.pair[1];
+   }
+   if(!phaseBase13(a))break;
+  }
+  const rows=ranks6(a).filter(r=>r.swissQualified);
+  const advanced=keyPlaceholder;
+  return rows.length>0&&rows.every(r=>advanced.includes(r.id));
+ })()`.replace('keyPlaceholder',key==='ti'?'a.tiTop':'a.schedule.filter(n=>!n.groupMatch).flatMap(n=>n.pair)'));
+ assert(result,key+' sends every 4–0 team to playoffs');
 }
 run('pgl.a.schedule.forEach(n=>{n.score="2:0";n.w=n.pair[0];n.l=n.pair[1];});var history=neonSwissData(pgl.a,pgl.f);');
 assert.equal(run('history.columns[0][0].ids.length'),16);

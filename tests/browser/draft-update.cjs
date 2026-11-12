@@ -16,6 +16,11 @@ const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:
   await page.goto('http://draft.test/');await page.waitForFunction(()=>window.ancientStartup?.ready);
   await page.evaluate(()=>{fresh();S.events=[{id:0,name:'FISSURE',series:'FISSURE',day:0,pool:1000000,qualified13:S.teams.slice(0,8).map(t=>t.id)}];startEvent();playMap();});
   assert(await page.locator('#modal').evaluate(e=>e.open));
+  assert(await page.getByRole('heading',{name:'Итоги драфта',exact:true}).isVisible());
+  assert.equal(await page.locator('#modal .draft-pick').count(),10);
+  assert.equal(await page.locator('#modal .draft-hero-portrait img').count(),10);
+  await page.locator('#modal .draft-breakdown summary').first().click();
+  assert(await page.locator('#modal .draft-breakdown').first().evaluate(el=>el.open));
   assert(await page.getByRole('button',{name:'Начать матч',exact:true}).isVisible());
   assert.equal(await page.evaluate(()=>S.active.live.clock),0);
   await page.keyboard.press('Escape');
