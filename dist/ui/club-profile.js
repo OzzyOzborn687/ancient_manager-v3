@@ -70,6 +70,7 @@ function profileView() {
   `<option value="${t.id}"${t.id === team.id ? ' selected' : ''}>${esc(t.name)}</option>`).join('');
  return `<div class="club-banner">${head('КЛУБ', esc(team.name), esc(team.region), clubAvatar12(team, true))}</div>
  <label class="club-picker">Выбрать клуб <select id="club-profile-select">${options}</select></label>
+ ${amTeamCard(team)}
  ${clubMetrics(info)}
  <section class="panel club-history"><h2>Динамика фанбазы</h2>${fanChart(info)}
  ${info.history.slice(-6).reverse().map(entry =>

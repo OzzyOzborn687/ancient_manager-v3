@@ -1,7 +1,7 @@
 'use strict';
 // One score per completed draft. All weights are tunable game-design values.
 const DraftUpdate={
- version:1,
+ version:2,
  roles:['carry','mid','offlane','soft_support','hard_support'],
  roleLabels:['Керри','Мид','Оффлейн','Поддержка 4','Поддержка 5'],
  tags:['initiation','control','teamfight','frontline','physical_damage','magic_damage','pure_damage','burst','save','sustain','push','waveclear','catch','scaling','farm_dependent'],
@@ -31,7 +31,13 @@ const DraftUpdate={
    }
   }
   // countered_by mirrors counters for inspection; never count that mirror again.
-  parts.counters=Math.min(W.counterCap,details.counters.length*W.counter);
+  const backlineTargets=new Set();
+  for(const matchup of details.counters){
+   if(!/доступ к (?:уязвимой )?задней линии/i.test(matchup.reason))continue;
+   if(backlineTargets.has(matchup.target))matchup.points*=.5;
+   backlineTargets.add(matchup.target);
+  }
+  parts.counters=Math.min(W.counterCap,details.counters.reduce((total,matchup)=>total+matchup.points,0));
   for(const rule of this.combos){
    let pair;
    for(const a of picks)for(const b of picks)if(!pair&&a.hero!==b.hero&&DRAFT_HEROES[a.hero].tags.includes(rule.a)&&DRAFT_HEROES[b.hero].tags.includes(rule.b))pair=[a.hero,b.hero];
@@ -43,6 +49,12 @@ const DraftUpdate={
   if(!has('control'))gap('Нет контроля',W.control);
   if(!has('physical_damage')&&!has('magic_damage')&&!has('pure_damage'))gap('Нет отмеченного источника урона',W.damage);
   if(!has('frontline')&&!has('save')&&!has('sustain'))gap('Нет передней линии, спасения или восстановления',W.protection);
+  const sustainedDamage=picks.some(p=>{
+   const tags=DRAFT_HEROES[p.hero].tags;
+   return p.role<3&&(p.hero==='Lina'||tags.includes('scaling')||
+    (tags.includes('physical_damage')&&!tags.includes('burst')));
+  });
+  if(!sustainedDamage&&picks.some(p=>p.role<3))gap('Мало продолжительного урона у коров',1);
   // Resource demand is position-dependent: a support Lina is not a farming core.
   const farmers=picks.filter(p=>p.role<3&&DRAFT_HEROES[p.hero].tags.includes('farm_dependent'));
   if(farmers.length>2)gap('Избыток зависимых от фарма коров: '+farmers.map(p=>p.hero).join(', '),(farmers.length-2)*W.farm);

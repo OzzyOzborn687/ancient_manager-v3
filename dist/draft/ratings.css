@@ -1,0 +1,17 @@
+.am-player-grid {
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(min(100%, 220px),1fr));
+ gap:12px;
+ margin:12px 0 20px;
+}
+.am-player-card,.am-team-rating { min-width:0; }
+.am-card-head { display:flex;align-items:center;gap:10px; }
+.am-card-head h3 { margin:3px 0;overflow-wrap:anywhere; }
+.am-card-head img { width:44px;height:48px;object-fit:cover;object-position:top;border-radius:5px; }
+.am-card-head strong { margin-left:auto;white-space:nowrap; }
+.am-player-card dl { margin:14px 0; }
+.am-player-card dl div { display:flex;justify-content:space-between;gap:8px;padding:4px 0; }
+.am-player-card dd { margin:0;font-weight:700;font-variant-numeric:tabular-nums; }
+.am-team-metrics { display:flex;gap:24px;flex-wrap:wrap;font-size:1.65rem; }
+.am-team-metrics small,.am-card-head small { font-size:.7rem; }
+.am-player-card select { max-width:100%;margin:6px 0; }
