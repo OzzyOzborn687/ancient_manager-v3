@@ -53,6 +53,6 @@ const decisionBefore11=decisionView;decisionView=function(m){return decorateActi
 const liveBefore11=liveControls4;liveControls4=function(m){return decorateActions11(liveBefore11(m),m)};
 const viewBefore11=matchView;matchView=function(){let m=S.active?.live||S.active?.maps.at(-1),html=viewBefore11();html=html.replaceAll('Победа определяется разрушением Древнего','Победа: Древний или сдача соперника');if(m?.resultReason==='gg')html=html.replace('Итоговый перевес','Итоговый перевес · поражение после GG');return html;};
 const migrateBefore11=migrate;migrate=function(){migrateBefore11();S.gameVersion=GAME_VERSION_V1;};
-const settingsBefore11=settings;settings=function(){let change=`<section class="panel"><h2>v1.1 · решения во время матча</h2><p>«Заколить GG» — немедленное поражение на карте в любой момент. «Контр-смок» — при отставании от 4000 золота или на три потерянные башни: 22,5% на удачную инициацию, один заряд смоука, минимум три живых героя, перезарядка десять минут. Эффект действует на одну драку, без мгновенной смены победителя или золота.</p></section>`;return settingsBefore11().replace('<section class="panel">',change+'<section class="panel">');};
+
 
 const modelBefore11=modelView4;modelView4=function(){return modelBefore11().replace('Победить можно только после последовательного сноса башен и открытия базы.','Победа достигается последовательным сносом базы либо сдачей соперника после GG.')};

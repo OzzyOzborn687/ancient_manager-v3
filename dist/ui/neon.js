@@ -19,12 +19,16 @@ head=function(k,title,desc,right){
  const art=page==='squad'?'squad':page==='development'?'staff':page==='calendar'||page==='bracket'||page==='trophies'?'city':'room';
  return '<div class="title-row neon-title-row">'+neonTitleArt(art)+'<div class="neon-title-copy"><div class="eyebrow">'+k+'</div><h1>'+title+'</h1><p>'+desc+'</p></div>'+(right?'<div class="neon-title-actions">'+right+'</div>':'')+'</div>';
 };
+function gameplayNewsNeon(){
+ const technical=/^\s*(?:v(?:ерсия\s*)?\d+(?:\.\d+)*\b|версия\s+\d|движок(?:\s|:|$)|модель\s+матча(?:\s|:|$)|восстановлена точная точка старта(?:\s|:|$)|возврат к старту TI 2027\b)/iu;
+ return S.news.filter(item=>typeof item?.text==='string'&&!technical.test(item.text)).slice(0,5);
+}
 function cycleNewsNeon(step){
- const size=Math.min(5,S.news.length);if(!size)return;
- newsIndex21=(newsIndex21+step+size)%size;render();
+ const size=gameplayNewsNeon().length;if(!size)return;
+ newsIndex21=(newsIndex21%size+step+size)%size;render();
 }
 home=function(){
- const e=dashboardEventObject21(),d=development21(),news=S.news.slice(0,5),index=news.length?newsIndex21%news.length:0;
+ const e=dashboardEventObject21(),d=development21(),news=gameplayNewsNeon(),index=news.length?newsIndex21%news.length:0;
  return '<div class="home-tools21"><div class="home-facts-neon"><span>Бюджет <b>'+cash(S.budget)+'</b></span><span>Подготовка <b class="neon-preparation">'+Math.round(d.preparation)+'%</b></span><span>База '+d.base+'/5 · штаб '+d.staff+'/5</span></div>'+
  '<div class="home-tools-art" aria-hidden="true">'+neonScene('arena')+'</div>'+
  '<div class="home-quick-links">'+btn('Зал наград',"go('trophies')")+btn('Тактика',"go('tactics')",true)+'</div></div>'+

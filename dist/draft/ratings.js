@@ -146,19 +146,18 @@ function amChangeFocus(id,focus){
  render();
 }
 function amPlayerCard(p,detail=false){
- const rating=amPlayerRating(p),photo=photo20(p);
- const localPhoto=p.name==='Ame'&&!p.fiction?'assets/neon/players/ame.webp':photo;
+ const rating=amPlayerRating(p);
  const format=value=>amRatingNumber.format(value);
  const change=(rating.recent??[]).filter(entry=>entry[0]>=S.day-30).reduce((total,entry)=>total+entry[1],0);
  const controls=detail&&p.team===S.club&&!p.retired
   ?'<label>Фокус тренировки <select '+(locked()?'disabled ':'')+'onchange="amChangeFocus('+p.id+',this.value)"><option value="">План команды</option>'+
    AM_RATING_KEYS.map((key,i)=>'<option value="'+key+'" '+(rating.focus===key?'selected':'')+'>'+AM_RATING_LABELS[i]+'</option>').join('')+'</select></label>'
   :'';
- return '<article class="panel am-player-card"><div class="am-card-head">'+
-  (localPhoto?'<img src="'+esc(localPhoto)+'" alt="" loading="lazy">':'')+
+ return '<article class="panel am-player-card arena-player-card"><div class="am-card-head">'+
+  portrait20(p)+
   '<div><span class="sub">'+esc(ROLES[p.role]??'Игрок')+'</span><h3>'+esc(p.name)+'</h3></div>'+
   '<strong>'+format(p.skill)+' <small>OVR</small></strong></div>'+
-  '<dl>'+rating.values.map((value,i)=>'<div><dt>'+AM_RATING_LABELS[i]+'</dt><dd>'+format(value)+'</dd></div>').join('')+'</dl>'+
+  '<dl>'+rating.values.map((value,i)=>'<div><dt>'+AM_RATING_LABELS[i]+'</dt><dd>'+format(value)+'</dd><span aria-hidden="true" class="arena-skill-track"><i style="width:'+clamp(value)+'%"></i></span></div>').join('')+'</dl>'+
   '<p class="sub">'+(rating.maps?'OpenDota · '+rating.maps+' карт':'Стартовый рейтинг игры')+'</p>'+
   (detail?'<p>Потенциал '+format(p.potential)+' · За 30 дней '+(change>=0?'+':'')+format(change)+'</p>':btn('Профиль','profile('+p.id+')'))+controls+'</article>';
 }
