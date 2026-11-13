@@ -27,7 +27,7 @@ const DRAFT_HERO_IMAGE_IDS={
 function draftPortrait(hero){
  const initials=hero.split(' ').map(word=>word[0]).join('').slice(0,3).toUpperCase();
  const id=DRAFT_HERO_IMAGE_IDS[hero]??hero.toLowerCase().replace(/[^a-z0-9 ]/g,'').replaceAll(' ','_');
- const url='https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/'+encodeURIComponent(id)+'.png';
+ const url='assets/heroes/'+encodeURIComponent(id)+'.webp';
  return '<span class="draft-hero-portrait" aria-hidden="true">'+esc(initials)+
   '<img src="'+url+'" alt="" loading="lazy" onerror="this.hidden=true"></span>';
 }

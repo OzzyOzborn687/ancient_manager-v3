@@ -21,7 +21,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),assert=req
   await page.screenshot({path:dir+'/invitation-'+width+'.png'});
   await fixture(false);
   assert(await page.locator('#app').innerText().then(t=>t.includes('Ваш путь — региональная квалификация')));
-  await page.locator('#nav').getByRole('button',{name:/Квалификации/}).click();
+  if(width<=700){await page.locator('#mobileNav33c').getByRole('button',{name:'Ещё',exact:true}).click();await page.locator('#app').getByRole('button',{name:/Квалификации/}).click();}
+  else await page.locator('#nav').getByRole('button',{name:/Квалификации/}).click();
   for(const tab of ['Приглашения','Регионы','Мой путь']){
    await page.locator('.qualifier-tabs').getByRole('button',{name:tab,exact:true}).click();
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);

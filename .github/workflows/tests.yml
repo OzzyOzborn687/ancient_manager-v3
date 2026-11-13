@@ -37,6 +37,7 @@ jobs:
       - name: Inspect all screens and tournament formats
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 --directory dist > /tmp/ancient-http.log 2>&1 &
+          BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/arena33c node tests/browser/arena33c.cjs
           node tests/browser/draft-update.cjs
           BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/neon node tests/browser/neon.cjs
           BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/ti-festival node tests/browser/ti-festival.cjs

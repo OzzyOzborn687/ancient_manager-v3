@@ -31,7 +31,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
   }
  }
  await page.setViewportSize({width:590,height:1280});await page.evaluate(()=>go('squad'));
- await page.waitForFunction(()=>{const img=document.querySelector('.neon-title-art img');return img?.complete&&img.naturalWidth>0;},null,{timeout:20000});
+ await page.waitForFunction(()=>{const img=document.querySelector('.c-player img');return img?.complete&&img.naturalWidth>0;},null,{timeout:20000});
  // Real profile, development purchase, navigation, save and bracket controls.
  await page.locator('.player-link20').first().click();assert(await page.evaluate(()=>page==='player'&&scrollY===0));
  await page.evaluate(()=>{S.budget=10000000;go('development');});
@@ -115,6 +115,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
  }
  await page.locator('[onclick="issueOrder4(\'farm\')"]').click();
  assert(await page.evaluate(()=>S.active.live.orders[0].type==='farm'));
+ await page.locator('.c-match-tactics > summary').click();
  await page.locator('[onclick="changeMatchTactic22(\'late\')"]').click();
  assert(await page.evaluate(()=>S.active.live.tactics22[0]==='late'));
  await page.evaluate(()=>{

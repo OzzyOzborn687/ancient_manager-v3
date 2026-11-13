@@ -7,8 +7,8 @@ const trainingFocuses33 = {
  lane:'Лейнинг', mechanics:'Механика', teamfight:'Командные бои',
  macro:'Макро', decisions:'Игровые решения', versatility:'Пул героев'
 };
-const trainingNumber33 = new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2});
-const trainingDelta33 = new Intl.NumberFormat('ru-RU',{maximumFractionDigits:3,signDisplay:'exceptZero'});
+const trainingNumber33 = new Intl.NumberFormat('ru-RU',{maximumFractionDigits:1});
+const trainingDelta33 = {format(n){if(n!==0&&Math.abs(n)<.1)return (n>0?'+':'−')+'&lt;0,1';return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:1,signDisplay:'exceptZero'}).format(n);}};
 function trainingAvailable33(){
  return !locked()&&!S.practice13&&!busy13&&nextEvent()?.day>S.day;
 }
