@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict'),{run,c}=require('./harness22.cjs')({modelVersion:8});
+assert(run(`(()=>{const before=JSON.stringify(S),seed=S.seed;for(const view of [home,squad,calendar,tactics]){const html=view();if(!html||/undefined|NaN/.test(html))return false;}return before===JSON.stringify(S)&&seed===S.seed})()`),'read-only career screens');
+assert(run(`home().indexOf('БЛИЖАЙШИЙ ВЫЗОВ')<home().indexOf('Дорога к Aegis')`),'near-term decision precedes TI');
+assert.equal(run(`(squad().match(/class="panel c-player /g)||[]).length`),5);
+run(`Arena33C.squadMode='table'`);assert(run(`squad().includes('Сравнить')&&!squad().includes('class="panel c-player ')`));
+run(`Arena33C.compareBase=roster()[0].id;Arena33C.compareCandidate=S.players.find(p=>p.role===0&&p.team!==S.club&&!p.retired).id;`);
+assert(run(`(()=>{const before=JSON.stringify(S),seed=S.seed,html=comparison33C();return before===JSON.stringify(S)&&seed===S.seed&&html.includes('SIN состава')&&html.includes('OVR команды')&&!/undefined|NaN/.test(html)})()`),'comparison is read-only');
+run(`S.events=[{id:0,name:'FISSURE',series:'FISSURE',day:0,pool:1000000,qualified13:S.teams.slice(0,8).map(t=>t.id)}];startEvent();playMap();confirmDraftUpdate();`);
+assert(run(`(()=>{const m=S.active.live,seed=S.seed,before=JSON.stringify(m);for(const tab of Object.keys(Arena33C.tabs)){Arena33C.tab=tab;const html=matchView();if(/NaN|undefined/.test(html)||!html.includes('c-scoreboard'))return false;}return before===JSON.stringify(m)&&S.seed===seed})()`),'all match tabs are pure');
+assert(run(`(()=>{const m=S.active.live;for(const p of m.sides[1].heroes){p.smokeUntil8=0;}m.v8.intel[0]=[];return mapTokens33C(m).every(p=>p.side===0)})()`),'no undiscovered enemy positions');
+assert(run(`(()=>{const m=S.active.live;m.v8.intel[0][0]={role:0,zone:2,alive:true,seenAt:m.clock};const before=tacticalMap33C(m);m.sides[1].heroes[0].zone=4;m.sides[1].heroes[0].destination=1;m.sides[1].heroes[0].travelUntil=9999;return tacticalMap33C(m)===before&&mapTokens33C(m).find(p=>p.side===1).zone===2})()`),'hidden movement never leaks through the map');
+assert(run(`(()=>{const m=S.active.live;m.v8.intel[0][0].seenAt=m.clock-BALANCE8.vision.knownFor-1;return mapTokens33C(m).every(p=>p.side===0)})()`),'stale sightings expire');
+assert(run(`(()=>{const m=S.active.live;const html=draftReportUpdate(m);return html.includes('c-capabilities')&&html.includes('c-draft-reasons')&&m.draftUpdate.bonuses.every(n=>html.includes(n<0?'draft-rating negative':n>0?'draft-rating positive':'draft-rating neutral'))})()`),'draft meaning and sign colors');
+run(`const reportMap33=S.active.live;reportMap33.finishedSide=0;reportMap33.report13=buildReport13(reportMap33);`);
+assert(run(`(()=>{const m=reportMap33,before=JSON.stringify(m),html=reportView13(m);return html.includes('Хронология ключевых событий')&&html.includes('Сводка решений менеджера')&&JSON.stringify(m)===before})()`),'saved debrief is read-only');
+assert(run(`reportView13({report13:{...reportMap33.report13,broadcast33c:undefined}}).includes('Разбор карты')`),'old reports retain fallback');
+console.log('PASS Arena 3.3 C: read-only screens/comparison/tabs, roster modes, draft explanations, hidden and stale enemy positions, saved debrief and legacy reports');

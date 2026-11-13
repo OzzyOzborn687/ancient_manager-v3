@@ -30,7 +30,7 @@ function environment(){const elements={},data=new Map(),c=vm.createContext({cons
  assert.equal(prep.base,.01);assert.equal(prep.newBase,.05);assert.equal(prep.old,prep.frozen);
  run('S='+original+';');
  for(let page of ['home','development','calendar','menu21','players','squad','finance','tactics','match']){run(`go(${JSON.stringify(page)})`);assert(e.elements.app.innerHTML.length>100);assert(!/undefined|NaN|null%/.test(e.elements.app.innerHTML),page);}
- assert(run('home().includes("reference-dashboard21")&&home().includes("news-board21")&&home().includes("group-panels21")&&home().includes("schedule-rail21")'));
+ assert(run('home().includes("c-home")&&home().includes("c-news")&&home().includes("group-panels21")&&home().includes("schedule-rail21")'));
  assert(run(`(()=>{let groups={schedule:[{pair:[0,7],score:'2:1'}]};return tableRows21(groups,[0,1,2,3])[0].w===1;})()`));
  assert(run(`(()=>{let activeEvent=S.events[0];S.active={event:activeEvent.id};let saved=JSON.stringify(activeEvent),id=activeEvent.id;delete S.calendar21;ensureTournamentCalendar();return S.events.some(e=>e.id===id&&JSON.stringify(e)===saved);})()`),'Active tournament remains byte-for-byte unchanged during calendar migration');
  run('S='+original+';development21().staff=9');assert(!run('validSave(S)'));run('S='+original+';');
