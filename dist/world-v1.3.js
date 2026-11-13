@@ -1,4 +1,5 @@
 'use strict';
+let skipTraining33=false;
 // v1.3. Career coefficients are game design values, not measured esports ratings.
 const ATTR13={lane:'Линия',mechanics:'Механика',decisions:'Решения',teamwork:'Командная игра',versatility:'Пул героев'};
 const PROFILES13=[
@@ -50,10 +51,10 @@ function playerGrowth13(p,mode,facility,focus){
 tick=function(){
  init13();S.day++;let season=circuitYear(S.day);
  if(season!==S.world13.season){S.world13.seasons.unshift({year:S.world13.season,table:S.teams.map(t=>({team:t.id,points:clubState13(t).seasonPoints})).sort((a,b)=>b.points-a.points)});for(let t of S.teams)clubState13(t).seasonPoints=0;S.world13.season=season;log('Начался сезон '+season+'. Сезонные очки обнулены; рейтинг силы сохранён.');}
- for(let t of S.teams){let c=clubState13(t),own=t.id===S.club,mode=own?S.training:c.training,facility=own?S.facility:c.facility,focus=own?S.world13.trainingFocus:c.focus;
+ for(let t of S.teams){let c=clubState13(t),own=t.id===S.club,mode=own?S.training:c.training,facility=own?S.facility:c.facility,focus=own?(S.world13.trainingFocus33??S.world13.trainingFocus):c.focus;
   if(!own&&S.day%7===1){c.training=avg(roster(t).map(p=>p.fatigue))>35?'rest':rng()<.18?'intensive':'balanced';c.focus=Object.keys(ATTR13)[int(0,4)];}
   for(let p of S.players.filter(p=>p.team===t.id)){
-   initPlayer13(p);playerGrowth13(p,mode,facility,focus);p.contract--;
+   initPlayer13(p);if(!own||!skipTraining33)playerGrowth13(p,mode,facility,focus);p.contract--;
    if(p.contract<=0){let cost=Math.round(p.salary*4),willing=p.morale>=45;
     if(!own&&willing&&funds13(t.id)>=cost){pay13(t.id,-cost,'Продление');p.contract=365;p.salary=Math.round(p.salary*1.03);}
     else if(own&&p.contract===0)log('Истёк контракт '+p.name+'. Продлите его в течение 14 дней; затем игрок сможет уйти.');
@@ -61,7 +62,7 @@ tick=function(){
    }
   }
   let target=mode==='intensive'?84:mode==='rest'?76:80;
-  if(own)S.chem=clamp(S.chem+(target-S.chem)*.015);else c.chem=clamp(c.chem+(target-c.chem)*.015);
+  if(own){if(!skipTraining33)S.chem=clamp(S.chem+(target-S.chem)*.015);}else c.chem=clamp(c.chem+(target-c.chem)*.015);
   if(S.day%7===0){let salary=S.players.filter(p=>p.team===t.id).reduce((n,p)=>n+p.salary,0)+(own?S.coach:c.coach)*120,base=65000+Math.min(40000,c.seasonPoints*50)+(own?S.trophies*5000:0);
    pay13(t.id,base,'Спонсоры');pay13(t.id,-salary,'Зарплаты игроков и штаба');pay13(t.id,-facility*6000,'База и операционные расходы');
    let debt=own?S.world13:c;

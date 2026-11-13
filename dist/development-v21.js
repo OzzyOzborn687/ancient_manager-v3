@@ -38,6 +38,7 @@ playerGrowth13=function(p,mode,facility,focus){if(p.retired)return;ensureDevelop
 const tickBefore21=tick;tick=function(){ensureDevelopment21();tickBefore21();for(let t of S.teams){let c=clubState13(t),d=c.development21,own=t.id===S.club;
  // Keep existing AI investments and player-owned levels in the same economy.
  if(!own){d.base=Math.max(d.base,clamp(c.facility,1,5));d.staff=Math.max(d.staff,clamp(Math.round((c.coach-75)/5)+1,1,5));}
+ if(own&&skipTraining33)continue;
  let mode=own?S.training:c.training;d.preparation=clamp(d.preparation+(mode==='rest'?.12:mode==='intensive'?.8:.5)*DEVELOPMENT21.base.speed[d.base-1]);
  }};
 resultImpact13=function(m){if(m.careerResult13)return;m.careerResult13=true;ensureDevelopment21();let ids=m.sides.map(s=>s.team),winner=m.finishedSide,official=m.scope13!=='scrim';
