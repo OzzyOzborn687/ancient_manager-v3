@@ -37,7 +37,7 @@ assert.equal(run('S.active.schedule.at(-1).bo'),5);
 run(`while(S.active.cursor<S.active.schedule.length){const n=S.active.schedule[S.active.cursor];recordNode6(S.active,n,n.bo===5?'3:1':'2:0');S.active.cursor++;}`);
 assert.equal(run('new Set(Object.values(S.active.placements)).has(1)'),true);
 // Real qualifier series uses the existing simulation, player form and difficulty metadata.
-run(`S=JSON.parse(${JSON.stringify(initial)});const parent=S.events.find(e=>circuitSeries(e)==='THE INTERNATIONAL');S.events=[parent];Qualifiers.freeze(parent);const child=S.events.find(e=>e.v5Qualifier&&e.qualifierRegion==='NA');const qa=Qualifiers.regionalState(child);const qn=qa.schedule[0];recordNode6(qa,qn,Qualifiers.fastRegionalSeries(qa,qn));`);
+run(`S=JSON.parse(${JSON.stringify(initial)});const parent=S.events.find(e=>circuitSeries(e)==='PGL WALLACHIA');S.events=[parent];Qualifiers.freeze(parent);const child=S.events.find(e=>e.v5Qualifier&&e.qualifierRegion==='GLOBAL');const qa=Qualifiers.regionalState(child);const qn=qa.schedule[0];recordNode6(qa,qn,Qualifiers.fastRegionalSeries(qa,qn));`);
 assert(run('qn.maps.length>=2&&qn.maps.every(m=>m.difficulty&&qn.pair.includes(m.winner))'));
 assert(run('validSave(S)'));
 // Unicode identities must remain different; Chinese names cannot collapse to an empty key.
