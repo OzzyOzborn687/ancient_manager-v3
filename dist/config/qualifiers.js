@@ -1,13 +1,13 @@
 'use strict';
 const QUALIFIERS=Object.freeze({
  version:2,operators:['BLAST SLAM','PGL WALLACHIA','ESL ONE','DREAMLEAGUE'],
- // Fixed core teams that always receive invites on operator events
- // and form the mandatory field on all other tournaments.
+ // 15 mandatory teams — always invited / always in the field on operator events.
  mandatoryTeamNames:[
   'Team Spirit','PARIVISION','BetBoom Team','Team Liquid','Xtreme Gaming',
-  '1w Team','OG','Aurora Gaming','LGD Gaming','Natus Vincere','GamerLegion'
+  '1w Team','OG','Aurora Gaming','LGD Gaming','Natus Vincere','GamerLegion',
+  'Team Yandex','Team Tidebound','Xipto Esports','PlayTime'
  ],
- regions:['EEU','EU','CN','SEA','NA'],invites:11,regionInviteCap:4,
+ regions:['EEU','EU','CN','SEA','NA'],invites:15,regionInviteCap:5,
  baseQuotas:{EEU:3,EU:2,CN:2,SEA:2,NA:1},minQuota:0,maxQuota:5,
  snapshotLead:35,listLead:7,defaultDuration:10,
  weights:{
