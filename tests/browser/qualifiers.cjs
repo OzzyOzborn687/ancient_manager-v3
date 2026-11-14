@@ -12,6 +12,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),assert=req
   if(/^https?:/.test(url)&&!url.startsWith(base)){external.push(url);return r.abort();}
   return r.continue();
  });
+ await require('./legacy-v4.cjs')(page,base);
  await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.ancientStartup?.ready);
  for(const width of [390,590,1440]){
   await page.setViewportSize({width,height:1000});

@@ -42,7 +42,7 @@ Qualifiers.update=function(){QualifierSceneLegacy.update.call(this);this.sceneSe
 let qualifierDevelopmentCache=null;
 ensureDevelopment21=function(){
  if(!S?.qualifiers?.scene)return QualifierSceneLegacy.development();
- const key=[S,S.day,S.teams.length,S.players.length,S.active];
+ const key=[S,S.day,S.teams.length,S.players.length,S.active,S.teams[S.club]?.career13?.development21?.recovery];
  if(qualifierDevelopmentCache?.every((v,i)=>v===key[i]))return;
  QualifierSceneLegacy.development();qualifierDevelopmentCache=key;
 };
@@ -57,8 +57,10 @@ qualify13=function(e,f){
  try{return QualifierSceneLegacy.qualify(e,f);}finally{qualifierLegacySelection=previous;}
 };
 Qualifiers.validScene=function(x){
+ const regions=x.v5?.sceneReady?REGIONS5:QUALIFIERS.regions.filter(r=>r!=='SA');
  const scene=x.qualifiers?.scene;if(!scene)return true;
  const C=QUALIFIERS.scene,idOK=id=>Number.isInteger(id)&&id>=0&&id<x.teams.length;
+ if(x.v5?.sceneReady&&(x.v5.version!==5||!Number.isInteger(x.v5.installedDay)||x.v5.installedDay<0||x.v5.installedDay>x.day||!x.v5.legacyArchive||!Array.isArray(x.v5.legacyArchive.clubs)||!Array.isArray(x.v5.legacyArchive.events)||!Array.isArray(x.v5.replacements)||x.v5.replacements.some(r=>!idOK(r.team)||!Number.isInteger(r.player)||!x.players[r.player]||typeof r.listed!=='string')))return false;
  if(scene.version!==C.version||!Number.isInteger(scene.seed)||!Number.isInteger(scene.coreCount)||scene.coreCount<16||scene.coreCount>24||x.teams.length>C.maxTeams||!Array.isArray(scene.generated)||new Set(scene.generated).size!==scene.generated.length||scene.generated.some(id=>!idOK(id)||id<scene.coreCount)||scene.generated.length!==x.teams.length-scene.coreCount)return false;
  const names=new Set(),roles=x.teams.map(()=>Array(5).fill(0));
  for(const p of x.players){
@@ -66,20 +68,21 @@ Qualifiers.validScene=function(x){
   if(p.team!==null&&p.active)roles[p.team][p.role]++;
  }
  for(const [i,t] of x.teams.entries()){
-  if(t.id!==i||typeof t.name!=='string'||names.has(t.name.toLowerCase())||![1,2,3].includes(t.tier)||!QUALIFIERS.regions.includes(t.homeRegion)||roles[i].some(n=>n!==1))return false;
+  if(t.id!==i||typeof t.name!=='string'||names.has(t.name.toLowerCase())||![1,2,3].includes(t.tier)||!regions.includes(t.homeRegion)||roles[i].some(n=>n!==1))return false;
   names.add(t.name.toLowerCase());
-  if(i>=scene.coreCount&&(!t.fiction||!t.sceneClub))return false;
+  if(i>=scene.coreCount&&(x.v5?.sceneReady?(!t.v5Key||t.fiction||!t.sceneClub):(!t.fiction||!t.sceneClub)))return false;
  }
  for(const season of Object.values(scene.seasons||{}))for(const v of Object.values(season)){
-  if(!Number.isInteger(v.total)||!v.quotas||Object.values(v.quotas).reduce((a,b)=>a+b,0)!==v.total||QUALIFIERS.regions.some(r=>!Number.isInteger(v.quotas[r])||v.quotas[r]<QUALIFIERS.minQuota||v.quotas[r]>QUALIFIERS.maxQuota))return false;
+  if(!Number.isInteger(v.total)||!v.quotas||Object.values(v.quotas).reduce((a,b)=>a+b,0)!==v.total||regions.some(r=>!Number.isInteger(v.quotas[r])||v.quotas[r]<QUALIFIERS.minQuota||v.quotas[r]>QUALIFIERS.maxQuota))return false;
  }
  if(x.patchV1?.bonuses?.some(b=>!idOK(b.team)))return false;
  if(x.careerRulesV1&&(!Array.isArray(x.patchV1?.bonuses)||x.patchV1.bonuses.length!==2||new Set(x.patchV1.bonuses.map(b=>b.team)).size!==2))return false;
  if(x.practice13&&(!idOK(x.practice13.team)||x.practice13.team===x.club))return false;
  for(const e of x.events){
   if(!this.isRegional(e))continue;
+  if(e.v5Qualifier){if(!Admissions5.validChild(e,x))return false;continue;}
   const parent=x.events.find(p=>p.id===e.qualifierFor),f=FORMAT6[e.formatKey6];
-  if(!parent||!f||!['qualifier8','qualifier16'].includes(e.formatKey6)||!(QUALIFIERS.regions.includes(e.qualifierRegion)||e.qualifierRegion==='GLOBAL'&&e.v4MajorQualifier===4&&parent.qualification?.majorVersion===4)||!Number.isInteger(e.quota)||e.quota<1||e.quota>(e.v4MajorQualifier===4?8:QUALIFIERS.maxQuota)||!Array.isArray(e.entrants)||e.entrants.length!==f.n||new Set(e.entrants).size!==f.n||e.entrants.some(id=>!idOK(id)||parent.qualification?.invited?.some(v=>v.team===id)))return false;
+  if(!parent||!f||!['qualifier8','qualifier16'].includes(e.formatKey6)||!(regions.includes(e.qualifierRegion)||e.qualifierRegion==='GLOBAL'&&e.v4MajorQualifier===4&&parent.qualification?.majorVersion===4)||!Number.isInteger(e.quota)||e.quota<1||e.quota>(e.v4MajorQualifier===4?8:QUALIFIERS.maxQuota)||!Array.isArray(e.entrants)||e.entrants.length!==f.n||new Set(e.entrants).size!==f.n||e.entrants.some(id=>!idOK(id)||parent.qualification?.invited?.some(v=>v.team===id)))return false;
   if(e.done&&(!Array.isArray(e.inviteWinners)||e.inviteWinners.length!==e.quota||new Set(e.inviteWinners).size!==e.quota||e.inviteWinners.some(id=>!e.entrants.includes(id))))return false;
   const a=x.active?.event===e.id?x.active:e.regionalState;
   for(const n of a?.schedule||e.schedule6||[]){

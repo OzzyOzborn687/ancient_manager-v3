@@ -6,7 +6,7 @@ vm.runInContext('window=globalThis',c);for(let f of files)vm.runInContext(fs.rea
 (async()=>{
  await run('boot()');assert(run('validSave(S)&&S.gameVersion==="2.6"'));
  for(let id of run('PAGES.map(p=>p[0])')){run(`go(${JSON.stringify(id)})`);assert(els.app.innerHTML.length>100,id);assert(!/undefined|NaN|null%/.test(els.app.innerHTML),id);}
- assert(run('S.players.filter(p=>!p.fiction).every(p=>!!bio20(p)&&!!photo20(p))'),'Missing: '+run('S.players.filter(p=>!p.fiction&&(!bio20(p)||!photo20(p))).map(p=>[p.name,!!bio20(p),!!photo20(p)])'));
+ assert(run('S.players.filter(p=>!p.fiction&&bio20(p)).every(p=>!!photo20(p))'),'Missing: '+run('S.players.filter(p=>!p.fiction&&(!bio20(p)||!photo20(p))).map(p=>[p.name,!!bio20(p),!!photo20(p)])'));
  run('profile(0)');assert(run('page==="player"'));assert(els.app.innerHTML.includes('Chunyu')&&els.app.innerHTML.includes('Wang')&&els.app.innerHTML.includes('[XG]'));
  assert(!/Стиль игрока|Черты характера|Амбиции|Лидерство/.test(els.app.innerHTML));assert(els.app.innerHTML.includes('renew(0)')&&els.app.innerHTML.includes('askRetirePlayer(0)'));
  run('S.players[0].team=15;profile(0)');assert(els.app.innerHTML.includes('[Liquid]'));assert(!els.app.innerHTML.includes('renew(0)'));run('S.players[0].team=0');

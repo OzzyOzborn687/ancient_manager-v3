@@ -1,6 +1,7 @@
 'use strict';
+// Retained V4 admission/scene contracts; V5 replacement and migration are verified in v5.cjs.
 const assert=require('node:assert/strict'),harness=require('./harness22.cjs');
-const {run}=harness({modelVersion:8}),plain=code=>JSON.parse(run('JSON.stringify('+code+')'));
+const {run}=harness({modelVersion:8,stopBefore:'v5/clubs.js'}),plain=code=>JSON.parse(run('JSON.stringify('+code+')'));
 function setup(series='PGL WALLACHIA',season=30,seed=12345){
  run('fresh();S.seed='+seed+';S.calendar21.installedDay=100000;S.events=[{id:0,name:"P2 fixture",series:'+JSON.stringify(series)+',season:'+season+',day:50,duration:8,pool:1000000}];Qualifiers.markCareer(S.events[0]);');
 }

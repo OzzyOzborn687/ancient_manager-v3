@@ -1,6 +1,7 @@
 'use strict';
+// Retained V4 admission/scene contracts; V5 replacement and migration are verified in v5.cjs.
 const {performance}=require('node:perf_hooks'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const {run}=require('./harness22.cjs')({modelVersion:8});
+const {run}=require('./harness22.cjs')({modelVersion:8,stopBefore:'v5/clubs.js'});
 run('addField6();Qualifiers.initFame();S.events=[];S.seed=1234;');
 const core=run('JSON.stringify(S)'),samples=100;
 function measure(snapshot,before,code){

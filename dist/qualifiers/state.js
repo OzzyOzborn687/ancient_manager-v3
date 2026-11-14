@@ -97,27 +97,29 @@ Qualifiers.update=function(){
  }
 };
 Qualifiers.valid=function(state){
+ const regions=state.v5?.sceneReady?REGIONS5:QUALIFIERS.regions.filter(r=>r!=='SA');
  if(state.qualifiers&&(state.qualifiers.version!==QUALIFIERS.version||!Array.isArray(state.qualifiers.legacyEvents)||state.qualifiers.legacyEvents.some(id=>!Number.isInteger(id))))return false;
  if(!state.teams.every(t=>t.fame===undefined||Number.isFinite(t.fame)&&t.fame>=QUALIFIERS.fame.min&&t.fame<=QUALIFIERS.fame.max))return false;
  for(const e of state.events){
   const q=e.qualification;if(!q)continue;
+  if(q.majorVersion===5){if(!Admissions5.valid(e,state))return false;continue;}
   if(q.majorVersion===4){if(!Majors4.valid(e,state))return false;continue;}
   if(q.qualVersion!==QUALIFIERS.version||!this.supports(e)||!['pending','frozen','complete','blocked'].includes(q.status))return false;
   if(q.status==='pending')continue;
-  const C=q.rules;if(!C||!Number.isInteger(C.invites)||C.invites<1||C.invites>=q.fieldSize||!Number.isInteger(C.regionInviteCap)||C.regionInviteCap<1||!Number.isInteger(C.minQuota)||C.minQuota<1||!Number.isInteger(C.maxQuota)||C.maxQuota<C.minQuota||!Number.isInteger(C.listLead)||!C.baseQuotas||QUALIFIERS.regions.some(r=>!Number.isFinite(C.baseQuotas[r])||C.baseQuotas[r]<=0))return false;
+  const C=q.rules;if(!C||!Number.isInteger(C.invites)||C.invites<1||C.invites>=q.fieldSize||!Number.isInteger(C.regionInviteCap)||C.regionInviteCap<1||!Number.isInteger(C.minQuota)||C.minQuota<1||!Number.isInteger(C.maxQuota)||C.maxQuota<C.minQuota||!Number.isInteger(C.listLead)||!C.baseQuotas||regions.some(r=>!Number.isFinite(C.baseQuotas[r])||C.baseQuotas[r]<=0))return false;
   if(!Number.isInteger(q.fieldSize)||q.fieldSize!==format6(e).n||!Number.isInteger(q.snapshotDay)||!Array.isArray(q.rows))return false;
   const idOK=id=>Number.isInteger(id)&&id>=0&&id<state.teams.length;
-  if(q.rows.some(r=>!idOK(r.team)||!QUALIFIERS.regions.includes(r.region)||!Number.isFinite(r.elo)||!Number.isFinite(r.form)||!Number.isFinite(r.index)||r.index<0||r.index>1+QUALIFIERS.precision||!r.components||['season','eloForm','history','fame'].some(k=>!Number.isFinite(r.components[k])||r.components[k]<0||r.components[k]>1)))return false;
+  if(q.rows.some(r=>!idOK(r.team)||!regions.includes(r.region)||!Number.isFinite(r.elo)||!Number.isFinite(r.form)||!Number.isFinite(r.index)||r.index<0||r.index>1+QUALIFIERS.precision||!r.components||['season','eloForm','history','fame'].some(k=>!Number.isFinite(r.components[k])||r.components[k]<0||r.components[k]>1)))return false;
   if(q.status==='blocked')continue;
   if(!Array.isArray(q.invited)||q.invited.length!==C.invites||new Set(q.invited.map(v=>v.team)).size!==C.invites||q.invited.some(v=>!idOK(v.team)||!['index','champion','wildcard'].includes(v.reason)))return false;
-  if(QUALIFIERS.regions.some(r=>q.invited.filter(v=>v.region===r).length>C.regionInviteCap))return false;
+  if(regions.some(r=>q.invited.filter(v=>v.region===r).length>C.regionInviteCap))return false;
   if(q.status!=='complete')continue;
   if(!Array.isArray(q.qualified)||q.qualified.length!==q.fieldSize||new Set(q.qualified).size!==q.fieldSize||q.qualified.some(id=>!idOK(id)))return false;
-  if(!q.quotas||!q.regions||QUALIFIERS.regions.some(r=>!Number.isInteger(q.quotas[r])||q.quotas[r]<C.minQuota||q.quotas[r]>C.maxQuota||!Array.isArray(q.regions[r]?.qualified)||q.regions[r].qualified.length!==q.quotas[r]))return false;
+  if(!q.quotas||!q.regions||regions.some(r=>!Number.isInteger(q.quotas[r])||q.quotas[r]<C.minQuota||q.quotas[r]>C.maxQuota||!Array.isArray(q.regions[r]?.qualified)||q.regions[r].qualified.length!==q.quotas[r]))return false;
   if(Object.values(q.quotas).reduce((a,b)=>a+b,0)!==q.fieldSize-C.invites)return false;
-  const regional=QUALIFIERS.regions.flatMap(r=>q.regions[r].qualified);
+  const regional=regions.flatMap(r=>q.regions[r].qualified);
   if(new Set([...q.invited.map(v=>v.team),...regional]).size!==q.fieldSize||regional.some(id=>!q.qualified.includes(id))||q.invited.some(v=>!q.qualified.includes(v.team)))return false;
-  for(const r of QUALIFIERS.regions){
+  for(const r of regions){
    const region=q.regions[r];
    if(!Array.isArray(region.candidates)||new Set(region.candidates).size!==region.candidates.length||region.candidates.some(id=>!idOK(id)||q.invited.some(v=>v.team===id))||!Array.isArray(region.matches))return false;
    if(region.qualified.some(id=>!region.candidates.includes(id)))return false;

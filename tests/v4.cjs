@@ -1,5 +1,6 @@
 'use strict';
-const assert=require('node:assert/strict'),h=require('./harness22.cjs')({modelVersion:8}),{run,c}=h;
+// Retained V4 admission/scene contracts; V5 replacement and migration are verified in v5.cjs.
+const assert=require('node:assert/strict'),h=require('./harness22.cjs')({modelVersion:8,stopBefore:'v5/clubs.js'}),{run,c}=h;
 run(`function fixture4(series='PGL WALLACHIA',n=16){fresh();S.seed=4182;Qualifiers.ensureScene();S.calendar21.installedDay=100000;S.v4.camps={};S.events=[{id:900001,name:'V4 test major',series,season:n===24?30:31,day:40,duration:8,pool:1000000}];V4.install();return S.events[0];}`);
 for(const [series,n,invites] of [['PGL WALLACHIA',16,15],['DREAMLEAGUE',24,16],['FISSURE',16,15],['THE INTERNATIONAL',16,15]]){
  c.testSeries4=series;c.testN4=n;c.testInvites4=invites;
