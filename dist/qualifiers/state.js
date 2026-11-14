@@ -27,18 +27,15 @@ Qualifiers.freeze=function(e){
   addField6();plan=this.invitations(e,n);
  }
  q.snapshotDay=S.day;q.eventDay=e.day;q.fieldSize=n;q.rows=plan.rows;
- const inviteCount=plan.ok?plan.invited.length:Math.min(QUALIFIERS.invites,n);
- q.rules={invites:inviteCount,regionInviteCap:QUALIFIERS.regionInviteCap,minQuota:QUALIFIERS.minQuota,maxQuota:QUALIFIERS.maxQuota,baseQuotas:{...QUALIFIERS.baseQuotas},listLead:QUALIFIERS.listLead};
+ q.rules={invites:QUALIFIERS.invites,regionInviteCap:QUALIFIERS.regionInviteCap,minQuota:QUALIFIERS.minQuota,maxQuota:QUALIFIERS.maxQuota,baseQuotas:{...QUALIFIERS.baseQuotas},listLead:QUALIFIERS.listLead};
  q.champion=plan.champion??this.champion(e);
- q.weights={...(QUALIFIERS.weights[circuitSeries(e)]||QUALIFIERS.weights['DREAMLEAGUE'])};
+ q.weights={...QUALIFIERS.weights[circuitSeries(e)]};
  if(!plan.ok){
   q.status='blocked';q.reason=plan.reason;
   log(e.name+' · квалификации: '+q.reason);return q;
  }
  Object.assign(q,{status:'frozen',invited:plan.invited,skipped:plan.skipped,player:plan.player,championUnavailable:plan.championUnavailable});
- const mandatoryCount=plan.invited.filter(v=>v.reason==='mandatory').length;
- log(e.name+' · объявлены '+inviteCount+' приглашений (обязательных: '+mandatoryCount+'). '+
-  (q.player.invited?'Ваш клуб приглашён: '+(q.invited.find(v=>v.team===S.club)?.text||'')+'.':'Ваш клуб без прямого инвайта.'));
+ log(e.name+' · объявлены '+QUALIFIERS.invites+' приглашений. '+(q.player.invited?'Ваш клуб приглашён: '+q.invited.find(v=>v.team===S.club).text+'.':'Ваш индекс '+q.player.index.toFixed(4)+'; порог '+q.player.cutoff?.toFixed(4)+'.'));
  return q;
 };
 Qualifiers.provisionalSeries=function(pair,stats){
@@ -64,10 +61,7 @@ Qualifiers.complete=function(e){
  if(!plan.ok){q.status='blocked';q.reason=plan.reason;log(e.name+': '+q.reason);return null;}
  const invited=plan.invited.map(v=>v.team),available=rows.filter(r=>r.busy===null&&!invited.includes(r.team));
  const capacities=Object.fromEntries(QUALIFIERS.regions.map(r=>[r,available.filter(t=>t.region===r).length]));
- const total=q.fieldSize-invited.length;
- const quotas=total>0?this.quotas(total,capacities,q.rules):Object.fromEntries(QUALIFIERS.regions.map(r=>[r,0]));
- const planned=total>0?this.randomQuotas(total,undefined,q.rules):Object.fromEntries(QUALIFIERS.regions.map(r=>[r,0]));
- const stats=this.stats(),regions={};
+ const total=q.fieldSize-invited.length,quotas=this.quotas(total,capacities,q.rules),planned=this.quotas(total,undefined,q.rules),stats=this.stats(),regions={};
  const seedBefore=S.seed;
  for(const region of QUALIFIERS.regions){
   const candidates=available.filter(r=>r.region===region),table=candidates.map(r=>({team:r.team,wins:0,mapDiff:0,elo:r.elo})),matches=[];
@@ -79,28 +73,18 @@ Qualifiers.complete=function(e){
    }
   }
   table.sort((a,b)=>b.wins-a.wins||b.mapDiff-a.mapDiff||b.elo-a.elo||a.team-b.team);
-  regions[region]={quota:quotas[region]||0,planned:planned[region]||0,candidates:candidates.map(r=>r.team),matches,table,qualified:table.slice(0,quotas[region]||0).map(r=>r.team)};
+  regions[region]={quota:quotas[region],planned:planned[region],candidates:candidates.map(r=>r.team),matches,table,qualified:table.slice(0,quotas[region]).map(r=>r.team)};
  }
  const qualified=[...invited,...QUALIFIERS.regions.flatMap(r=>regions[r].qualified)];
- if(qualified.length!==q.fieldSize||new Set(qualified).size!==q.fieldSize){
-  // Soft recovery: pad with strongest remaining free clubs if regional pool was thin.
-  const missing=q.fieldSize-qualified.length;
-  if(missing>0){
-   const pad=available.filter(r=>!qualified.includes(r.team)).sort((a,b)=>b.elo-a.elo||a.team-b.team).slice(0,missing).map(r=>r.team);
-   qualified.push(...pad);
-  }
-  if(qualified.length!==q.fieldSize||new Set(qualified).size!==q.fieldSize){
-   q.status='blocked';q.reason='Не удалось набрать поле из обязательных инвайтов и региональных слотов.';return null;
-  }
- }
+ if(qualified.length!==q.fieldSize||new Set(qualified).size!==q.fieldSize)throw Error('Неверное поле квалификаций');
  const displaced=q.invited.filter(v=>!invited.includes(v.team)).map(v=>({team:v.team,reason:'schedule-conflict'}));
  Object.assign(q,{status:'complete',invited:plan.invited,skipped:plan.skipped,player:plan.player,championUnavailable:plan.championUnavailable,
   revalidation:{day:S.day,displaced,conflicts:rows.filter(r=>r.busy!==null).map(r=>({team:r.team,event:r.busy}))},
   quotas,plannedQuotas:planned,regions,qualified,completedDay:S.day,seedBefore,seedAfter:S.seed,
-  adjustments:QUALIFIERS.regions.filter(r=>(quotas[r]||0)!==(planned[r]||0)).map(region=>({region,planned:planned[region]||0,actual:quotas[region]||0,reason:'current-pool-capacity'}))});
+  adjustments:QUALIFIERS.regions.filter(r=>quotas[r]!==planned[r]).map(region=>({region,planned:planned[region],actual:quotas[region],reason:'current-pool-capacity'}))});
  // Compatibility projection for the existing tournament and ranking screens.
  e.qualified13=[...qualified];e.qualification13={invited:[...invited],matches:QUALIFIERS.regions.flatMap(r=>regions[r].matches),day:S.day,qualVersion:QUALIFIERS.version};
- log(e.name+' · определены все '+qualified.length+' участников. Обязательные инвайты + закрытые региональные квалы.');
+ log(e.name+' · определены все '+qualified.length+' участников. Региональный отбор p1 завершён.');
  return qualified;
 };
 Qualifiers.update=function(){
@@ -114,13 +98,13 @@ Qualifiers.update=function(){
 };
 Qualifiers.valid=function(state){
  const regions=state.v5?.sceneReady?REGIONS5:QUALIFIERS.regions.filter(r=>r!=='SA');
- if(state.qualifiers&&(state.qualifiers.version!==QUALIFIERS.version||!Array.isArray(state.qualifiers.legacyEvents)||state.qualifiers.legacyEvents.some(id=>!Number.isInteger(id))))return false;
+ if(state.qualifiers&&(![1,2].includes(state.qualifiers.version)||!Array.isArray(state.qualifiers.legacyEvents)||state.qualifiers.legacyEvents.some(id=>!Number.isInteger(id))))return false;
  if(!state.teams.every(t=>t.fame===undefined||Number.isFinite(t.fame)&&t.fame>=QUALIFIERS.fame.min&&t.fame<=QUALIFIERS.fame.max))return false;
  for(const e of state.events){
   const q=e.qualification;if(!q)continue;
   if(q.majorVersion===5){if(!Admissions5.valid(e,state))return false;continue;}
   if(q.majorVersion===4){if(!Majors4.valid(e,state))return false;continue;}
-  if(q.qualVersion!==QUALIFIERS.version||!this.supports(e)||!['pending','frozen','complete','blocked'].includes(q.status))return false;
+  if(![1,2].includes(q.qualVersion)||!this.supports(e)||!['pending','frozen','complete','blocked'].includes(q.status))return false;
   if(q.status==='pending')continue;
   const C=q.rules;if(!C||!Number.isInteger(C.invites)||C.invites<1||C.invites>q.fieldSize||!Number.isInteger(C.regionInviteCap)||C.regionInviteCap<1||!Number.isInteger(C.minQuota)||C.minQuota<0||!Number.isInteger(C.maxQuota)||C.maxQuota<C.minQuota||!Number.isInteger(C.listLead)||!C.baseQuotas||regions.some(r=>!Number.isFinite(C.baseQuotas[r])||C.baseQuotas[r]<0))return false;
   if(!Number.isInteger(q.fieldSize)||q.fieldSize!==format6(e).n||!Number.isInteger(q.snapshotDay)||!Array.isArray(q.rows))return false;

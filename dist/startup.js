@@ -4,7 +4,7 @@ window.ancientNavigationHistory=window.history;
 window.ancientStartup={ready:false,running:false,error:null};
 
 // Create critical DOM nodes early so later scripts never crash on null.innerHTML.
-(function ensureCriticalDom(){
+function ensureCriticalDom(){
   function ensure(id, tag, attrs){
     if(document.getElementById(id))return;
     const el=document.createElement(tag||'div');
@@ -21,10 +21,11 @@ window.ancientStartup={ready:false,running:false,error:null};
   }
   ensure('mobileNav33c','nav',{'class':'c-mobile-nav','aria-label':'Мобильная навигация'});
   ensure('broadcastStatus33c','div',{'class':'c-status-bar','aria-label':'Состояние карьеры'});
-})();
+}
+ensureCriticalDom();
 
 function startupText(value){
-  return String(value).replace(/[&<>"']/g,c=>({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[c]));
+  return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 function showStartupError(error){
   const state=window.ancientStartup;state.error=String(error?.message||error||'Неизвестная ошибка');state.running=false;
@@ -33,29 +34,41 @@ function showStartupError(error){
   if(advance)advance.disabled=true;
   if(app)app.innerHTML='<section class="panel"><h2>Не удалось завершить загрузку</h2><p>Можно повторить загрузку или начать новую карьеру. Старое сохранение можно скачать.</p><p class="sub">Ошибка: '+startupText(state.error)+'</p><div class="actions"><button class="primary" onclick="startAncientManager()">Повторить загрузку</button><button class="primary" onclick="startFreshCareer()">Новая карьера</button><button onclick="downloadStartupSave()">Скачать сохранение</button></div></section>';
 }
-function downloadStartupSave(){
-  const keys=['ancient-manager-v1','ancient-manager-v1-previous','ancient-manager-backup','ancient-manager-before-update','ancient-manager-unreadable',...Array.from({length:5},(_,i)=>'ancient-manager-slot-'+i)],copies={};
+function downloadStartupSave(key=null){
+  const keys=['ancient-manager-v1','ancient-manager-v1-previous','ancient-manager-backup','ancient-manager-before-update','ancient-manager-before-new-career','ancient-manager-unreadable',...Array.from({length:5},(_,i)=>'ancient-manager-slot-'+i)],copies={};
   try{if(typeof STORE_CACHE!=='undefined')for(const [key,raw] of STORE_CACHE)if(raw)copies[key]=raw;}catch(_){}
   for(const key of keys)try{const raw=localStorage.getItem(key);if(raw&&!copies[key])copies[key]=raw;}catch(_){}
-  const primary=copies['ancient-manager-v1'];let payload=primary;
+  const primary=copies['ancient-manager-v1'];let payload=(key&&copies[key])||primary;
   if(!payload)payload=JSON.stringify({format:'AncientManagerRecovery',copies,error:window.ancientStartup.error},null,2);
   const blob=new Blob([payload],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');
   link.href=url;link.download='Ancient-Manager-recovery.json';document.body.appendChild(link);link.click();link.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-function startFreshCareer(){
+async function startFreshCareer(){
+  const state=window.ancientStartup;
+  if(state.running)return;
+  const previous=typeof S==='undefined'?undefined:S;
+  let raw=typeof STORE_CACHE!=='undefined'?STORE_CACHE.get('ancient-manager-v1'):null;
+  if(!raw)try{raw=localStorage.getItem('ancient-manager-v1');}catch(_){}
+  state.running=true;
   try{
-    localStorage.removeItem('ancient-manager-v1');
-    try{recoveryBlocked=false;}catch(_){}
-    const state=window.ancientStartup;state.error=null;state.ready=false;
-    if(typeof fresh==='function'){
-      fresh(0);state.ready=true;
-      if(typeof go==='function')go('home');
-      if(typeof render==='function')render();
-      return;
+    if(raw){
+      if(typeof persist==='function'){
+        const backup=await persist('ancient-manager-before-new-career',raw);
+        if(!backup.ok)throw Error('Не удалось сохранить резервную копию прежней карьеры. Скачайте сохранение перед началом новой.');
+      }else localStorage.setItem('ancient-manager-before-new-career',raw);
     }
-    startAncientManager();
-  }catch(error){console.error(error);showStartupError(error);}
+    if(typeof fresh!=='function')throw Error('Не загрузились файлы новой карьеры. Обновите страницу.');
+    recoveryBlocked=false;lastAuto='';state.error=null;state.ready=false;
+    fresh(0);if(typeof saveQueue!=='undefined')await saveQueue;
+    state.ready=true;go('home');
+  }catch(error){
+    recoveryBlocked=true;
+    if(typeof saveQueue!=='undefined')await saveQueue;
+    S=previous;
+    if(raw){if(typeof persist==='function')await persist('ancient-manager-v1',raw);else try{localStorage.setItem('ancient-manager-v1',raw);}catch(_){}if(typeof STORE_CACHE!=='undefined')STORE_CACHE.set('ancient-manager-v1',raw);}
+    console.error(error);showStartupError(error);
+  }finally{state.running=false;}
 }
 async function startAncientManager(){
   const state=window.ancientStartup;if(state.running)return;state.running=true;state.ready=false;

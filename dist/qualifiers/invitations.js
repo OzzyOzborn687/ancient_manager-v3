@@ -6,11 +6,6 @@ const Qualifiers={
   if(QUALIFIERS.regions.includes(t.region))return t.region;
   return QUALIFIERS.aliases[t.region]||QUALIFIERS.homeById[t.id]||QUALIFIERS.regions[t.id%QUALIFIERS.regions.length];
  },
- /** Resolve fixed core team IDs by exact name from the config list. */
- mandatoryIds(){
-  const names=new Set((QUALIFIERS.mandatoryTeamNames||[]).map(n=>n.toLowerCase()));
-  return S.teams.filter(t=>names.has(t.name.toLowerCase())).map(t=>t.id);
- },
  stats(){
   const result=S.teams.map(()=>({best:0,form:0,count:0}));
   for(const p of S.players)if(p.active&&p.team!==null&&!p.retired&&result[p.team]){
@@ -66,117 +61,57 @@ const Qualifiers={
   const stats=this.stats();this.initFame(stats);
   const raw=S.teams.map(t=>({team:t.id,region:this.region(t),elo:clubState13(t).elo,form:stats[t.id].form,
    season:clubState13(t).seasonPoints,history:this.historyScore(e,t.id),fame:t.fame,busy:this.busy(e,t.id)?.id??null}));
-  const series=circuitSeries(e);
-  const weights=QUALIFIERS.weights[series]||QUALIFIERS.weights['DREAMLEAGUE'];
-  const total=Object.values(weights).reduce((a,b)=>a+b,0);
   const normalized=Object.fromEntries(['season','elo','form','history','fame'].map(k=>[k,this.normalize(raw.map(r=>r[k]))]));
+  const weights=QUALIFIERS.weights[circuitSeries(e)],total=Object.values(weights).reduce((a,b)=>a+b,0);
   return raw.map((r,i)=>{
    const components={season:normalized.season[i],eloForm:normalized.elo[i]*QUALIFIERS.eloForm.elo+normalized.form[i]*QUALIFIERS.eloForm.form,history:normalized.history[i],fame:normalized.fame[i]};
    return {...r,components,index:Object.entries(weights).reduce((n,[k,w])=>n+components[k]*w/total,0),wildcard:normalized.fame[i]*normalized.form[i]};
   }).sort((a,b)=>b.index-a.index||b.elo-a.elo||a.team-b.team);
  },
  canFinish(selected,rows,n,rules=QUALIFIERS){
-  // With mandatory invites the regional capacity check is relaxed:
-  // only ensure there are enough free clubs overall for the remaining field.
-  if(selected.length>rules.invites)return false;
-  const free=rows.filter(r=>!selected.some(s=>s.team===r.team)).length;
-  return free>=(n-selected.length);
+  const counts=Object.fromEntries(QUALIFIERS.regions.map(r=>[r,rows.filter(t=>t.region===r).length]));
+  const picked=Object.fromEntries(QUALIFIERS.regions.map(r=>[r,selected.filter(t=>t.region===r).length]));
+  if(selected.length>rules.invites||Object.values(picked).some(v=>v>rules.regionInviteCap))return false;
+  const left=rules.invites-selected.length,needed=n-rules.invites;
+  function search(index,remaining,capacity){
+   if(index===QUALIFIERS.regions.length)return remaining===0&&capacity>=needed;
+   const r=QUALIFIERS.regions[index],available=counts[r]-picked[r];
+   const limit=Math.min(remaining,rules.regionInviteCap-picked[r],available-rules.minQuota);
+   for(let extra=0;extra<=limit;extra++)if(search(index+1,remaining-extra,capacity+Math.min(rules.maxQuota,available-extra)))return true;
+   return false;
+  }
+  return rows.length>=n&&search(0,left,0);
  },
- /**
-  * Operator invites: every available mandatory team gets a direct invite.
-  * Remaining invite slots (if any) are filled by index, then a wildcard.
-  * Remaining field slots after invites go to regional closed quals.
-  */
  invitations(e,n,allRows=this.rows(e),champion=this.champion(e),rules=QUALIFIERS){
   const rows=allRows.filter(r=>r.busy===null),selected=[],skipped=[];
-  const mandatorySet=new Set(this.mandatoryIds());
-  const mandatoryRows=rows.filter(r=>mandatorySet.has(r.team))
-   .sort((a,b)=>b.index-a.index||b.elo-a.elo||a.team-b.team);
-
-  // 1. Mandatory core — always invited when free.
-  for(const row of mandatoryRows){
-   if(selected.length>=n)break;
-   selected.push({...row,reason:'mandatory',text:'Обязательный инвайт оператора'});
-  }
-
-  // 2. If field is smaller than the full mandatory list, stop here.
-  if(selected.length>=n){
-   const own=allRows.find(s=>s.team===S.club);
-   return {ok:true,invited:selected.slice(0,n),rows:allRows,skipped,champion,
-    championUnavailable:champion!==null&&!selected.some(s=>s.team===champion),
-    player:{team:S.club,index:own?.index??0,cutoff:null,
-     invited:selected.some(s=>s.team===S.club),
-     reason:own?.busy!==null?'schedule-conflict':selected.find(s=>s.team===S.club)?.reason||'below-cutoff'}};
-  }
-
-  // 3. Dynamic invite budget: take all mandatory, then optionally a few more by index
-  //    so that at least some regional slots remain when field is large enough.
-  const inviteBudget=Math.min(rules.invites,Math.max(selected.length,n-QUALIFIERS.regions.length));
-  const holder=rows.find(r=>r.team===champion&&!selected.some(s=>s.team===r.team));
-  if(holder&&selected.length<inviteBudget){
+  const holder=rows.find(r=>r.team===champion);
+  if(!this.canFinish([],rows,n,rules))return {ok:false,reason:'Недостаточно доступных клубов по регионам для поля '+n+'.',rows:allRows};
+  if(holder){
+   if(!this.canFinish([holder],rows,n,rules))return {ok:false,reason:'Гарантия чемпиона несовместима с доступными региональными местами.',rows:allRows};
    selected.push({...holder,reason:'champion',text:'Действующий чемпион оператора'});
   }
   for(const row of rows){
-   if(selected.length>=inviteBudget)break;
+   if(selected.length>=rules.invites-1)break;
    if(selected.some(s=>s.team===row.team))continue;
+   const count=selected.filter(s=>s.region===row.region).length;
+   if(count>=rules.regionInviteCap){skipped.push({team:row.team,reason:'region-cap'});continue;}
+   if(!this.canFinish([...selected,row],rows,n,rules)){skipped.push({team:row.team,reason:'regional-capacity'});continue;}
    selected.push({...row,reason:'index',text:'Индекс оператора '+row.index.toFixed(4)});
   }
-
-  if(selected.length>n)selected.length=n;
-  if(selected.length===0)return {ok:false,reason:'Нет доступных клубов для приглашений.',rows:allRows};
-
-  const own=allRows.find(s=>s.team===S.club);
-  return {ok:true,invited:selected,rows:allRows,skipped,champion,
-   championUnavailable:champion!==null&&!selected.some(s=>s.team===champion),
-   player:{team:S.club,index:own?.index??0,cutoff:null,
-    invited:selected.some(s=>s.team===S.club),
-    reason:own?.busy!==null?'schedule-conflict':selected.find(s=>s.team===S.club)?.reason||'below-cutoff'}};
- },
- /**
-  * Random regional slot distribution for closed quals.
-  * Special case: when total === 8 → prefer 2 slots on as many regions as possible.
-  * Odd remainders are assigned randomly.
-  */
- randomQuotas(total,capacities,rules=QUALIFIERS){
-  const regions=QUALIFIERS.regions.slice();
-  const caps=Object.fromEntries(regions.map(r=>[r,Math.min(rules.maxQuota,capacities?.[r]??rules.maxQuota)]));
-  const result=Object.fromEntries(regions.map(r=>[r,0]));
-  if(total<=0)return result;
-
-  // Prefer even spread: start with floor(total/regions) each, then random extras.
-  let base=Math.floor(total/regions.length);
-  if(total===8)base=Math.min(2,base||2); // explicit rule for 8 missing slots
-  let left=total;
-  for(const r of regions){
-   const give=Math.min(caps[r],base,left);
-   result[r]=give;left-=give;
-  }
-  // Distribute remaining slots randomly among regions that still have capacity.
-  while(left>0){
-   const open=regions.filter(r=>result[r]<caps[r]);
-   if(!open.length)break;
-   const pick=open[Math.floor(rng()*open.length)];
-   result[pick]++;left--;
-  }
-  // If still short (capacity), dump into any region under maxQuota.
-  while(left>0){
-   const open=regions.filter(r=>result[r]<rules.maxQuota);
-   if(!open.length)break;
-   const pick=open[Math.floor(rng()*open.length)];
-   result[pick]++;left--;
-  }
-  return result;
+  const wildcard=[...rows].sort((a,b)=>b.wildcard-a.wildcard||b.elo-a.elo||a.team-b.team)
+   .find(row=>!selected.some(s=>s.team===row.team)&&this.canFinish([...selected,row],rows,n,rules));
+  if(!wildcard||selected.length!==rules.invites-1)return {ok:false,reason:'Не удалось заполнить приглашения без нарушения региональных ограничений.',rows:allRows};
+  selected.push({...wildcard,reason:'wildcard',text:'Wildcard: известность × форма'});
+  const indices=selected.filter(s=>s.reason==='index').map(s=>s.index),own=allRows.find(s=>s.team===S.club);
+  return {ok:true,invited:selected,rows:allRows,skipped,champion,championUnavailable:champion!==null&&!holder,
+   player:{team:S.club,index:own?.index??0,cutoff:indices.length?Math.min(...indices):null,
+    invited:selected.some(s=>s.team===S.club),reason:own?.busy!==null?'schedule-conflict':selected.find(s=>s.team===S.club)?.reason||skipped.find(s=>s.team===S.club)?.reason||'below-cutoff'}};
  },
  quotas(total,capacities,rules=QUALIFIERS){
-  // Prefer random distribution (user rule). Fall back to weighted if random fails capacity.
-  try{
-   const random=this.randomQuotas(total,capacities,rules);
-   if(Object.values(random).reduce((a,b)=>a+b,0)===total)return random;
-  }catch(_){}
   const regions=QUALIFIERS.regions,weights=rules.baseQuotas,sum=Object.values(weights).reduce((a,b)=>a+b,0);
   const targets=Object.fromEntries(regions.map(r=>[r,total*weights[r]/sum]));
   const caps=Object.fromEntries(regions.map(r=>[r,Math.min(rules.maxQuota,capacities?.[r]??rules.maxQuota)]));
-  if(Object.values(caps).reduce((a,b)=>a+b,0)<total)throw Error('Недостаточная ёмкость регионов');
+  if(regions.some(r=>caps[r]<rules.minQuota)||Object.values(caps).reduce((a,b)=>a+b,0)<total)throw Error('Недостаточная ёмкость регионов');
   const result=Object.fromEntries(regions.map(r=>[r,Math.min(caps[r],Math.max(rules.minQuota,Math.floor(targets[r])))]));
   while(Object.values(result).reduce((a,b)=>a+b,0)>total){
    const r=[...regions].filter(r=>result[r]>rules.minQuota).sort((a,b)=>(result[b]-targets[b])-(result[a]-targets[a])||regions.indexOf(a)-regions.indexOf(b))[0];if(!r)throw Error('Слишком мало мест');result[r]--;

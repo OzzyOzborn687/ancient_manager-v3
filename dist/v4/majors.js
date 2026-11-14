@@ -57,7 +57,7 @@ const Majors4={
  },
  valid(e,state){
   const q=e.qualification,idOK=id=>Number.isInteger(id)&&id>=0&&id<state.teams.length;
-  if(q.majorVersion!==4||q.qualVersion!==1||!this.isMajor(e)||!['pending','frozen','complete','blocked'].includes(q.status))return false;
+  if(q.majorVersion!==4||![1,2].includes(q.qualVersion)||!this.isMajor(e)||!['pending','frozen','complete','blocked'].includes(q.status))return false;
   if(q.status==='pending')return true;
   if(!Number.isInteger(q.snapshotDay)||q.snapshotDay<0||q.snapshotDay>state.day||q.fieldSize!==format6(e).n||!Array.isArray(q.rows)||q.rows.some(r=>!idOK(r.team)||!Number.isInteger(r.rank)||!Number.isFinite(r.season)||!Number.isFinite(r.elo)))return false;
   if(q.status==='blocked')return typeof q.reason==='string';

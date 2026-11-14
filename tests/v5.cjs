@@ -10,8 +10,10 @@ assert(run('(()=>{const before=JSON.stringify(S);UI5.scene();return before===JSO
 assert(run('new Set(S.players.filter(p=>p.team!==null).map(p=>Scene5.key(p.name))).size===S.players.filter(p=>p.team!==null).length'));
 assert.throws(()=>run("Qualifiers.generateClub('NA',3)"),/отключена/);
 const initial=run('JSON.stringify(S)');
-for(const key of run('Object.keys(RULES5)')){
- run(`S=JSON.parse(${JSON.stringify(initial)});S.events=[{id:100,name:'Rule fixture',series:'ANCIENT',day:50,pool:1000000,duration:10,formatKey6:RULES5[${JSON.stringify(key)}].format,qualification:{qualVersion:1,majorVersion:5,status:'pending',policy:structuredClone(RULES5[${JSON.stringify(key)}])}}];S.qualifiers.legacyEvents=[];`);
+const operators={pgl:'PGL WALLACHIA',blast:'BLAST SLAM',dream:'DREAMLEAGUE',esl:'ESL ONE',ti:'THE INTERNATIONAL',dacha:'BETBOOM DACHA',dachaDubai:'BETBOOM DACHA',playground:'FISSURE',universe:'FISSURE',oneWin:'1WIN SERIES',clavision:'CLAVISION',acl:'ASIAN CHAMPIONS LEAGUE',elite:'ELITE LEAGUE',future:'GAMES OF THE FUTURE',ewc:'ESPORTS WORLD CUP',riyadh:'RIYADH MASTERS'};
+for(const key of run('Object.keys(TOURNAMENTS5)')){
+ const name=key==='dachaDubai'?'Dacha Dubai':key==='playground'?'FISSURE Playground':'Rule fixture';
+ run(`S=JSON.parse(${JSON.stringify(initial)});S.events=[{id:100,name:${JSON.stringify(name)},series:${JSON.stringify(operators[key])},day:50,pool:1000000,duration:10}];S.qualifiers.legacyEvents=[];Admissions5.install();`);
  run('Qualifiers.freeze(S.events[0])');
  assert.equal(run('S.events.find(e=>e.id===100).qualification.status'),'frozen'===run('S.events.find(e=>e.id===100).qualification.status')?'frozen':'complete',key+': '+run('S.events[0].qualification?.reason'));
  assert(run('validSave(S)'),key+' frozen save');
@@ -46,7 +48,7 @@ assert(run("Scene5.key('天命')!==Scene5.key('生死')"));
 const legacy=harness({modelVersion:8,stopBefore:'v5/clubs.js'});
 legacy.run('Qualifiers.ensureScene()');
 const before=legacy.run('JSON.stringify({club:S.club,budget:S.budget,roster:roster().map(p=>({id:p.id,skill:p.skill,form:p.form}))})');
-for(const file of ['clubs.js','scene.js','admissions.js','ui.js'])vm.runInContext(fs.readFileSync('dist/v5/'+file,'utf8'),legacy.c,{filename:file});
+for(const file of ['clubs.js','scene.js','legacy-admissions.js','admissions.js','ui.js'])vm.runInContext(fs.readFileSync('dist/v5/'+file,'utf8'),legacy.c,{filename:file});
 legacy.run('migrate()');
 assert.equal(legacy.run('S.teams.length'),51);assert.equal(legacy.run('S.teams.filter(t=>t.fiction).length'),0);
 assert.equal(legacy.run('JSON.stringify({club:S.club,budget:S.budget,roster:roster().map(p=>({id:p.id,skill:p.skill,form:p.form}))})'),before);
@@ -56,7 +58,7 @@ run(`S=JSON.parse(${JSON.stringify(initial)});`);
 const bad=run('structuredClone(S)');bad.teams[18].fiction=true;assert.equal(run('validSave('+JSON.stringify(bad)+')'),false);
 const pending=harness({modelVersion:8,stopBefore:'v5/clubs.js'});
 pending.run(`Qualifiers.ensureScene();S.calendar21.installedDay=100000;S.events=[{id:900,name:'Played legacy final',day:0,pool:100000,done:true,champion:16,entrants:[0,16],placements6:{0:2,16:1}},{id:901,name:'Active legacy event',day:0,pool:100000,entrants:[0,16]}];S.active={event:901,entrants:[0,16]};`);
-for(const file of ['clubs.js','scene.js','admissions.js','ui.js'])vm.runInContext(fs.readFileSync('dist/v5/'+file,'utf8'),pending.c,{filename:file});
+for(const file of ['clubs.js','scene.js','legacy-admissions.js','admissions.js','ui.js'])vm.runInContext(fs.readFileSync('dist/v5/'+file,'utf8'),pending.c,{filename:file});
 assert(pending.run('validSave({...S,active:null})'),'old scene validates before migration in a new runtime');
 pending.run('const pendingBefore=JSON.stringify(S.active);Scene5.install()');
 assert(pending.run('S.v5.pending&&S.teams.length===64&&pendingBefore===JSON.stringify(S.active)'),'active legacy opponents preserved');

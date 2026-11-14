@@ -1,6 +1,7 @@
 'use strict';
+// Historical provisional-admission benchmark; live V5 qualifications are covered by v5/v5b/cleanup.
 const {performance}=require('node:perf_hooks'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),harness=require('./harness22.cjs');
-const h=harness({modelVersion:8}),run=h.run;
+const h=harness({modelVersion:8,stopBefore:'v5/clubs.js'}),run=h.run;
 run('addField6();Qualifiers.initFame();S.events=[];S.seed=1234;');
 const initial=run('JSON.stringify(S)'),samples=100;
 function measure(before,fn){
