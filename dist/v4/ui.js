@@ -31,6 +31,7 @@ PAGES.splice(PAGES.findIndex(p=>p[0]==='tactics'),0,['bootcamp','⌂','Бутк�
 const renderBeforeV4=render;
 render=function(...args){const r=renderBeforeV4(...args);if(!S)return r;
  const nav=$('nav');if(!nav.innerHTML.includes("go('bootcamp')"))nav.innerHTML+='<button class="'+(page==='bootcamp'?'active':'')+'" onclick="go(\'bootcamp\')">'+icon21('base')+'<span>Буткемп</span></button>';
+ $('mobileNav33c').innerHTML=[['home','Главная','◈'],['squad','Команда','♙'],['match','Матч','▷'],['bootcamp','Буткемп','⌂'],['menu21','Ещё','☰']].map(([key,label,icon])=>'<button aria-current="'+(page===key?'page':'false')+'" onclick="go(\''+key+'\')"><span aria-hidden="true">'+icon+'</span>'+label+'</button>').join('');
  if(page==='bootcamp'&&!busy13&&!S.practice13)$('app').innerHTML=CampUI4.view();
  $('broadcastStatus33c').innerHTML=$('broadcastStatus33c').innerHTML.replace('3.3 C / ARENA','V4.0 / ARENA');
  return r;
