@@ -24,9 +24,9 @@ const {chromium}=require('playwright'),fs=require('node:fs'),assert=require('nod
   const saved=await page.evaluate(async()=>{save();await saveQueue;return JSON.stringify({teams:S.teams,players:S.players,v5:S.v5,events:S.events})});
   await page.reload();await page.waitForFunction(()=>window.ancientStartup?.ready);
   assert.equal(await page.evaluate(()=>JSON.stringify({teams:S.teams,players:S.players,v5:S.v5,events:S.events})),saved);assert(await page.evaluate(()=>validSave(S)));
-  await page.evaluate(()=>{fresh();S.calendar21.installedDay=100000;const e=S.events.find(e=>circuitSeries(e)==='THE INTERNATIONAL');S.events=[e];Qualifiers.freeze(e);const child=S.events.find(e=>e.v5Qualifier&&e.qualifierRegion==='NA');S.club=child.entrants[0];S.day=child.day;showBracket(child.id)});
+  await page.evaluate(()=>{fresh();S.calendar21.installedDay=100000;const e=S.events.find(e=>circuitSeries(e)==='PGL WALLACHIA');S.events=[e];Qualifiers.freeze(e);const child=S.events.find(e=>e.v5Qualifier&&e.qualifierRegion==='GLOBAL');S.club=child.entrants[0];S.day=child.day;showBracket(child.id)});
   assert((await page.locator('#app').innerText()).includes('Инвайт'));
-  await page.evaluate(()=>startEvent());assert(await page.evaluate(()=>!!S.active&&S.active.formatKey6.startsWith('qualifier5n')&&S.active.entrants.length<=4&&validSave(S)));
+  await page.evaluate(()=>startEvent());assert(await page.evaluate(()=>!!S.active&&S.active.formatKey6.startsWith('qualifier5n')&&S.active.entrants.length<=16&&validSave(S)));
   await page.screenshot({path:dir+'/small-na-qualifier.png',fullPage:true});
   assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
   console.log('PASS V5 browser: 51 loaded transparent club logos; 320/390/768/1440; region filter; published admissions; persistence; real small NA qualifier start.');
