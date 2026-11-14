@@ -1,5 +1,13 @@
 'use strict';
-const ADMISSION_RULES5=Object.freeze({confirmationDays:15,qualifierSlots:Object.freeze({'BLAST SLAM':2,'PGL WALLACHIA':1,'ESL ONE':1,'DREAMLEAGUE':1})});
+const ADMISSION_RULES5=Object.freeze({confirmationDays:15,qualifierSlots:Object.freeze({'BLAST SLAM':1,'PGL WALLACHIA':1,'ESL ONE':1,'DREAMLEAGUE':1})});
+// Fixed invitation list restored from the previous mandatory-invite update.
+const MANDATORY_TEAMS5=Object.freeze([
+ 'Team Spirit','PARIVISION','BetBoom Team','Team Liquid','Xtreme Gaming',
+ '1w Team','OG','Aurora Gaming','LGD Gaming','Natus Vincere','GamerLegion',
+ 'Team Yandex','Team Tidebound','Xipto Esports','PlayTime'
+]);
+// One guaranteed representative from each region for fields smaller than 15.
+const REGIONAL_GRANDS5=Object.freeze(['Team Spirit','Team Liquid','Xtreme Gaming','Xipto Esports','GamerLegion','PlayTime']);
 const TOURNAMENTS5={
  pgl:{field:16,format:'pgl',source:'https://www.pglesports.com/dota2/wallachia-s9-2026/'},
  blast:{field:16,format:'blast',source:'https://bo3.gg/dota2/news/all-participants-blast-slam-ix'},
@@ -25,13 +33,46 @@ FORMAT6.twenty5={n:20,kind:'rr',size:5,bo:2,topTwo5:true,label:'20 команд 
 for(let n=1;n<=16;n++)FORMAT6['qualifier5n'+n]={n,kind:'rr',size:n,bo:3,label:n+' реальных клубов · круговой отбор BO3',note:'Игровой закрытый отбор без вымышленных участников. Очки → Бухгольц → разница карт → выигранные карты → посев. Проходят первые K. При единственном участнике — проход без матча.'};
 const Admissions5={
  installing:false,
+ mandatoryIds(state=S){
+  return MANDATORY_TEAMS5.map(name=>state.teams.find(t=>t.name.toLowerCase()===name.toLowerCase())?.id).filter(Number.isInteger);
+ },
  policy(e){
   const series=circuitSeries(e),key=series==='BETBOOM DACHA'&&/dubai|дубай/i.test(e.name)?'dachaDubai':
    ({'PGL WALLACHIA':'pgl','BLAST SLAM':'blast','DREAMLEAGUE':'dream','ESL ONE':'esl','THE INTERNATIONAL':'ti','BETBOOM DACHA':'dacha','1WIN SERIES':'oneWin','CLAVISION':'clavision','ASIAN CHAMPIONS LEAGUE':'acl','ELITE LEAGUE':'elite','GAMES OF THE FUTURE':'future','ESPORTS WORLD CUP':'ewc','RIYADH MASTERS':'riyadh'})[series]||(series==='FISSURE'?(/playground/i.test(e.name)?'playground':'universe'):null);
   const format=TOURNAMENTS5[key];if(!format)return null;
   const slots=ADMISSION_RULES5.qualifierSlots[series]??0;
-  return {...format,direct:format.field-slots,quotas:slots?{GLOBAL:slots}:{},label:'V5.0 B · региональный рейтинг',
-   note:slots?'Лидер каждого региона получает прямой инвайт. Оставшиеся прямые места — следующим командам по региональному месту и рейтингу сезона. '+slots+' мест на квалификацию на весь турнир.':'Все места — прямые инвайты по региональному рейтингу. Квалификаций нет.'};
+  const mandatory= ['PGL WALLACHIA','BLAST SLAM','DREAMLEAGUE','ESL ONE','THE INTERNATIONAL'].includes(series)?'all':'regional';
+  return {...format,direct:format.field-slots,quotas:slots?{GLOBAL:slots}:{},mandatory,mandatoryVersion:1,label:'Обязательные инвайты',
+   note:mandatory==='all'?'15 фиксированных клубов получают обязательные инвайты. '+(slots?'Последнее место разыгрывается в квалификации.':'Последнее место — по региональному рейтингу. Квалификаций нет.'):
+    'Размер турнира сохранён. По одному фиксированному гранду каждого региона получают обязательный инвайт; затем приоритет остальным клубам обязательного списка и региональному рейтингу. Квалификаций нет.'};
+ },
+ priorityIds(rule,state=S){
+  const names=rule.mandatory==='all'?MANDATORY_TEAMS5:REGIONAL_GRANDS5;
+  return names.map(name=>state.teams.find(t=>t.name.toLowerCase()===name.toLowerCase())?.id).filter(Number.isInteger);
+ },
+ selectInvites(rule,rows){
+  const byId=new Map(rows.map(r=>[r.team,r])),fixed=this.priorityIds(rule),core=new Set(this.mandatoryIds());
+  if(fixed.length!==(rule.mandatory==='all'?15:6))throw Error('В базе отсутствует клуб обязательного списка.');
+  const ordered=[...fixed.map(id=>byId.get(id)),...rows.filter(r=>core.has(r.team)&&!fixed.includes(r.team)),...rows.filter(r=>!core.has(r.team))];
+  return ordered.slice(0,rule.direct).map(r=>({...r,reason:fixed.includes(r.team)?'mandatory':'season-top',text:fixed.includes(r.team)?'Обязательный инвайт'+(rule.mandatory==='regional'?' · гранд региона '+(r.region==='EU'?'WEU':r.region):''):'Регион '+(r.region==='EU'?'WEU':r.region)+' · место '+r.regionalRank}));
+ },
+ restoreMandatory(){
+  const active=S.events.find(e=>e.id===S.active?.event),parent=active?.qualifierFor;
+  for(const e of [...S.events]){
+   if(e.done||Qualifiers.isRegional(e)||e.id===active?.id||e.id===parent||!e.qualification||e.qualification.policy?.mandatoryVersion===1)continue;
+   if(isTI(e)&&(e.festivalInvitation||S.tiRecovery?.day===e.day&&['exact','restart'].includes(S.tiRecovery.mode)))continue;
+   const policy=this.policy(e);if(!policy)continue;
+   const children=S.events.filter(c=>c.qualifierFor===e.id);
+   // Played/active qualifiers are part of an already-started competition.
+   if(children.some(c=>c.done||c.id===active?.id||(c.regionalState?.schedule||c.schedule6||[]).some(n=>n.score)))continue;
+   (S.v5.legacyArchive.mandatoryAdmissions??=[]).push({event:e.id,day:S.day,qualification:structuredClone(e.qualification),qualification13:structuredClone(e.qualification13),qualified13:structuredClone(e.qualified13)});
+   const removed=new Set(children.map(c=>c.id));
+   S.v5.legacyArchive.events.push(...children.map(c=>structuredClone(c)));
+   for(const [key,camp] of Object.entries(S.v4?.camps||{}))if(removed.has(camp.event)){if(camp.status==='active')Camp4.close(camp,'interrupted');delete S.v4.camps[key];}
+   S.events=S.events.filter(c=>!removed.has(c.id));
+   delete e.qualified13;delete e.qualification13;delete e.participationConfirmed5b;
+   e.formatKey6=policy.format;e.qualification={qualVersion:1,majorVersion:5,status:'pending',mode:'mandatory-invites-v5',policy};
+  }
  },
  migrateAdmissions(){
   if(S.v5.hotfixA)return;
@@ -48,7 +89,7 @@ const Admissions5={
  install(){
   if(!S?.v5?.sceneReady||this.installing||Scene5.loading||Scene5.installing)return;
   this.installing=true;
-  try{this.migrateAdmissions();LegacyAdmissions5.repairFuture();for(const e of S.events){
+  try{this.migrateAdmissions();this.restoreMandatory();LegacyAdmissions5.repairFuture();for(const e of S.events){
    if(Qualifiers.isRegional(e)||e.done||e.id===S.active?.event)continue;
    if(isTI(e)&&e.qualified13&&(e.festivalInvitation||S.tiRecovery?.day===e.day&&['exact','restart'].includes(S.tiRecovery.mode))){
     if(e.qualification?.majorVersion===5){const children=new Set(Object.values(e.qualification.regionalEvents||{}));e.legacyQualification5=e.qualification;delete e.qualification;S.events=S.events.filter(c=>!children.has(c.id)||c.done||c.id===S.active?.event);}
@@ -74,7 +115,7 @@ const Admissions5={
   const rows=this.rows(e),available=rows.filter(r=>r.busy===null&&(!rule.inviteRegion||this.members(rule.inviteRegion,S.teams[r.team])));
   // Reserve the exact published regional quotas before selecting direct invites.
   const residual=group=>rows.filter(r=>r.busy===null&&this.members(group,S.teams[r.team])).length;
-  const invited=[];
+  const invited=rule.mandatory?this.selectInvites(rule,rows):[];
   for(const r of available){
    if(invited.length===rule.direct)break;
    const groupOK=Object.entries(rule.quotas).every(([group,quota])=>['GLOBAL','DIV2'].includes(group)||residual(group)-[...invited,r].filter(v=>this.members(group,S.teams[v.team])).length>=quota);
@@ -127,7 +168,8 @@ const Admissions5={
   if(q.policy.quotas.GLOBAL&&!q.regionalEvents.GLOBAL){try{this.child(e,'GLOBAL',q.policy.quotas.GLOBAL);}catch(error){q.status='blocked';q.reason=error.message;}return null;}
   const qualified=[...q.invited.map(r=>r.team),...children.flatMap(c=>c.inviteWinners)];
   if(qualified.length!==q.fieldSize||new Set(qualified).size!==q.fieldSize){q.status='blocked';q.reason='Квалификации не сформировали полное уникальное поле.';return null;}
-  const conflicts=qualified.map(id=>Qualifiers.busy(e,id)).filter(Boolean);
+  const fixed=new Set(q.invited.filter(v=>v.reason==='mandatory').map(v=>v.team));
+  const conflicts=qualified.filter(id=>!fixed.has(id)).map(id=>Qualifiers.busy(e,id)).filter(Boolean);
   if(conflicts.length){e.day=Math.max(e.day,...conflicts.map(c=>c.day+(c.duration||10)+2));q.eventDay=e.day;return null;}
   q.status='complete';q.qualified=qualified;q.completedDay=S.day;e.qualified13=[...qualified];e.qualification13={invited:q.invited.map(r=>r.team),matches:[],day:S.day,majorVersion:5};return [...qualified];
  },
@@ -140,6 +182,7 @@ const Admissions5={
   if(!Number.isInteger(q.snapshotDay)||q.snapshotDay>state.day||q.fieldSize!==r.field||!Array.isArray(q.rows)||q.rows.some(row=>!idOK(row.team)||!Number.isFinite(row.elo)||!Number.isInteger(row.rank)))return false;
   if(q.status==='blocked')return typeof q.reason==='string';
   if(q.rules?.invites!==r.direct||!Array.isArray(q.invited)||q.invited.length!==r.direct||new Set(q.invited.map(v=>v.team)).size!==r.direct||q.invited.some(v=>!idOK(v.team))||!q.regionalEvents)return false;
+  if(r.mandatoryVersion===1&&(this.priorityIds(r,state).length!==(r.mandatory==='all'?15:6)||this.priorityIds(r,state).some(id=>!q.invited.some(v=>v.team===id&&v.reason==='mandatory'))))return false;
   for(const [group,id] of Object.entries(q.regionalEvents)){
    const child=state.events.find(c=>c.id===id);if(!child||!child.v5Qualifier||child.qualifierFor!==e.id||child.qualifierRegion!==group||child.quota!==r.quotas[group])return false;
   }

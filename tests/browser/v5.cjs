@@ -18,7 +18,10 @@ const {chromium}=require('playwright'),fs=require('node:fs'),assert=require('nod
   }
   await page.getByRole('button',{name:'SA',exact:true}).click();assert.equal(await page.locator('.v5-club').count(),7);
   await page.evaluate(()=>{S.calendar21.installedDay=100000;const e=S.events.find(e=>circuitSeries(e)==='DREAMLEAGUE');S.events=[e];Qualifiers.freeze(e);openQualifiers(e.id)});
-  assert.equal(await page.locator('.qualifier-invites>article').count(),15);assert((await page.locator('.v5-rules').innerText()).includes('мест на квалификацию на весь турнир'));
+  assert.equal(await page.locator('.qualifier-invites>article').count(),15);assert((await page.locator('.v5-rules').innerText()).includes('15 фиксированных клубов'));
+  const inviteText=await page.locator('.qualifier-invites').innerText();
+  for(const name of await page.evaluate(()=>[...MANDATORY_TEAMS5]))assert(inviteText.includes(name),'missing mandatory invitation '+name);
+  assert(await page.evaluate(()=>{const e=qualifierParent(),c=S.events.find(c=>c.qualifierFor===e.id);return c.quota===1&&c.entrants.every(id=>!Admissions5.mandatoryIds().includes(id));}));
   await page.screenshot({path:dir+'/dreamleague-admissions.png',fullPage:true});
   assert(await page.evaluate(()=>validSave(S)));
   const saved=await page.evaluate(async()=>{save();await saveQueue;return JSON.stringify({teams:S.teams,players:S.players,v5:S.v5,events:S.events})});
