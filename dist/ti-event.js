@@ -24,6 +24,7 @@ async function applyTIRewind(source=null,options={}){
    if(x.done){let reward=x.reward||0;S.budget-=reward;S.prizes=Math.max(0,S.prizes-reward);if(x.place===1)S.trophies=Math.max(0,S.trophies-1);if(S.teams[x.champion])S.teams[x.champion].points=Math.max(0,S.teams[x.champion].points-100);if(x.place&&x.place!==1)my().points=Math.max(0,my().points-Math.max(5,70-x.place*7));
     for(let [id,place] of Object.entries(x.placements6||{})){let t=S.teams[+id];if(!t)continue;clubState13(t).seasonPoints=Math.max(0,clubState13(t).seasonPoints-Math.max(5,Math.round(120/place)));if(+id!==S.club){let shares={1:.36,2:.19,3:.11,4:.075,5:.04,7:.025,9:.006,13:.004,14:.003};clubState13(t).budget-=Math.round(x.pool*(shares[place]||.003));}}
    }
+   if(x.sponsor4a){pay13(x.sponsor4a.team,-x.sponsor4a.bonus,'Отмена спонсорской премии при возврате к TI');delete x.sponsor4a;}
    for(let k of ['done','place','reward','champion','schedule6','placements6','seeds6','groupIds6','gsl6','pairingFallback','skippedV12','skipRequestedV12','notQualified13','qualification13','qualified13','entrants','format','formatKey6','groups','tiEvent'])delete x[k];
   }
   S.history=S.history.filter(h=>!removed.includes(h));S.news=S.news.filter(n=>n.day<targetDay);S.ledger=S.ledger.filter(n=>n.day<targetDay);S.day=targetDay;S.active=null;S.practice13=null;
@@ -32,6 +33,7 @@ async function applyTIRewind(source=null,options={}){
   for(let prior of S.events.filter(x=>x.day<targetDay&&!x.done)){prior.done=true;prior.skippedV12=true;prior.recoveryOmittedTI=true;}
  }
  S.tiRecovery={request:TI_REWIND,mode:exact?'exact':'restart',day:targetDay,fromDay:original.day};delete S.tiRecoveryError;
+ if(typeof resetSponsorsAfterRewind4A==='function')resetSponsorsAfterRewind4A();
  if(typeof resetPreparationAfterRewind4==='function')resetPreparationAfterRewind4();
  pauseLive4(false);selectedBracket=null;lastAuto='';
  tiState(e).chronicle.push({text:exact?'Карьера восстановлена из точной копии старта TI.':'TI перезапущен. Сохранены нынешние составы, развитие, контракты, патч и прочие финансовые операции; результаты TI и следующих турниров и их известные призовые отменены.'});
