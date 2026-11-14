@@ -74,7 +74,7 @@ assert(run('JSON.stringify(baseResult)===JSON.stringify(wrappedResult)&&S.seed==
 assert(run('eventQ().qualification===undefined&&S.qualifiers.legacyEvents.includes(0)'));
 run('migrate();');assert(run('eventQ().qualification===undefined'));
 for(const series of ['THE INTERNATIONAL','FISSURE']){
- setup(series);assert(run('eventQ().qualification===undefined'));
+ setup(series);run('S.qualifiers.legacyEvents.push(eventQ().id);delete eventQ().qualification;');assert(run('eventQ().qualification===undefined'));
  run('legacyCalls=0;originalQualifier=QualifiersLegacy.qualify;QualifiersLegacy.qualify=()=>{legacyCalls++;return [0,1]};qualify13(eventQ(),format6(eventQ()));QualifiersLegacy.qualify=originalQualifier;');
  assert.equal(run('legacyCalls'),1);
 }

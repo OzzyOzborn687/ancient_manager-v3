@@ -32,6 +32,7 @@ async function applyTIRewind(source=null,options={}){
   for(let prior of S.events.filter(x=>x.day<targetDay&&!x.done)){prior.done=true;prior.skippedV12=true;prior.recoveryOmittedTI=true;}
  }
  S.tiRecovery={request:TI_REWIND,mode:exact?'exact':'restart',day:targetDay,fromDay:original.day};delete S.tiRecoveryError;
+ if(typeof resetPreparationAfterRewind4==='function')resetPreparationAfterRewind4();
  pauseLive4(false);selectedBracket=null;lastAuto='';
  tiState(e).chronicle.push({text:exact?'Карьера восстановлена из точной копии старта TI.':'TI перезапущен. Сохранены нынешние составы, развитие, контракты, патч и прочие финансовые операции; результаты TI и следующих турниров и их известные призовые отменены.'});
  log(exact?'Восстановлена точная точка старта TI 2027.':'Возврат к старту TI 2027: реконструкция с текущими составами. Исходная карьера в отдельной резервной копии.');return true;

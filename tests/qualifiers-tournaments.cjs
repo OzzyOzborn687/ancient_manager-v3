@@ -1,6 +1,7 @@
 'use strict';
+// Legacy regional-admission contracts; V4 major admission has its own end-to-end suite in v4.cjs.
 const assert=require('node:assert/strict'),harness=require('./harness22.cjs');
-const {run}=harness({modelVersion:8}),plain=code=>JSON.parse(run('JSON.stringify('+code+')'));
+const {run}=harness({modelVersion:8,stopBefore:'v4/config.js'}),plain=code=>JSON.parse(run('JSON.stringify('+code+')'));
 run('S.calendar21.installedDay=100000;S.events=[{id:0,name:"Manager qualifier",series:"PGL WALLACHIA",day:50,duration:8,pool:1000000}];Qualifiers.markCareer(S.events[0]);clubState13(my()).elo=200;my().fame=0;Qualifiers.freeze(S.events[0]);');
 assert(run('S.events.some(e=>Qualifiers.isRegional(e)&&e.entrants.includes(S.club))'));
 assert(run('home().includes("Ваш путь — региональная квалификация")'));
