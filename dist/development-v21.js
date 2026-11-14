@@ -19,9 +19,12 @@ function formRecord21(p,win,event=null){ensureDevelopment21();let g=p.progress21
 }
 function formWindow21(p){let g=p.progress21,results=(g?.results||[]).filter(r=>S.day-r.day<=30),wins=results.filter(r=>r.win).length;return {games:results.length,wins,rate:results.length?wins/results.length:0};}
 function growthQuality21(p){let r=formWindow21(p);return clamp((r.rate-.35)/.4,0,1)*Math.min(1,r.games/6);}
+const TRAINING_FORM5C=Object.freeze({balanced:.30,intensive:.45,ceiling:85});
+function trainingFormCeiling5C(p){return Math.min(95,Math.max(p.progress21.initialForm,TRAINING_FORM5C.ceiling+10*Math.min(1,p.progress21.successfulDays/60)));}
 // Form has a calendar-time ceiling: no number of same-day wins can create a peak.
 playerGrowth13=function(p,mode,facility,focus){if(p.retired)return;ensureDevelopment21();let g=p.progress21,d=p.team==null?{staff:1,base:1,preparation:0}:development21(p.team),staff=DEVELOPMENT21.staff,rest=mode==='rest',intense=mode==='intensive',q=growthQuality21(p),gap=g.lastOfficialDay==null?Infinity:S.day-g.lastOfficialDay,headroom=Math.max(0,p.potential-p.skill),energy=clamp((100-p.fatigue)/80,0,1);
  if(g.lastDailyDay!==S.day){
+  const beforeTraining=p.form;
   if(p.active&&q>=.6&&gap<=21)g.successfulDays=Math.min(90,g.successfulDays+1);else g.successfulDays=Math.max(0,g.successfulDays-(gap>30?1:.3));
   let title=g.lastTitleDay!=null&&S.day-g.lastTitleDay<=90,ceiling=Math.min(95,Math.max(g.initialForm,75+20*Math.min(1,g.successfulDays/60))),target=70+25*q*(title?1:.9);
   if(p.active&&gap<=21&&q>.3&&target>p.form)p.form=Math.min(ceiling,target,p.form+.28*staff.form[d.staff-1]*(rest?.7:1));
@@ -32,6 +35,10 @@ playerGrowth13=function(p,mode,facility,focus){if(p.retired)return;ensureDevelop
   if(!rest&&p.attributes13&&Number.isFinite(p.attributes13[focus]))p.attributes13[focus]=clamp(p.attributes13[focus]+amount*2,40,99);
   p.fatigue=clamp(p.fatigue+fatigueDelta21(p,rest?-12:intense?4:-1));p.morale=clamp(p.morale+(rest?.5:intense?-.3:.05)+(p.active?0:-.2),20,98);
   if(!rest&&focus==='versatility'){let h=playerPool4(p)[(S.day+p.id)%playerPool4(p).length]?.hero;if(h)p.heroPractice13[h]=Math.min(20,(p.heroPractice13[h]||0)+.12*DEVELOPMENT21.base.speed[d.base-1]);}
+  if(!rest){
+   const ceiling=trainingFormCeiling5C(p),gain=(TRAINING_FORM5C[mode]??TRAINING_FORM5C.balanced)*staff.form[d.staff-1]*(.5+.5*energy)*(p.active?1:.2);
+   p.form=Math.max(p.form,Math.min(ceiling,beforeTraining+gain));
+  }
   p.form=clamp(p.form,35,95);g.lastDailyDay=S.day;
  }
 };

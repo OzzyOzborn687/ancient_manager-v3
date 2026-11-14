@@ -59,6 +59,7 @@ function trainingChoices33(values,selected,field,disabled){
 tactics=function(){
  const available=trainingAvailable33(),focus=trainingFocus33(),players=roster();
  const before=players.map(trainingSnapshot33),after=available?trainingPreview33():before;
+ const camp=Camp4.current(S.club,S.day+1);
  const form=avg(before.map(p=>p.form)),nextForm=avg(after.map(p=>p.form));
  const fmt=number=>trainingNumber33.format(number),delta=number=>trainingDelta33.format(number);
  const last=S.world13.lastTraining33;
@@ -81,7 +82,8 @@ tactics=function(){
    'onclick="setTactic(\''+key+'\')">'+esc(info[0])+'</button>').join('')+'</div></section>'+
   '<section class="panel training-choice33"><h2>Интенсивность тренировки</h2><div>'+
   trainingChoices33(trainingModes33,S.training,'mode',!available)+'</div></section>'+
-  '<section class="panel training-form33"><h2>Форма команды</h2><strong>'+fmt(form)+
+  '<section class="panel training-form33"><h2>Форма команды</h2><p>Обычные тренировки повышают форму без обязательных побед: базово +0,30 за сбалансированный день или +0,45 за интенсивный. Прирост зависит от штаба и усталости; базовый тренировочный потолок — 85, успешный сезон повышает его до 95.</p>'+
+  (camp?'<p><b>Буткемп: '+esc(V4_CONFIG.camp.tiers[camp.tier].label)+'</b> · дневная прибавка и усиление прироста включены в прогноз.</p>':'<p>Буткемп дополнительно усиливает рост формы. Восстановление и пропуск не дают обычной тренировочной прибавки.</p>')+'<strong>'+fmt(form)+
   (available?' → '+fmt(nextForm)+' <small>'+delta(nextForm-form)+'</small>':'')+
   '</strong>'+trainingBar33(form,nextForm)+'</section>'+
   '<div class="training-layout33"><section class="panel training-choice33"><h2>Фокус тренировки</h2><div>'+
