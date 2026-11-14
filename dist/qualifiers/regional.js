@@ -38,7 +38,7 @@ Qualifiers.regionalState=function(e){
  e.regionalState=a;assignDates13(a);e.schedule6=structuredClone(a.schedule);e.seeds6={...a.seeds};e.gsl6=a.gsl;return a;
 };
 Qualifiers.regionalWindow=function(parent,own){
- const C=QUALIFIERS.regional,duration=C.duration,earliest=Math.max(S.day,parent.day-C.startLead),latest=parent.day-QUALIFIERS.listLead-duration;
+ const C=QUALIFIERS.regional,duration=C.duration,earliest=Math.max(S.day,parent.day-C.startLead),latest=parent.day-(parent.qualification?.rules?.listLead??QUALIFIERS.listLead)-duration;
  const free=day=>!own||!S.events.some(e=>!e.done&&e.id!==parent.id&&this.overlap({day:day-C.minGap,duration:duration+C.minGap*2},e)&&(e.entrants||e.qualified13||e.qualification?.invited?.map(v=>v.team)||[]).includes(S.club));
  for(let day=earliest;day<=latest;day++){
   if(free(day))return day;
@@ -46,7 +46,7 @@ Qualifiers.regionalWindow=function(parent,own){
  // Keep the manager's official events disjoint. Historical template dates stay
  // in plannedDay21; only career participation moves, as in the existing calendar.
  for(let day=Math.max(earliest,latest+1);day<=earliest+C.maxWindowDelay;day++)if(free(day)){
-  parent.originalDay13??=parent.day;parent.day=day+duration+QUALIFIERS.listLead;
+  parent.originalDay13??=parent.day;parent.day=day+duration+(parent.qualification?.rules?.listLead??QUALIFIERS.listLead);
   parent.qualification.eventDay=parent.day;
   log(parent.name+' перенесён на '+date(parent.day)+': квалификация проходит после занятых официальных дат.');return day;
  }
