@@ -101,6 +101,7 @@ Qualifiers.valid=function(state){
  if(!state.teams.every(t=>t.fame===undefined||Number.isFinite(t.fame)&&t.fame>=QUALIFIERS.fame.min&&t.fame<=QUALIFIERS.fame.max))return false;
  for(const e of state.events){
   const q=e.qualification;if(!q)continue;
+  if(q.majorVersion===4){if(!Majors4.valid(e,state))return false;continue;}
   if(q.qualVersion!==QUALIFIERS.version||!this.supports(e)||!['pending','frozen','complete','blocked'].includes(q.status))return false;
   if(q.status==='pending')continue;
   const C=q.rules;if(!C||!Number.isInteger(C.invites)||C.invites<1||C.invites>=q.fieldSize||!Number.isInteger(C.regionInviteCap)||C.regionInviteCap<1||!Number.isInteger(C.minQuota)||C.minQuota<1||!Number.isInteger(C.maxQuota)||C.maxQuota<C.minQuota||!Number.isInteger(C.listLead)||!C.baseQuotas||QUALIFIERS.regions.some(r=>!Number.isFinite(C.baseQuotas[r])||C.baseQuotas[r]<=0))return false;

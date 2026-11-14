@@ -16,7 +16,7 @@ vm.runInContext('window=globalThis',c);for(let f of files)vm.runInContext(fs.rea
  run('awardYear20=2027;go("trophies")');assert(els.app.innerHTML.includes('Award 2027')&&!els.app.innerHTML.includes('Award 2026'));run('S='+snapshot+';awardYear20=null;');
  run('let fiction20=academy(null,2);profile(fiction20.id)');assert(els.app.innerHTML.includes('Биография не заполнена')&&!els.app.innerHTML.includes('источник биографии'));assert(run('validSave(S)'));
  run('go("match")');assert(els.app.innerHTML.includes('Следующая серия впереди'));
- run('let ne20=nextEvent();S.day=ne20.day;ne20.qualified13=S.teams.slice(0,FORMAT6[formatKey6(ne20)].n).map(t=>t.id);startEvent();go("match")');assert(run('!!S.active'));assert(els.app.innerHTML.length>100);run('playMap()');assert(run('!!S.active.live'));run('profile(0)');assert(run('page==="player"&&!!S.active.live&&validSave(S)'));run('go("match")');assert(els.app.innerHTML.includes('Карта'));
+ run('let ne20=nextEvent();S.day=ne20.day;S.calendar21.installedDay=S.day;delete ne20.qualification;ne20.qualified13=S.teams.slice(0,FORMAT6[formatKey6(ne20)].n).map(t=>t.id);startEvent();go("match")');assert(run('!!S.active'));assert(els.app.innerHTML.length>100);run('playMap()');assert(run('!!S.active.live'));run('profile(0)');assert(run('page==="player"&&!!S.active.live&&validSave(S)'));run('go("match")');assert(els.app.innerHTML.includes('Карта'));
  await run('saveQueue');assert(data.get('ancient-manager-v1'));console.log('PASS v2.0: every tab, all biographies/photos, full-page player profile, dynamic team tags, filters, year/club awards, fictional fallback, contracts, active map navigation and save');
 })().catch(e=>{console.error(e);process.exitCode=1});
 

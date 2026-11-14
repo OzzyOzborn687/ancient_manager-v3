@@ -93,6 +93,8 @@ window.openClubProfile = id => {
  go('clubProfile');
 };
 
+window.clubAudience4 = clubStats;
+
 PAGES.push(['clubProfile','◈','Профиль клуба'], ['sponsors','◇','Спонсоры']);
 const previousHome = home;
 home = function () {
