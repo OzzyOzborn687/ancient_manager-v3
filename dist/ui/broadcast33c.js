@@ -68,7 +68,7 @@ tactics=function(...args){const html=tacticsBefore33C(...args),available=trainin
 const renderBefore33C=render;
 render=function(...args){
  const result=renderBefore33C(...args);if(!S)return result;
- $('mobileNav33c').innerHTML=[['home','Главная','◈'],['squad','Команда','♙'],['match','Матч','▷'],['menu21','Ещё','☰']].map(([key,label,icon])=>'<button aria-current="'+(page===key?'page':'false')+'" onclick="go(\''+key+'\')"><span aria-hidden="true">'+icon+'</span>'+label+'</button>').join('');
+ renderMobileNavigation();
  $('broadcastStatus33c').innerHTML='<span class="c-status-dot"></span><b>'+esc(my().short)+'</b><span>'+date(S.day)+'</span><span>'+esc(S.active?'Серия '+S.active.score.join(' : '):'Подготовка к турниру')+'</span><strong>3.3 C / ARENA</strong>';
  return result;
 };

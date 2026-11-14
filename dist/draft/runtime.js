@@ -65,11 +65,12 @@ function draftReportUpdate(m){
 function showDraftUpdate(){
  const m=S.active?.live;if(!m)return;
  openModal('<div class="draft-prematch">'+draftReportUpdate(m)+'<div class="draft-actions">'+
-  btn(m.draftUpdatePending?'Начать матч':'Закрыть','confirmDraftUpdate()',true)+'</div></div>');
+  btn(m.draftUpdatePending?(m.quickSimulationPending?'Начать быструю симуляцию':'Начать матч'):'Закрыть','confirmDraftUpdate()',true)+'</div></div>');
 }
 function confirmDraftUpdate(){
- const m=S.active?.live;if(m)m.draftUpdatePending=false;
+ const m=S.active?.live,quick=!!m?.quickSimulationPending;if(m){m.draftUpdatePending=false;m.quickSimulationPending=false;}
  closeModal();save();render();
+ if(quick)return skipMatch22();
 }
 const playBeforeDraftUpdate=playMap;
 playMap=function(...args){

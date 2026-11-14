@@ -1,5 +1,6 @@
 'use strict';
 // A fictional career event. No claims about the real TI 2027 schedule.
+let restoringTICheckpoint=false;
 const TI_REWIND='ti-2027-recovery-1',TI_BACKUP='ancient-manager-before-ti-rewind',TI_CHECKPOINT='ancient-manager-ti-start';
 function isTI(e){return !!e&&circuitSeries(e)==='THE INTERNATIONAL';}
 function ti2027(s=S){return s.events.find(e=>isTI(e)&&(e.calendarKey?.startsWith('circuit-2027-')||/2027/.test(e.name)));}
@@ -16,7 +17,7 @@ async function applyTIRewind(source=null,options={}){
  await saveQueue;
  let protectedCopy=await persist(options.backupKey||TI_BACKUP,raw);
  if(!protectedCopy.ok){S.tiRecoveryError='Возврат к TI отложен: не удалось записать резервную копию. Скачай карьеру в разделе «Сохранения» и освободи место в браузере.';return false;}
- if(exact){S=structuredClone(exact.state);migrate();e=ti2027();}
+ if(exact){restoringTICheckpoint=true;try{S=structuredClone(exact.state);migrate();}finally{restoringTICheckpoint=false;}e=ti2027();}
  else{
   let affected=S.events.filter(x=>x.day>=targetDay),names=new Set(affected.map(x=>x.name)),removed=S.history.filter(h=>names.has(h.event)||h.day>=targetDay);
   S.wins=Math.max(0,S.wins-removed.filter(h=>h.win&&!h.draw).length);S.losses=Math.max(0,S.losses-removed.filter(h=>!h.win&&!h.draw).length);

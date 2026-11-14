@@ -41,7 +41,7 @@ toggleLive4=function(){
 };
 let skipRunning22=false;
 async function skipMatch22(){
- const m=S.active?.live;if(!m||skipRunning22)return;pauseLive4(false);skipRunning22=true;m.window22.pending=false;
+ const m=S.active?.live;if(!m||skipRunning22)return;if(m.draftUpdatePending){showDraftUpdate();return;}pauseLive4(false);skipRunning22=true;m.window22.pending=false;
  try{
   while(S.active?.live===m&&m.finishedSide==null){
    for(let i=0;i<BALANCE22.playback.skipBatch&&m.finishedSide==null;i++)simulateTick4(m,BALANCE22.tick);
