@@ -1,0 +1,131 @@
+{
+  "version": "4.0 B",
+  "atlases": [
+    {
+      "file": "assets/trophies/championships.webp",
+      "cols": 3,
+      "rows": 2
+    },
+    {
+      "file": "assets/trophies/circuit.webp",
+      "cols": 4,
+      "rows": 2
+    }
+  ],
+  "trophies": {
+    "aegis": {
+      "atlas": 0,
+      "col": 0,
+      "row": 0,
+      "label": "Aegis of Champions",
+      "reference": "The International 2024 · Aegis",
+      "source": "https://www.dota2.com/newsentry/4176605502427363584"
+    },
+    "wallachia": {
+      "atlas": 0,
+      "col": 1,
+      "row": 0,
+      "label": "PGL Wallachia",
+      "reference": "PGL Wallachia Season 8 · скульптурный трофей",
+      "source": "https://egamersworld.com/dota2/news/34336/betboom-team-wins-pgl-wallachia-season-8-after-def-F6WDj6r6E"
+    },
+    "blast": {
+      "atlas": 0,
+      "col": 2,
+      "row": 0,
+      "label": "BLAST Slam",
+      "reference": "BLAST Slam I · геометрический трофей",
+      "source": "https://esports.gg/news/dota-2/betboom-break-duck-against-tundra-to-secure-maiden-dota-2-blast-slam-victory/"
+    },
+    "esl": {
+      "atlas": 0,
+      "col": 0,
+      "row": 1,
+      "label": "ESL One",
+      "reference": "ESL One Birmingham 2024",
+      "source": "https://www.gosugamers.net/dota2/news/71198-esl-one-birmingham-is-down-to-the-top-3-teams"
+    },
+    "ewc": {
+      "atlas": 0,
+      "col": 1,
+      "row": 1,
+      "label": "Esports World Cup",
+      "reference": "Esports World Cup · Dota 2, 2025",
+      "source": "https://pt.egamersworld.com/blog/dota-2-esports-world-cup-2025-review-BuPL2G7MGb"
+    },
+    "online": {
+      "atlas": 0,
+      "col": 2,
+      "row": 1,
+      "label": "Онлайн-трофей",
+      "original": true
+    },
+    "dachaDubai": {
+      "atlas": 1,
+      "col": 0,
+      "row": 0,
+      "label": "BetBoom Dacha Dubai",
+      "reference": "BetBoom Dacha Dubai 2024 · изготовитель GESAMT",
+      "source": "https://gesamtproduction.com/betboom_dacha_dota_2_dubai_2024"
+    },
+    "dachaBelgrade": {
+      "atlas": 1,
+      "col": 1,
+      "row": 0,
+      "label": "BetBoom Dacha Belgrade",
+      "reference": "BetBoom Dacha Belgrade · Dota 2, 2024",
+      "source": "https://liquipedia.net/dota2/BetBoom_Dacha/Belgrade/2024"
+    },
+    "fissure": {
+      "atlas": 1,
+      "col": 2,
+      "row": 0,
+      "label": "FISSURE Playground",
+      "reference": "FISSURE Playground 1 · Dota 2, 2025",
+      "source": "https://liquipedia.net/commons/File:Tundra_Esports_win_FISSURE_PLAYGROUND_1_DOTA2.jpg"
+    },
+    "riyadh": {
+      "atlas": 1,
+      "col": 3,
+      "row": 0,
+      "label": "Riyadh Masters",
+      "reference": "Riyadh Masters · Dota 2, 2024",
+      "source": "https://www.spa.gov.sa/N2143441"
+    },
+    "future": {
+      "atlas": 1,
+      "col": 0,
+      "row": 1,
+      "label": "Games of the Future",
+      "reference": "Games of the Future · Dota 2, Казань 2024",
+      "source": "https://www.championat.com/cybersport/article-5459986-itogi-igr-buduschego-2024-rezultaty-obzor-vpechatleniya-sorevnovaniya-buduschee.html"
+    },
+    "elite": {
+      "atlas": 1,
+      "col": 1,
+      "row": 1,
+      "label": "Elite League LAN",
+      "reference": "Elite League Season 2 · Лима, 2024",
+      "source": "https://www.championat.com/cybersport/article-5711330-istoriya-team-liquid-eto-chempiony-the-international-2024-po-dote.html"
+    },
+    "wallachiaAxes": {
+      "atlas": 1,
+      "col": 2,
+      "row": 1,
+      "label": "PGL Wallachia · ранний кубок",
+      "reference": "PGL Wallachia Season 1 · скрещённые топоры",
+      "source": "https://escharts.com/pt/news/highest-earning-dota-2-esports-players"
+    },
+    "onlineGreen": {
+      "atlas": 1,
+      "col": 3,
+      "row": 1,
+      "label": "Онлайн-трофей",
+      "original": true
+    },
+    "pending": {
+      "label": "Изображение кубка уточняется",
+      "pending": true
+    }
+  }
+}
