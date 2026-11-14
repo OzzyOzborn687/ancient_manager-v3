@@ -4,7 +4,7 @@
 const policyBefore5A=Admissions5.policy;
 Admissions5.policy=function(e){
  const old=policyBefore5A.call(this,e);if(!old)return old;
- const series=circuitSeries(e),allowed=['BLAST SLAM','PGL WALLACHIA','ESL ONE'].includes(series);
+ const series=circuitSeries(e),allowed=['BLAST SLAM','PGL WALLACHIA','ESL ONE','DREAMLEAGUE'].includes(series);
  const slots=series==='BLAST SLAM'?2:1,field=old.field;
  return {...old,field,direct:allowed?field-slots:field,quotas:allowed?{GLOBAL:slots}:{},format:old.format,inviteRegion:undefined,label:'V5.0 A · региональный рейтинг',note:allowed?'Лидер каждого региона получает прямой инвайт. Оставшиеся прямые места — следующим командам по региональному месту и рейтингу сезона. '+slots+' мест на квалификацию на весь турнир.':'Все места — прямые инвайты по региональному рейтингу. Квалификаций нет.'};
 };
