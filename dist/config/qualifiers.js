@@ -1,8 +1,14 @@
 'use strict';
 const QUALIFIERS=Object.freeze({
- version:1,operators:['BLAST SLAM','PGL WALLACHIA','ESL ONE','DREAMLEAGUE'],
- regions:['EEU','EU','CN','SEA','NA'],invites:6,regionInviteCap:2,
- baseQuotas:{EEU:3,EU:2,CN:2,SEA:2,NA:1},minQuota:1,maxQuota:4,
+ version:2,operators:['BLAST SLAM','PGL WALLACHIA','ESL ONE','DREAMLEAGUE'],
+ // Fixed core teams that always receive invites on operator events
+ // and form the mandatory field on all other tournaments.
+ mandatoryTeamNames:[
+  'Team Spirit','PARIVISION','BetBoom Team','Team Liquid','Xtreme Gaming',
+  '1w Team','OG','Aurora Gaming','LGD Gaming','Natus Vincere','GamerLegion'
+ ],
+ regions:['EEU','EU','CN','SEA','NA'],invites:11,regionInviteCap:4,
+ baseQuotas:{EEU:3,EU:2,CN:2,SEA:2,NA:1},minQuota:0,maxQuota:5,
  snapshotLead:35,listLead:7,defaultDuration:10,
  weights:{
   'BLAST SLAM':{season:30,eloForm:25,history:15,fame:30},
@@ -12,7 +18,7 @@ const QUALIFIERS=Object.freeze({
  },
  normalNeutral:.5,eloForm:{elo:.7,form:.3},historyDays:365,historyExponent:1,
  homeById:{4:'EU',6:'SEA',7:'CN',10:'SEA',14:'EEU',16:'CN',17:'EEU',18:'SEA',19:'NA',20:'NA',21:'CN',22:'EEU',23:'SEA'},
- aliases:{CIS:'EEU','Китай':'CN','Европа':'EU','Северная Америка':'NA','ЮВА':'SEA'},
+ aliases:{CIS:'EEU','Китай':'CN','Европа':'EU','Северная Америка':'NA','ЮВА':'SEA','INT':'EU'},
  fame:{min:0,max:100,skillReference:50,skillWeight:1.2,pointsWeight:.1,dailyDecay:.9995,
   bestPlayerGrowth:.15,mapWin:.12,upsetEloScale:400,upsetCap:1,upsetWin:.4,eventWin:4,placeExponent:1},
  provisional:{bo:3,eloScale:400,eloBase:10,formReference:75,formWeight:2,minProbability:.03,maxProbability:.97},
