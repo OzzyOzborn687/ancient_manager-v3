@@ -48,8 +48,8 @@ const Camp4={
   const e=S.events.find(e=>e.id===b.event);
   if(!e||e.done||S.day>e.day||this.busy(p.team)){this.close(b,'interrupted');return;}
   const day=b.days[S.day]??={players:{}};if(Object.hasOwn(day.players,p.id))return;
-  const cfg=V4_CONFIG.camp.tiers[b.tier],old=p.form,fatigue=p.fatigue,g=p.progress21;
-  const ceiling=Math.min(95,Math.max(g?.initialForm||75,75+20*Math.min(1,(g?.successfulDays||0)/60))+5);
+  const cfg=V4_CONFIG.camp.tiers[b.tier],old=p.form,fatigue=p.fatigue;
+  const ceiling=Math.min(95,trainingFormCeiling5C(p)+5);
   if(allowForm)p.form=Math.max(old,Math.min(ceiling,old+cfg.form+Math.max(0,old-beforeForm)*cfg.growth));
   p.fatigue=Math.max(0,p.fatigue-cfg.recovery);
   day.players[p.id]={form:p.form-old,recovery:fatigue-p.fatigue};

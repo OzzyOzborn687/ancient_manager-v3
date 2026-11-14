@@ -1,0 +1,699 @@
+{
+  "provider": "CyberScore",
+  "retrieved": "2026-11-14",
+  "players": [
+    {
+      "name": "33",
+      "key": "33",
+      "file": "assets/players/33.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/63339820-57e6-4fa3-9d71-eaf84fb12919.webp",
+      "profile": "https://cyberscore.live/en/players/33/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "9Class",
+      "key": "9class",
+      "file": "assets/players/9class.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/40338a48-415a-4f58-a9a0-250a522d8bc5.webp",
+      "profile": "https://cyberscore.live/en/players/9class/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Abed",
+      "key": "abed",
+      "file": "assets/players/abed.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/cb046768-f269-4017-ac0b-14c2f764015d.webp",
+      "profile": "https://cyberscore.live/en/players/abed/",
+      "width": 360,
+      "height": 359
+    },
+    {
+      "name": "Ame",
+      "key": "ame",
+      "file": "assets/players/ame.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/03251c1c-5e4c-4431-bf44-f438dd58fc52.webp",
+      "profile": "https://cyberscore.live/en/players/ame/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Ari",
+      "key": "ari",
+      "file": "assets/players/ari.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/ff5882aa-0dca-4a30-9b5b-41ebc9d878e8.webp",
+      "profile": "https://cyberscore.live/en/players/ari/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "ATF",
+      "key": "atf",
+      "file": "assets/players/atf.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/71ad22b9-91c6-4137-8b8a-a3b3bc7c2ec2.webp",
+      "profile": "https://cyberscore.live/en/players/atf/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Batyuk",
+      "key": "batyuk",
+      "file": "assets/players/batyuk.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/daa23d5e-239b-410a-b7c2-b12eb2a86dee.webp",
+      "profile": "https://cyberscore.live/en/players/batyuk/",
+      "width": 262,
+      "height": 440
+    },
+    {
+      "name": "Bignum",
+      "key": "bignum",
+      "file": "assets/players/bignum.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/d368d14e-ce37-4000-93be-251549304744.webp",
+      "profile": "https://cyberscore.live/en/players/bignum/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "BoBoKa",
+      "key": "boboka",
+      "file": "assets/players/boboka.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/0f965d42-b80d-4c61-bdd8-90f75b960936.webp",
+      "profile": "https://cyberscore.live/en/players/boboka/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Boxi",
+      "key": "boxi",
+      "file": "assets/players/boxi.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/4efbdb05-fd16-4ef4-8b91-2e3ac2106fdf.webp",
+      "profile": "https://cyberscore.live/en/players/boxi/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "bzm",
+      "key": "bzm",
+      "file": "assets/players/bzm.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/1932333b-72e2-4dab-9e76-0b431b24e72b.webp",
+      "profile": "https://cyberscore.live/en/players/bzm/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "CHIRA_JUNIOR",
+      "key": "chira-junior",
+      "file": "assets/players/chira-junior.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/fbde8cb7-450f-4433-a12d-867bf016ce66.webp",
+      "profile": "https://cyberscore.live/en/players/chira-junior/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Collapse",
+      "key": "collapse",
+      "file": "assets/players/collapse.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/3dd0e53a-0339-4d22-ac0a-ba8341802252.webp",
+      "profile": "https://cyberscore.live/en/players/collapse/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Davai Lama",
+      "key": "davai-lama",
+      "file": "assets/players/davai-lama.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/2d91d973-09c2-45cd-a949-7553243d25f5.webp",
+      "profile": "https://cyberscore.live/en/players/davai-lama/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "daze",
+      "key": "daze",
+      "file": "assets/players/daze.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/8df40b19-2c95-47bd-81c4-b43c1c5779b3.webp",
+      "profile": "https://cyberscore.live/en/players/daze/",
+      "width": 274,
+      "height": 440
+    },
+    {
+      "name": "DM",
+      "key": "dm",
+      "file": "assets/players/dm.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/798f9654-f6f9-4704-ab38-94fd965b4439.webp",
+      "profile": "https://cyberscore.live/en/players/dm/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Dukalis",
+      "key": "dukalis",
+      "file": "assets/players/dukalis.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/0d3d0d27-6379-4311-96fb-c48dcdc0a3ba.webp",
+      "profile": "https://cyberscore.live/en/players/dukalis/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "elmisho",
+      "key": "elmisho",
+      "file": "assets/players/elmisho.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/7e744743-df59-459d-9c89-1f4fbfa67a08.webp",
+      "profile": "https://cyberscore.live/en/players/elmisho/",
+      "width": 360,
+      "height": 419
+    },
+    {
+      "name": "Fayde",
+      "key": "fayde",
+      "file": "assets/players/fayde.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/ffddda06-9ad4-40d1-b717-7920630611d5.webp",
+      "profile": "https://cyberscore.live/en/players/fayde/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "fy",
+      "key": "fy",
+      "file": "assets/players/fy.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/e6070f24-a76c-427b-9d98-c2f376e55e6f.webp",
+      "profile": "https://cyberscore.live/en/players/fy/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Ghost",
+      "key": "ghost",
+      "file": "assets/players/ghost.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/d0167d17-4fcf-458d-857a-0633b14d7bd6.webp",
+      "profile": "https://cyberscore.live/en/players/ghost/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "gotthejuice",
+      "key": "gotthejuice",
+      "file": "assets/players/gotthejuice.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/10/66e6c549-a3e9-4bec-afe5-610c5c400828.webp",
+      "profile": "https://cyberscore.live/en/players/gotthejuice/",
+      "width": 360,
+      "height": 391
+    },
+    {
+      "name": "kaori",
+      "key": "kaori",
+      "file": "assets/players/kaori.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/0030fdf0-a3e7-4187-b0a8-5ddbbb1988fd.webp",
+      "profile": "https://cyberscore.live/en/players/kaori/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Kataomi",
+      "key": "kataomi",
+      "file": "assets/players/kataomi.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/2b520691-d78b-4c2b-9eae-85341508f037.webp",
+      "profile": "https://cyberscore.live/en/players/kataomi/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Kiritych",
+      "key": "kiritych",
+      "file": "assets/players/kiritych.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/4eca4c57-d269-4043-a8fe-26b3fbdceb7a.webp",
+      "profile": "https://cyberscore.live/en/players/kiritych/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Larl",
+      "key": "larl",
+      "file": "assets/players/larl.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/05e34a11-5894-4650-a822-c56dd6b504f4.webp",
+      "profile": "https://cyberscore.live/en/players/larl/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Lorenof",
+      "key": "lorenof",
+      "file": "assets/players/lorenof.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/8f51f5da-7829-4761-9c71-de51f6bf7dbe.webp",
+      "profile": "https://cyberscore.live/en/players/lorenof/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Malady",
+      "key": "malady",
+      "file": "assets/players/malady.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/95b779aa-aeac-4d27-b820-8347b5b2867f.webp",
+      "profile": "https://cyberscore.live/en/players/malady/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Malrine",
+      "key": "malrine",
+      "file": "assets/players/malrine.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/47987e75-8c66-4e70-b05d-86c0000cfc65.webp",
+      "profile": "https://cyberscore.live/en/players/malrine/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "miCKe",
+      "key": "micke",
+      "file": "assets/players/micke.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/a0137ab3-a398-49e7-bebd-50fc01e0b691.webp",
+      "profile": "https://cyberscore.live/en/players/micke/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "MieRo",
+      "key": "miero",
+      "file": "assets/players/miero.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/464eb164-4911-413d-b700-06bf857275bd.webp",
+      "profile": "https://cyberscore.live/en/players/miero/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Mikoto",
+      "key": "mikoto",
+      "file": "assets/players/mikoto.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/b6c83839-9ab8-4bd4-9710-1545ae451022.webp",
+      "profile": "https://cyberscore.live/en/players/mikoto/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Mira",
+      "key": "mira",
+      "file": "assets/players/mira.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/0d65af6a-64cc-4840-b238-cf03f9302a54.webp",
+      "profile": "https://cyberscore.live/en/players/mira/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Natsumi-",
+      "key": "natsumi",
+      "file": "assets/players/natsumi.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/d3edaed2-9c68-49d3-a9b0-366401717c59.webp",
+      "profile": "https://cyberscore.live/en/players/natsumi/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Niku",
+      "key": "niku",
+      "file": "assets/players/niku.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/10/192c8343-81bc-4281-8172-84a74e5dd374.webp",
+      "profile": "https://cyberscore.live/en/players/niku/",
+      "width": 346,
+      "height": 440
+    },
+    {
+      "name": "No[o]ne-",
+      "key": "noone",
+      "file": "assets/players/noone.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/7963a22e-af32-4b29-a692-b504fba44e2e.webp",
+      "profile": "https://cyberscore.live/en/players/noone/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "not me",
+      "key": "not-me",
+      "file": "assets/players/not-me.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/d1caeacb-9307-4338-b578-c347349ce1c1.webp",
+      "profile": "https://cyberscore.live/en/players/not-me/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "NothingToSay",
+      "key": "nothingtosay",
+      "file": "assets/players/nothingtosay.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/5938b596-1cc4-4118-af1f-9400be5be2f1.webp",
+      "profile": "https://cyberscore.live/en/players/nothingtosay/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Noticed",
+      "key": "noticed",
+      "file": "assets/players/noticed.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/6a80e8a2-568d-449d-a653-d7263925550a.webp",
+      "profile": "https://cyberscore.live/en/players/noticed/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "OmaR",
+      "key": "omar",
+      "file": "assets/players/omar.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/fbb64dc2-d0b5-42ab-b774-f0ff153dffeb.webp",
+      "profile": "https://cyberscore.live/en/players/omar/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "OneJey",
+      "key": "onejey",
+      "file": "assets/players/onejey.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/b08cf677-0f10-4820-a7b9-d617abcdf2da.webp",
+      "profile": "https://cyberscore.live/en/players/onejey/",
+      "width": 305,
+      "height": 440
+    },
+    {
+      "name": "panto",
+      "key": "panto",
+      "file": "assets/players/panto.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/66bcb589-fb88-4ec7-93df-3f65d0761cf3.webp",
+      "profile": "https://cyberscore.live/en/players/panto/",
+      "width": 360,
+      "height": 348
+    },
+    {
+      "name": "Paparazi",
+      "key": "paparazi",
+      "file": "assets/players/paparazi.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/aa293325-60d8-4680-810f-4adff9812ded.webp",
+      "profile": "https://cyberscore.live/en/players/paparazi/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "plAnet",
+      "key": "planet",
+      "file": "assets/players/planet.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/84f27c3d-0dc0-402c-82c0-69e0ee37f5a8.webp",
+      "profile": "https://cyberscore.live/en/players/planet/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "pma",
+      "key": "pma",
+      "file": "assets/players/pma.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/10/33620dd3-209e-4b6e-b0e4-f5aa13738e35.webp",
+      "profile": "https://cyberscore.live/en/players/pma/",
+      "width": 328,
+      "height": 440
+    },
+    {
+      "name": "Pure",
+      "key": "pure",
+      "file": "assets/players/pure.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/e0b476a2-fdc3-4f29-aae3-4328e5f5e222.webp",
+      "profile": "https://cyberscore.live/en/players/pure/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "RCY",
+      "key": "rcy",
+      "file": "assets/players/rcy.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/9eb53ecd-ada2-46d0-ad55-b34b0b9a2007.webp",
+      "profile": "https://cyberscore.live/en/players/rcy/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Riddys",
+      "key": "riddys",
+      "file": "assets/players/riddys.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/10/ad093e38-e3a8-4ee5-9510-527766309a1d.webp",
+      "profile": "https://cyberscore.live/en/players/riddys/",
+      "width": 348,
+      "height": 440
+    },
+    {
+      "name": "rue",
+      "key": "rue",
+      "file": "assets/players/rue.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/02e4acf3-8585-414b-aeac-75cd59ed4649.webp",
+      "profile": "https://cyberscore.live/en/players/rue/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Saksa",
+      "key": "saksa",
+      "file": "assets/players/saksa.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/cbf13dee-9c28-48a0-89e3-8de35485ee09.webp",
+      "profile": "https://cyberscore.live/en/players/saksa/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Satanic",
+      "key": "satanic",
+      "file": "assets/players/satanic.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/6557c7fe-b385-4a3b-9ada-ee59808c527e.webp",
+      "profile": "https://cyberscore.live/en/players/satanic/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Save-",
+      "key": "save",
+      "file": "assets/players/save.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/f6cf4478-9da4-46ae-bd78-2a38018301ab.webp",
+      "profile": "https://cyberscore.live/en/players/save/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Shiro",
+      "key": "shiro",
+      "file": "assets/players/shiro.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/0c11874e-8845-4eda-901e-8e8e55ef13ba.webp",
+      "profile": "https://cyberscore.live/en/players/shiro/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Skem",
+      "key": "skem",
+      "file": "assets/players/skem.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/e01a3aa4-a4fb-4557-ad23-5f34a3770adf.webp",
+      "profile": "https://cyberscore.live/en/players/skem/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "skiter",
+      "key": "skiter",
+      "file": "assets/players/skiter.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/03894a04-932e-4f55-8130-93a768f61e19.webp",
+      "profile": "https://cyberscore.live/en/players/skiter/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Sneyking",
+      "key": "sneyking",
+      "file": "assets/players/sneyking.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/68e6ab0b-86a5-4eca-bc12-59966a887b9a.webp",
+      "profile": "https://cyberscore.live/en/players/sneyking/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Speeed",
+      "key": "speeed",
+      "file": "assets/players/speeed.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/d282c043-2b1d-496c-a70f-87f3d06fc08c.webp",
+      "profile": "https://cyberscore.live/en/players/speeed/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "SSS",
+      "key": "sss",
+      "file": "assets/players/sss.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/c7267cea-26e3-4b99-a214-27cac95876e6.webp",
+      "profile": "https://cyberscore.live/en/players/sss/",
+      "width": 280,
+      "height": 440
+    },
+    {
+      "name": "SumaiL",
+      "key": "sumail",
+      "file": "assets/players/sumail.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/55b40593-b14f-436c-81ce-3dc535087c7e.webp",
+      "profile": "https://cyberscore.live/en/players/sumail/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "swedenstrong",
+      "key": "swedenstrong",
+      "file": "assets/players/swedenstrong.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/2b6306f9-d887-401c-bed9-8c2709407d52.webp",
+      "profile": "https://cyberscore.live/en/players/swedenstrong/",
+      "width": 360,
+      "height": 370
+    },
+    {
+      "name": "Tailung",
+      "key": "tailung",
+      "file": "assets/players/tailung.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/2c98a2f0-91b7-42b8-8f06-9a603f73ff3b.webp",
+      "profile": "https://cyberscore.live/en/players/tailung/",
+      "width": 360,
+      "height": 434
+    },
+    {
+      "name": "Thiolicor",
+      "key": "thiolicor",
+      "file": "assets/players/thiolicor.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/1caed694-791a-4ec0-884d-dc44454c9ad7.webp",
+      "profile": "https://cyberscore.live/en/players/thiolicor/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "tOfu",
+      "key": "tofu",
+      "file": "assets/players/tofu.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/e5ccf34d-f30c-451c-8a95-20291ea4e959.webp",
+      "profile": "https://cyberscore.live/en/players/tofu/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Topson",
+      "key": "topson",
+      "file": "assets/players/topson.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/da56d5dd-380d-4cb1-83c6-d80849f5e46d.webp",
+      "profile": "https://cyberscore.live/en/players/topson/",
+      "width": 360,
+      "height": 419
+    },
+    {
+      "name": "watson",
+      "key": "watson",
+      "file": "assets/players/watson.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/2c07acb5-ae7e-4230-b47f-f3ccc3b6988c.webp",
+      "profile": "https://cyberscore.live/en/players/watson/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Whitemon",
+      "key": "whitemon",
+      "file": "assets/players/whitemon.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/a0d51a74-ebca-4c9d-ab31-54f5e7b9d835.webp",
+      "profile": "https://cyberscore.live/en/players/whitemon/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Wisper",
+      "key": "wisper",
+      "file": "assets/players/wisper.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/b89531c9-9db1-4993-a50d-fcb8bb3bc1fe.webp",
+      "profile": "https://cyberscore.live/en/players/wisper/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Wits",
+      "key": "wits",
+      "file": "assets/players/wits.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/23af9e46-1dbf-4d3a-8d53-56de1bd8d2f1.webp",
+      "profile": "https://cyberscore.live/en/players/wits/",
+      "width": 262,
+      "height": 440
+    },
+    {
+      "name": "Ws`",
+      "key": "ws",
+      "file": "assets/players/ws.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/c1a2be72-19af-4869-a434-c0e6a42b4171.webp",
+      "profile": "https://cyberscore.live/en/players/ws/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "XinQ",
+      "key": "xinq",
+      "file": "assets/players/xinq.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/7fab319f-32e7-4638-a152-fa34ce5d295e.webp",
+      "profile": "https://cyberscore.live/en/players/xinq/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Xm",
+      "key": "xm",
+      "file": "assets/players/xm.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/d9733e38-203d-4def-b3f5-9753bae6739d.webp",
+      "profile": "https://cyberscore.live/en/players/xm/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Xxs",
+      "key": "xxs",
+      "file": "assets/players/xxs.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/2203676b-f861-43a7-a5ee-f23ef0d5fdee.webp",
+      "profile": "https://cyberscore.live/en/players/xxs/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "y`",
+      "key": "y",
+      "file": "assets/players/y.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/ca21f4a5-8d6b-42ba-ada7-2f2bd1828a5b.webp",
+      "profile": "https://cyberscore.live/en/players/y/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Yang",
+      "key": "yang",
+      "file": "assets/players/yang.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/6/8c851b65-5e56-4559-9d8c-c033470ffc2c.webp",
+      "profile": "https://cyberscore.live/en/players/yang/",
+      "width": 360,
+      "height": 365
+    },
+    {
+      "name": "Yatoro",
+      "key": "yatoro",
+      "file": "assets/players/yatoro.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/a4072605-076f-4cc9-acb1-87232c559358.webp",
+      "profile": "https://cyberscore.live/en/players/yatoro/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "Yuma",
+      "key": "yuma",
+      "file": "assets/players/yuma.webp",
+      "source": "https://media.cyberscore.live/static/players/2026/8/a06516e2-47a5-4cc4-9dac-be8cada6b0fc.webp",
+      "profile": "https://cyberscore.live/en/players/yuma/",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "name": "zeal",
+      "key": "zeal",
+      "file": "assets/players/zeal.webp",
+      "source": "https://media.cyberscore.live/static/players/2025/10/0a5bc47e-bc54-4d09-839f-2f50be54f97a.webp",
+      "profile": "https://cyberscore.live/en/players/zeal/",
+      "width": 302,
+      "height": 440
+    }
+  ]
+}
