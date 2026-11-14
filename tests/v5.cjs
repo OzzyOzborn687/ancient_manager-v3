@@ -28,7 +28,7 @@ for(const key of run('Object.keys(RULES5)')){
 }
 run(`S=JSON.parse(${JSON.stringify(initial)});`);
 // Full 16-team DreamLeague: 56 BO3 group series and DE12 with a BO5 final.
-run(`const dream=S.events.find(e=>circuitSeries(e)==='DREAMLEAGUE');S.events=[dream];S.calendar21.installedDay=100000;S.day=dream.day;dream.qualification.status='complete';dream.qualification.qualified=S.teams.slice(0,16).map(t=>t.id);dream.qualified13=[...dream.qualification.qualified];dream.qualification13={invited:[S.club],matches:[]};seekMatch6=()=>{};startEvent();`);
+run(`const dream=S.events.find(e=>circuitSeries(e)==='DREAMLEAGUE');S.events=[dream];S.calendar21.installedDay=100000;S.day=dream.day;dream.qualification.status='complete';dream.qualification.completedDay=S.day-15;dream.participationConfirmed5b=S.day-15;dream.qualification.qualified=S.teams.slice(0,16).map(t=>t.id);dream.qualified13=[...dream.qualification.qualified];dream.qualification13={invited:[S.club],matches:[]};seekMatch6=()=>{};startEvent();`);
 assert.equal(run('S.active.entrants.length'),16);assert.equal(run('S.active.groupIds.length'),2);
 assert.equal(run('S.active.schedule.length'),56);assert(run('S.active.schedule.every(n=>n.bo===3)'));
 run(`while(S.active.cursor<S.active.schedule.length){recordNode6(S.active,S.active.schedule[S.active.cursor],'2:0');S.active.cursor++;}phaseNext6(S.active);`);
