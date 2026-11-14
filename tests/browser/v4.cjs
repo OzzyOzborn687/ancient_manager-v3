@@ -7,7 +7,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),fs=require
   const base=(process.env.GAME_URL||'http://127.0.0.1:4173').replace(/\/$/,''),dir=process.env.BROWSER_RESULTS_DIR||'/tmp/ancient-manager-browser/v4';fs.mkdirSync(dir,{recursive:true});
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failures.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
-  await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
+  await require('./legacy-v4.cjs')(page,base);
+ await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
   await page.setViewportSize({width:390,height:1000});
   await page.locator('#mobileNav33c').getByRole('button',{name:'Буткемп',exact:true}).click();
   assert(await page.evaluate(()=>page==='bootcamp'));

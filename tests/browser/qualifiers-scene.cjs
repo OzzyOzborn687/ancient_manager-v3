@@ -7,6 +7,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),assert=req
  const dir=process.env.BROWSER_RESULTS_DIR||'/tmp/ancient-manager-browser/qualifiers-scene';fs.mkdirSync(dir,{recursive:true});
  page.on('pageerror',e=>errors.push(e.message));
  await page.route('**/*',route=>{const url=route.request().url();if(/^https?:/.test(url)&&!url.startsWith(base)){external.push(url);return route.abort();}return route.continue();});
+ await require('./legacy-v4.cjs')(page,base);
  await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.ancientStartup?.ready);
  async function fixture(invited,large=false){
   await page.evaluate(({invited,large})=>{

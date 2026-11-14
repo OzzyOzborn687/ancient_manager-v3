@@ -18,6 +18,8 @@ function mirrorMap26(seed,tactics,heroes=['Juggernaut','Puck','Mars','Rubick','O
   Object.assign(m.sides[1].heroes[role],common,{zone:laneZone6(1,role),destination:laneZone6(1,role)});
  }
  m.teamRating=[85,85];m.cohesion6=[80,80];m.preparation21=[0,0];m.scout13=[0,0];
+ // A refreshed real roster must not change the conditions of a mirror fixture.
+ if(m.amSynergy)m.amSynergy[1]=structuredClone(m.amSynergy[0]);
  S.seed=seed+73;
  return m;
 }
