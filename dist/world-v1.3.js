@@ -64,7 +64,7 @@ tick=function(){
   let target=mode==='intensive'?84:mode==='rest'?76:80;
   if(own){if(!skipTraining33)S.chem=clamp(S.chem+(target-S.chem)*.015);}else c.chem=clamp(c.chem+(target-c.chem)*.015);
   if(S.day%7===0){let salary=S.players.filter(p=>p.team===t.id).reduce((n,p)=>n+p.salary,0)+(own?S.coach:c.coach)*120,base=65000+Math.min(40000,c.seasonPoints*50)+(own?S.trophies*5000:0);
-   pay13(t.id,base,'Спонсоры');pay13(t.id,-salary,'Зарплаты игроков и штаба');pay13(t.id,-facility*6000,'База и операционные расходы');
+   pay13(t.id,typeof Sponsor4A==='undefined'?base:Sponsor4A.weekly(t.id),'Спонсоры');pay13(t.id,-salary,'Зарплаты игроков и штаба');pay13(t.id,-facility*6000,'База и операционные расходы');
    let debt=own?S.world13:c;
    if(funds13(t.id)<0&&debt.supportYear!==season){pay13(t.id,500000,'Возвратный заём совета');debt.supportYear=season;debt.debt+=500000;if(own)log('Совет выдал заём $500 000. Помощь доступна один раз за сезон; долг погашается из свободных средств.');}
    if(funds13(t.id)>400000&&debt.debt>0){let amount=Math.min(25000,debt.debt);pay13(t.id,-amount,'Погашение займа');debt.debt-=amount;}

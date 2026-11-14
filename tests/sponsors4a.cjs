@@ -1,0 +1,25 @@
+'use strict';
+const assert=require('node:assert/strict'),h=require('./harness22.cjs')({modelVersion:8}),{run}=h;
+run(`function sponsorFixture4A(){fresh();S.calendar21.installedDay=100000;S.events=[{id:999,name:'Future fixture',series:'ANCIENT',day:10000,duration:1,pool:1000}];delete S.sponsors4a;S.budget=1000000;S.trophies=0;for(const t of S.teams)clubState13(t).seasonPoints=0;Sponsor4A.install();}
+function title4A(id,team=S.club,pool=1000000){const e={id,name:'Sponsor championship '+id,day:S.day,pool,done:true,champion:team};S.events.push(e);Sponsor4A.settle(e);return e;}`);
+assert(run(`(()=>{sponsorFixture4A();return Sponsor4A.weekly(S.club)===120000&&Sponsor4A.weekly(1)===120000})()`),'raised weekly floor and equal AI rules');
+assert(run(`(()=>{sponsorFixture4A();S.day=6;tick();return S.ledger.find(r=>r.text==='Спонсоры'&&r.day===7)?.n===120000&&validSave(S)})()`),'actual weekly payment uses displayed contract, not old plus extra');
+assert(run(`(()=>{sponsorFixture4A();const before=S.budget,e=title4A(1001);const first=S.budget;Sponsor4A.settle(e);return first-before===100000&&first===S.budget&&e.sponsor4a.bonus===100000&&S.prizes===0})()`),'once-only title premium separate from prize winnings');
+assert(run(`(()=>{sponsorFixture4A();title4A(1001);title4A(1002);const c=Sponsor4A.club(S.club),n=Sponsor4A.pending(),before=S.budget;title4A(1003);return c.level===1&&n.from===0&&n.to===1&&n.after===Math.round(n.before*1.2)&&S.budget-before===120000&&S.sponsors4a.notices.length===1&&validSave(S)})()`),'two titles raise future weekly and title payments with one notice');
+assert(run(`(()=>{sponsorFixture4A();for(let i=1;i<=10;i++)title4A(1000+i);return Sponsor4A.factor(S.club)===1.6&&S.sponsors4a.notices.length===3&&Sponsor4A.bonus(10000000,S.club)===560000&&validSave(S)})()`),'four/six-title levels and 60% cap');
+assert(run(`(()=>{sponsorFixture4A();title4A(1001);S.day=91;title4A(1002);return Sponsor4A.club(S.club).level===0&&!Sponsor4A.pending()})()`),'old victories outside 90 days do not unlock a level');
+assert(run(`(()=>{sponsorFixture4A();title4A(1001);title4A(1002);S.day=200;return Sponsor4A.wins(S.club).length===0&&Sponsor4A.factor(S.club)===1.2})()`),'earned sponsorship persists after streak window');
+assert(run(`(()=>{sponsorFixture4A();const before=S.budget;e={id:2000,name:'Qualifier',day:0,pool:10000,done:true,champion:S.club,qualifierFor:100};S.events.push(e);return !Sponsor4A.settle(e)&&S.budget===before&&Sponsor4A.wins(S.club).length===0})()`),'qualifier titles excluded');
+assert(run(`(()=>{sponsorFixture4A();title4A(1001,1);const before=S.budget,ai=funds13(1);title4A(1002,1);return S.budget===before&&funds13(1)-ai===100000&&Sponsor4A.club(1).level===1&&!Sponsor4A.pending()})()`),'AI gets its own premium and never human notices');
+assert(run(`(()=>{sponsorFixture4A();const old={id:1001,day:0,pool:1000000,done:true,champion:S.club};S.events.push(old);delete S.sponsors4a;Sponsor4A.install();const before=S.budget;return !Sponsor4A.settle(old)&&S.budget===before&&!old.sponsor4a})()`),'migration never repays old tournaments');
+assert(run(`(()=>{sponsorFixture4A();title4A(1001);title4A(1002);S=JSON.parse(JSON.stringify(S));migrate();const before=S.budget;Sponsor4A.settle(S.events.find(e=>e.id===1002));return S.budget===before&&Sponsor4A.pending().event===1002&&validSave(S)})()`),'pending notice and once-only payment survive migration');
+assert(run(`(()=>{sponsorFixture4A();title4A(1001);title4A(1002);acknowledgeSponsor4A(1002);const x=JSON.parse(JSON.stringify(S));x.sponsors4a.clubs[S.club].level=9;return !Sponsor4A.pending()&&!validSave(x)})()`),'acknowledgement persists and bad tiers are rejected');
+assert(run(`(()=>{sponsorFixture4A();const e={id:2001,name:'Actual finish',series:'FISSURE',day:0,duration:1,pool:1000000,qualified13:[0,1,2,3,4,5,6,7]};S.events.push(e);const a={event:e.id,entrants:[0,1,2,3,4,5,6,7],schedule:[{id:0,pair:[0,1],w:S.club,score:'2:0',bo:3}],placements:Object.fromEntries([0,1,2,3,4,5,6,7].map(id=>[id,id===S.club?1:9])),seeds:{}};finishEvent6(a);const once=S.budget;finishEvent6(a);return e.sponsor4a?.bonus===100000&&once===S.budget&&S.ledger.some(r=>r.text.includes('спонсорская премия'))})()`),'real tournament settlement pays sponsor premium exactly once');
+console.log('PASS V4.0 A sponsors: actual weekly payments, title premium, 90-day levels, caps, notifications, AI, exclusions and save idempotency');
+
+(async()=>{
+ run(`sponsorFixture4A();S.events.push({id:9000,name:'THE INTERNATIONAL 2027',series:'THE INTERNATIONAL',day:10,duration:14,pool:30000000});S.day=11;title4A(9001);S.day=12;title4A(9002);beforeRewind4A=S.budget;persist=async()=>({ok:true});saveQueue=Promise.resolve();`);
+ assert(await run(`applyTIRewind(null,{force:true})`));
+ assert(run(`S.budget===beforeRewind4A-200000&&!S.events.find(e=>e.id===9001).sponsor4a&&Sponsor4A.club(S.club).level===0&&!Sponsor4A.pending()&&validSave(S)`),'TI restart reverses removed title premiums and tiers');
+ console.log('PASS sponsor premiums and contract levels roll back with removed TI results');
+})().catch(e=>{console.error(e);process.exitCode=1});
