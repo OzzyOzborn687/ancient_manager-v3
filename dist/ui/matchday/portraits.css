@@ -1,0 +1,4 @@
+/* Keep source photographs in full colour and at their original brightness. */
+html body.matchday #app.g6-view :is(.portrait20,.portrait20 img,.profile-photo20 img),
+html body.matchday #app .md-player-photo img,
+html body :is(.t52-photo .portrait20,.t52-photo .portrait20 img,.ta-players .portrait20,.ta-players img){filter:none!important;opacity:1!important}
