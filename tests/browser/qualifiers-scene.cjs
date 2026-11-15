@@ -22,8 +22,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),assert=req
   await page.screenshot({path:dir+'/invitation-'+width+'.png'});
   await fixture(false);
   assert(await page.locator('#app').innerText().then(t=>t.includes('Ваш путь — региональная квалификация')));
-  if(width<=700){await page.locator('#mobileNav33c').getByRole('button',{name:'Ещё',exact:true}).click();await page.locator('#app').getByRole('button',{name:/Квалификации/}).click();}
-  else await page.locator('#nav').getByRole('button',{name:/Квалификации/}).click();
+  await page.locator('.md-section-nav').getByRole('button',{name:'Квалификации',exact:true}).click();
   for(const tab of ['Приглашения','Регионы','Мой путь']){
    await page.locator('.qualifier-tabs').getByRole('button',{name:tab,exact:true}).click();
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);
@@ -39,6 +38,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),assert=req
  }
  await page.evaluate(()=>{S.day=nextEvent().day;render();});
  await page.getByRole('button',{name:'Начать квалификацию',exact:true}).click();
+ if(await page.locator('#tournamentIntro52A').count())await page.locator('#tournamentIntro52A .ta-start').click();
  assert(await page.evaluate(()=>Number.isInteger(S.active?.qualifierFor)&&S.active.bo===3));
  await page.locator('#app').getByRole('button',{name:'Матч-центр →',exact:true}).first().click();
  assert(await page.evaluate(()=>page==='match'));

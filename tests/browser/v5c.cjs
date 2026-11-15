@@ -7,8 +7,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V5.2 C');
-  assert((await page.locator('#broadcastStatus33c').innerText()).includes('V5.2 C'));
+  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / BETA V6.0');
+  assert((await page.locator('#broadcastStatus33c').innerText()).includes('BETA V6.0'));
   // Offline from all external sites: inspect every actual core-club squad.
   for(const id of await page.evaluate(()=>S.teams.filter(t=>t.tier===1).map(t=>t.id))){
    await page.evaluate(id=>{S.club=id;go('squad')},id);
