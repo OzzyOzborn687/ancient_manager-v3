@@ -7,10 +7,11 @@ const Background51={
  queue(e,withdrawn=false){
   if(!e||e.done)return;
   e.background51??={version:1,status:'queued',withdrawn,queuedDay:S.day};
-  if(withdrawn){e.background51.withdrawn=true;e.skipRequestedV12=true;}
+  if(withdrawn){e.background51.withdrawn=true;e.skipRequestedV12=true;this.releaseCamp(e);}
   // Declining a main event also declines an unplayed player qualifier for it.
   for(const child of S.events.filter(c=>c.qualifierFor===e.id&&!c.done&&c.entrants?.includes(S.club)))this.queue(child,true);
  },
+ releaseCamp(e){const b=Camp4.plans()[Camp4.key(e.id)];if(b?.status==='active')Camp4.close(b,'cancelled',true);},
  detach(a){
   const e=S.events.find(e=>e.id===a?.event);if(!e||!a.format6)return false;
   if(!a.spectator13&&!a.withdrawnV12&&a.entrants.includes(S.club))return false;
@@ -133,7 +134,7 @@ finishCalendar13=function(e){if(Background51.finishing===e.id){e.completedDay20=
 const tickBeforeBackground51=tick;
 tick=function(){tickBeforeBackground51();Background51.update();save();};
 const migrateBeforeBackground51=migrate;
-migrate=function(...args){migrateBeforeBackground51(...args);if(S.v5?.sceneReady&&S.active?.format6&&(S.active.spectator13||S.active.withdrawnV12||!S.active.entrants.includes(S.club)||S.pendingSkipV12===S.active.event)){if(S.pendingSkipV12===S.active.event)S.active.withdrawnV12=true;Background51.detach(S.active);}if(S.v5?.sceneReady&&!S.active&&S.pendingSkipV12!=null){Background51.queue(S.events.find(e=>e.id===S.pendingSkipV12),true);S.pendingSkipV12=null;}Background51.update();};
+migrate=function(...args){migrateBeforeBackground51(...args);for(const e of S.events)if(e.background51?.withdrawn)Background51.releaseCamp(e);if(S.v5?.sceneReady&&S.active?.format6&&(S.active.spectator13||S.active.withdrawnV12||!S.active.entrants.includes(S.club)||S.pendingSkipV12===S.active.event)){if(S.pendingSkipV12===S.active.event)S.active.withdrawnV12=true;Background51.detach(S.active);}if(S.v5?.sceneReady&&!S.active&&S.pendingSkipV12!=null){Background51.queue(S.events.find(e=>e.id===S.pendingSkipV12),true);S.pendingSkipV12=null;}Background51.update();};
 const fatigueBeforeBackground51=fatigueMap6;
 fatigueMap6=function(...args){if(!Background51.simulating)return fatigueBeforeBackground51(...args);};
 const busyBeforeBackground51=Camp4.busy;
@@ -166,3 +167,13 @@ home=function(...args){return homeBeforeBackground51(...args)+Background51.panel
 calendar=function(...args){return Background51.panel()+calendarViewBeforeBackground51(...args);};
 const validBeforeBackground51=validSave;
 validSave=function(x){return validBeforeBackground51(x)&&Background51.valid(x);};
+
+// The event ID is the one shown on the home card: a stale/double click cannot skip its successor.
+function skipUpcomingTournament51B(eventId){
+ if(S.active||S.practice13||busy13||!S.v5?.sceneReady)return false;
+ const e=nextEvent();if(!e||e.id!==eventId||e.done||e.background51)return false;
+ skipTournament12();
+ const next=nextEvent(),parent=Qualifiers.isRegional(next)?S.events.find(e=>e.id===next.qualifierFor):next;
+ campEvent4=parent?.id??null;selectedQualifierEvent=parent?.id??null;
+ render();return true;
+}
