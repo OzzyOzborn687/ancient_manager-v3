@@ -7,7 +7,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V5.2');
+  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V5.2 A');
   for(const width of [1440,768,390,320]){
    await page.setViewportSize({width,height:1000});
    await page.evaluate(()=>{fresh();S.calendar21.installedDay=100000;S.events=[{id:920,name:'FISSURE Playground first',series:'FISSURE',day:40,duration:3,pool:100000},{id:921,name:'FISSURE Playground next',series:'FISSURE',day:45,duration:3,pool:100000}];Admissions5.install();for(const e of [...S.events])Qualifiers.freeze(e);S.day=33;S.budget=1000000;S.v4.camps={};campEvent4=920;selectedQualifierEvent=920;Camp4.book(920,'elite');go('home')});

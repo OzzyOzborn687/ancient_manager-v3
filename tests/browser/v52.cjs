@@ -2,7 +2,7 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
 (async()=>{const browser=await chromium.launch({...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{}),headless:true,args:['--no-sandbox']});try{
  const page=await browser.newPage(),base=process.env.GAME_URL||'http://127.0.0.1:4173',errors=[],dir=process.env.BROWSER_RESULTS_DIR||'/tmp/am-v52-browser';fs.mkdirSync(dir,{recursive:true});page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
- await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V5.2');
+ await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V5.2 A');
  for(const width of [1440,768,390,320]){
   await page.setViewportSize({width,height:1000});
   const fee=await page.evaluate(()=>{fresh();S.calendar21.installedDay=100000;S.events=[{id:990,name:'Next event',series:'ANCIENT',day:90,pool:100000}];S.budget=10000000;const p=S.players.find(p=>p.name==='Xxs'),old=roster(S.teams[3]).find(q=>q.role===p.role);old.team=null;old.active=false;p.team=3;p.active=true;clubState13(S.teams[3]).lastResults=[];go('market');offer(p.id,'starter');return transferTerms13(p,'starter').fee});
