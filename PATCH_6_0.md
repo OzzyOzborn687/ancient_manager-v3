@@ -15,4 +15,4 @@ Matchday becomes the full interface language: matte charcoal, ivory, acid lime, 
 ## Validation
 All registered screens checked at desktop/mobile widths, no horizontal page overflow or runtime errors. Browser checks cover selection without career mutations, reserve/contracts tabs, navigation, next-day action, save/reload and four broadcast dialog themes. Existing startup, draft, transfer, tournament and elimination regression checks retained. Interface tests updated for new structure/version.
 
-V5.2 D tournament-results concepts remain planned separately; no new result mechanics introduced. Match formulas, OVR, SIN, economics, training and save schema are unchanged.
+The V5.2 D tournament-results concepts are now implemented in V6.0; see PATCH_6_0_RESULTS_D.md. No new result calculation mechanics introduced. Match formulas, OVR, SIN, economics, training and save schema are unchanged.
