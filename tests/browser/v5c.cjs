@@ -7,6 +7,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
+  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V5.0 C');
   assert((await page.locator('#broadcastStatus33c').innerText()).includes('V5.0 C'));
   // Offline from all external sites: inspect every actual core-club squad.
   for(const id of await page.evaluate(()=>S.teams.filter(t=>t.tier===1).map(t=>t.id))){
@@ -35,6 +36,6 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await page.reload();await page.waitForFunction(()=>window.ancientStartup?.ready);assert.deepEqual(await page.evaluate(()=>roster().map(p=>p.form)),saved);
   await page.evaluate(()=>profile(roster()[0].id));await page.locator('.profile-photo20 img').evaluate(i=>i.decode());
   assert(await page.evaluate(()=>validSave(S)));assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
-  console.log('PASS V5.0 C browser: 70 core and 7 free-agent photos load with external networking blocked; training and camp predictions equal actual gains; responsive 320/390/768/1440; saved form and profile survive reload.');
+  console.log('PASS V5.0 C browser: matching header and status versions; 70 core and 7 free-agent photos load with external networking blocked; training and camp predictions equal actual gains; responsive 320/390/768/1440; saved form and profile survive reload.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
