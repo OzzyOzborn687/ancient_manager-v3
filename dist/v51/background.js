@@ -13,7 +13,7 @@ const Background51={
  },
  releaseCamp(e){const b=Camp4.plans()[Camp4.key(e.id)];if(b?.status==='active')Camp4.close(b,'cancelled',true);},
  detach(a){
-  const e=S.events.find(e=>e.id===a?.event);if(!e||!a.format6)return false;
+  const e=S.events.find(e=>e.id===a?.event);if(!e||!a.format6||!Array.isArray(a.entrants))return false;
   if(!a.spectator13&&!a.withdrawnV12&&a.entrants.includes(S.club))return false;
   this.queue(e,!!a.withdrawnV12);
   e.background51.status='running';e.background51.state=a;
@@ -134,7 +134,7 @@ finishCalendar13=function(e){if(Background51.finishing===e.id){e.completedDay20=
 const tickBeforeBackground51=tick;
 tick=function(){tickBeforeBackground51();Background51.update();save();};
 const migrateBeforeBackground51=migrate;
-migrate=function(...args){migrateBeforeBackground51(...args);for(const e of S.events)if(e.background51?.withdrawn)Background51.releaseCamp(e);if(S.v5?.sceneReady&&S.active?.format6&&(S.active.spectator13||S.active.withdrawnV12||!S.active.entrants.includes(S.club)||S.pendingSkipV12===S.active.event)){if(S.pendingSkipV12===S.active.event)S.active.withdrawnV12=true;Background51.detach(S.active);}if(S.v5?.sceneReady&&!S.active&&S.pendingSkipV12!=null){Background51.queue(S.events.find(e=>e.id===S.pendingSkipV12),true);S.pendingSkipV12=null;}Background51.update();};
+migrate=function(...args){migrateBeforeBackground51(...args);for(const e of S.events)if(e.background51?.withdrawn)Background51.releaseCamp(e);if(S.v5?.sceneReady&&S.active?.format6&&(S.active.spectator13||S.active.withdrawnV12||Array.isArray(S.active.entrants)&&!S.active.entrants.includes(S.club)||S.pendingSkipV12===S.active.event)){if(S.pendingSkipV12===S.active.event)S.active.withdrawnV12=true;Background51.detach(S.active);}if(S.v5?.sceneReady&&!S.active&&S.pendingSkipV12!=null){Background51.queue(S.events.find(e=>e.id===S.pendingSkipV12),true);S.pendingSkipV12=null;}Background51.update();};
 const fatigueBeforeBackground51=fatigueMap6;
 fatigueMap6=function(...args){if(!Background51.simulating)return fatigueBeforeBackground51(...args);};
 const busyBeforeBackground51=Camp4.busy;
