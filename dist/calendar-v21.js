@@ -77,7 +77,7 @@ ensureTournamentCalendar=function(){if(!S?.events)return;
 };
 // Historical dates remain immutable. Only overdue career participation moves forward.
 finishCalendar13=function(e){let until=Math.max(S.day,e.day+(e.duration||1)-1);while(S.day<until)tick();e.completedDay20=until;
- for(let other of S.events.filter(x=>!x.done&&x.id!==e.id&&x.day<=until)){other.originalDay13??=other.day;other.day=until+1;}
+ for(let other of S.events.filter(x=>!x.done&&!x.background51&&x.id!==e.id&&x.day<=until)){other.originalDay13??=other.day;other.day=until+1;}
  ensureTournamentCalendar();
 };
 eventDates=function(e){return date(e.day)+' — '+date(e.day+(e.duration||1)-1)+(e.plannedDay21!=null&&e.day!==e.plannedDay21?' · перенос в карьере':'');};
