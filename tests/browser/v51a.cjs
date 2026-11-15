@@ -7,7 +7,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / BETA V6.0');
+  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V6.0');
   await page.evaluate(()=>{
    fresh();S.calendar21.installedDay=100000;S.events=[{id:900,name:'Background fixture',series:'FISSURE',day:0,duration:6,pool:100000,formatKey6:'eight5',qualified13:S.teams.slice(1,9).map(t=>t.id)},{id:901,name:'Later own fixture',series:'ANCIENT',day:80,pool:100000}];S.v4.camps={};S.budget=10000000;
    for(const p of roster()){p.form=70;p.fatigue=10;p.progress21.initialForm=70;p.progress21.results=[];}S.training='balanced';go('tactics');

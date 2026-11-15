@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),h=require('./harness22.cjs')({modelVersion:8}),r=h.run;
-assert(fs.readFileSync('dist/index.html','utf8').includes('class="version-badge21">ANCIENT MANAGER / BETA V6.0</span>'),'Header must display the current patch');
+assert(fs.readFileSync('dist/index.html','utf8').includes('class="version-badge21">ANCIENT MANAGER / V6.0</span>'),'Header must display the current patch');
 r(`function fixture5c(){fresh();S.calendar21.installedDay=100000;S.events=[{id:800,name:'Training fixture',series:'ANCIENT',day:10,pool:100000,entrants:[S.club]}];S.v4.camps={};S.training='balanced';S.budget=1000000;for(const p of roster()){p.form=70;p.fatigue=20;p.progress21.initialForm=70;p.progress21.lastOfficialDay=null;p.progress21.results=[];}return S.events[0];}`);
 for(const mode of ['balanced','intensive']){
  r(`fixture5c();S.training=${JSON.stringify(mode)};var before5c=JSON.stringify(roster().map(p=>({skill:p.skill,rating:p.amRating}))),chem5c=S.chem,state5c=JSON.stringify(S),preview5c=trainingPreview33();`);

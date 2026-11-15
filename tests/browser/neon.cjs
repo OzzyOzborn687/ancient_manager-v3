@@ -33,7 +33,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
  await page.setViewportSize({width:590,height:1280});await page.evaluate(()=>go('squad'));
  await page.waitForFunction(()=>{const img=document.querySelector('.c-player img');return img?.complete&&img.naturalWidth>0;},null,{timeout:20000});
  // Real profile, development purchase, navigation, save and bracket controls.
- await page.locator('.player-link20').first().click();assert(await page.evaluate(()=>page==='player'&&scrollY===0));
+ await page.locator('.g6-player .actions').first().getByRole('button',{name:'Профиль',exact:true}).click();assert(await page.evaluate(()=>page==='player'&&scrollY===0));
  await page.evaluate(()=>{S.budget=10000000;go('development');});
  const before=await page.evaluate(()=>({base:development21().base,cash:S.budget,cost:DEVELOPMENT21.base.cost[development21().base]}));
  await page.locator('[onclick="upgradeDevelopment21(\'base\')"]').click();
