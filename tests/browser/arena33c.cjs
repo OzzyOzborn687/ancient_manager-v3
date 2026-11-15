@@ -14,7 +14,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),fs=require
     await page.evaluate(n=>go(n),name);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),name+' '+width);
    }
    await page.evaluate(()=>go('home'));
-   if(width<=390){assert(await page.locator('#mobileNav33c').isVisible());await page.locator('#mobileNav33c').getByRole('button',{name:'Команда',exact:true}).click();assert(await page.evaluate(()=>page==='squad'));}
+   if(width<=390){assert(await page.locator('#matchdayHeader6').isVisible());await page.locator('.md-nav nav').getByRole('button',{name:'СОСТАВ',exact:true}).click();assert(await page.evaluate(()=>page==='squad'));}
    await page.evaluate(()=>go('squad'));
    await page.getByRole('button',{name:'Таблица',exact:true}).click();assert(await page.locator('.neon-squad table').isVisible());
    await page.getByRole('button',{name:'Карточки',exact:true}).click();assert.equal(await page.locator('.c-player').count(),5);
@@ -45,7 +45,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),fs=require
   assert.equal(await page.evaluate(()=>JSON.stringify(S.active.live)),payload,'save continuity');
   await page.evaluate(()=>{const m=S.active.live;while(m.finishedSide==null&&m.clock<21600)simulateTick4(m,10);if(m.finishedSide==null)throw Error('Map stalled');window.reportCopy33c={report13:structuredClone(buildReport13(m))};document.querySelector('#app').innerHTML=reportView13(reportCopy33c)});
   assert(await page.getByRole('heading',{name:'Хронология ключевых событий',exact:true}).isVisible());
-  assert((await page.locator('.c-debrief').innerText()).includes('Δ золота'));
+  assert((await page.locator('.c-debrief').textContent()).includes('Δ золота'));
   for(const width of [390,1440]){await page.setViewportSize({width,height:1000});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));await page.screenshot({path:dir+'/debrief-'+width+'.png',fullPage:true});}
   assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);console.log('PASS browser Arena 3.3 C: 320/390/768/1440, navigation, lineup modes, comparison, local portraits, draft, tabs, map, orders, reload and saved debrief');
  }finally{await browser.close()}

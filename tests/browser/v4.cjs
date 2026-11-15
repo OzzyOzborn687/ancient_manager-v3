@@ -10,7 +10,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),fs=require
   await require('./legacy-v4.cjs')(page,base);
  await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
   await page.setViewportSize({width:390,height:1000});
-  await page.locator('#mobileNav33c').getByRole('button',{name:'Буткемп',exact:true}).click();
+  await page.locator('.md-section-nav').getByRole('button',{name:'Буткемп',exact:true}).click();
   assert(await page.evaluate(()=>page==='bootcamp'));
   await page.evaluate(()=>{fresh();S.calendar21.installedDay=100000;S.events=[{id:800001,name:'Bootcamp browser fixture',series:'ANCIENT',day:10,duration:5,pool:100000,entrants:[S.club]}];S.v4.camps={};S.budget=1000000;for(const p of roster()){p.form=70;p.fatigue=50;p.progress21.initialForm=70;}campEvent4=800001;go('bootcamp');});
   for(const width of [320,390,768,1440]){

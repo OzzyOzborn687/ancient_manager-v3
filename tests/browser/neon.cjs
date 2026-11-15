@@ -54,6 +54,7 @@ const fs=require('fs'),assert=require('node:assert/strict');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
   await page.screenshot({path:resultDir+'/difficulty-'+width+'.png'});
  }
+ await page.setViewportSize({width:768,height:1000});
  await page.evaluate(()=>{selectedBracket=S.events.find(e=>formatKey6(e)==='pgl').id;bracketTabV1='groups';go('bracket');});
  await page.getByRole('button',{name:'Вписать',exact:true}).first().click();
  const fit=await page.locator('.neon-graph').first().evaluate(e=>e.style.transform);
@@ -132,8 +133,8 @@ const fs=require('fs'),assert=require('node:assert/strict');
  await page.evaluate(()=>{save();});await page.evaluate(()=>saveQueue);
  assert(await page.evaluate(()=>!!localStorage.getItem('ancient-manager-v1')));
  const beforeDay=await page.evaluate(()=>{fresh();S.events.forEach(e=>{if(e.day<=S.day)e.day=S.day+30});go('home');return S.day;});
- await page.locator('#advance').click();assert(await page.evaluate(day=>S.day>day,beforeDay));
- const report={baseURL,graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','five difficulty levels and reload','frozen map difficulty/next map bonus','bracket fit/100%','model-8 farm order and tactic','automatic base defense and actual TP','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('16px "Russo One"'))};
+ await page.locator('.md-command .md-next').click();assert(await page.evaluate(day=>S.day>day,beforeDay));
+ const report={baseURL,graphChecks,errors,failedLocalAssets:failures,checks,interactionChecks:['profile','upgrade and budget','five difficulty levels and reload','frozen map difficulty/next map bonus','bracket fit/100%','model-8 farm order and tactic','automatic base defense and actual TP','playoff tab','save persistence','next day'],fonts:await page.evaluate(()=>document.fonts.check('800 16px MDB'))};
  fs.writeFileSync(resultDir+'/report.json',JSON.stringify(report,null,2));
  console.log(JSON.stringify({...report,checks:checks.filter(c=>c.documentOverflow||c.bright.length)},null,2));
  assert.equal(errors.length,0);assert.equal(failures.length,0);assert(!checks.some(c=>c.documentOverflow),'No whole-page horizontal overflow');
