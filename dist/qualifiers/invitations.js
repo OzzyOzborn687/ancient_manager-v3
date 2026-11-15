@@ -38,7 +38,7 @@ const Qualifiers={
  },
  busy(e,id){
   return S.events.find(other=>{
-   if(other.id===e.id||other.done||!this.overlap(e,other))return false;
+   if(other.id===e.id||other.done||other.background51?.withdrawn&&id===S.club||!this.overlap(e,other))return false;
    const a=S.active?.event===other.id?S.active:null;
    return (a?.entrants||other.entrants||other.qualified13||[]).includes(id)||
     other.qualification?.invited?.some(v=>v.team===id);

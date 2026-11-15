@@ -12,7 +12,7 @@ const LegacyAdmissions5={
  repairFuture(){
   const active=S.events.find(e=>e.id===S.active?.event),protectedId=active?.qualifierFor;
   for(const e of [...S.events]){
-   if(e.done||e.id===active?.id||e.id===protectedId||!this.recognizes(e)||e.qualification?.majorVersion!==5)continue;
+   if(e.done||e.background51||e.id===active?.id||e.id===protectedId||!this.recognizes(e)||e.qualification?.majorVersion!==5)continue;
    const old=e.qualification,children=S.events.filter(c=>c.qualifierFor===e.id);
    const started=children.some(c=>c.done||(c.regionalState?.schedule||c.schedule6||[]).some(n=>n.score));
    const policy=started&&old.policy?old.policy:Admissions5.policy(e);if(!policy)continue;

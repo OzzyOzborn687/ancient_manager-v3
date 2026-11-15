@@ -26,7 +26,7 @@ async function applyTIRewind(source=null,options={}){
     for(let [id,place] of Object.entries(x.placements6||{})){let t=S.teams[+id];if(!t)continue;clubState13(t).seasonPoints=Math.max(0,clubState13(t).seasonPoints-Math.max(5,Math.round(120/place)));if(+id!==S.club){let shares={1:.36,2:.19,3:.11,4:.075,5:.04,7:.025,9:.006,13:.004,14:.003};clubState13(t).budget-=Math.round(x.pool*(shares[place]||.003));}}
    }
    if(x.sponsor4a){pay13(x.sponsor4a.team,-x.sponsor4a.bonus,'Отмена спонсорской премии при возврате к TI');delete x.sponsor4a;}
-   for(let k of ['done','place','reward','champion','schedule6','placements6','seeds6','groupIds6','gsl6','pairingFallback','skippedV12','skipRequestedV12','notQualified13','qualification13','qualified13','entrants','format','formatKey6','groups','tiEvent'])delete x[k];
+   for(let k of ['done','background51','place','reward','champion','schedule6','placements6','seeds6','groupIds6','gsl6','pairingFallback','skippedV12','skipRequestedV12','notQualified13','qualification13','qualified13','entrants','format','formatKey6','groups','tiEvent'])delete x[k];
   }
   S.history=S.history.filter(h=>!removed.includes(h));S.news=S.news.filter(n=>n.day<targetDay);S.ledger=S.ledger.filter(n=>n.day<targetDay);S.day=targetDay;S.active=null;S.practice13=null;
   // Clear future dated effects; do not fabricate old player skills, transfers or finances.

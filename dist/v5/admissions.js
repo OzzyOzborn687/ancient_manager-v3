@@ -59,12 +59,12 @@ const Admissions5={
  restoreMandatory(){
   const active=S.events.find(e=>e.id===S.active?.event),parent=active?.qualifierFor;
   for(const e of [...S.events]){
-   if(e.done||Qualifiers.isRegional(e)||e.id===active?.id||e.id===parent||!e.qualification||e.qualification.policy?.mandatoryVersion===1)continue;
+   if(e.done||e.background51||Qualifiers.isRegional(e)||e.id===active?.id||e.id===parent||!e.qualification||e.qualification.policy?.mandatoryVersion===1)continue;
    if(isTI(e)&&(e.festivalInvitation||S.tiRecovery?.day===e.day&&['exact','restart'].includes(S.tiRecovery.mode)))continue;
    const policy=this.policy(e);if(!policy)continue;
    const children=S.events.filter(c=>c.qualifierFor===e.id);
    // Played/active qualifiers are part of an already-started competition.
-   if(children.some(c=>c.done||c.id===active?.id||(c.regionalState?.schedule||c.schedule6||[]).some(n=>n.score)))continue;
+   if(children.some(c=>c.done||c.background51||c.id===active?.id||(c.regionalState?.schedule||c.schedule6||[]).some(n=>n.score)))continue;
    (S.v5.legacyArchive.mandatoryAdmissions??=[]).push({event:e.id,day:S.day,qualification:structuredClone(e.qualification),qualification13:structuredClone(e.qualification13),qualified13:structuredClone(e.qualified13)});
    const removed=new Set(children.map(c=>c.id));
    S.v5.legacyArchive.events.push(...children.map(c=>structuredClone(c)));
@@ -90,7 +90,7 @@ const Admissions5={
   if(!S?.v5?.sceneReady||this.installing||Scene5.loading||Scene5.installing)return;
   this.installing=true;
   try{this.migrateAdmissions();this.restoreMandatory();LegacyAdmissions5.repairFuture();for(const e of S.events){
-   if(Qualifiers.isRegional(e)||e.done||e.id===S.active?.event)continue;
+   if(Qualifiers.isRegional(e)||e.done||e.background51||e.id===S.active?.event)continue;
    if(isTI(e)&&e.qualified13&&(e.festivalInvitation||S.tiRecovery?.day===e.day&&['exact','restart'].includes(S.tiRecovery.mode))){
     if(e.qualification?.majorVersion===5){const children=new Set(Object.values(e.qualification.regionalEvents||{}));e.legacyQualification5=e.qualification;delete e.qualification;S.events=S.events.filter(c=>!children.has(c.id)||c.done||c.id===S.active?.event);}
     e.formatKey6='ti';continue;
