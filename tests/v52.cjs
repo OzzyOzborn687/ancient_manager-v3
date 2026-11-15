@@ -11,7 +11,7 @@ r("player52=fixture52();var prior52=roster(S.teams[3]).find(p=>p.role===player52
 assert(r("TransferReveal52.current.from.name==='Team Yandex'&&TransferReveal52.current.to.name==='Xtreme Gaming'&&TransferReveal52.current.fee===fee52&&JSON.stringify(S)===expectedState52&&validSave(S)"));
 for(let role=0;role<5;role++){
  r(`var data52=structuredClone(TransferReveal52.current);data52.player.role=${role};data52.player.name='<img src=x onerror=alert(1)>';`);
- assert(r(`TransferReveal52.markup(data52).includes('POS ${role+1}')&&TransferReveal52.markup(data52).includes('&lt;img')&&!TransferReveal52.markup(data52).includes('<img src=x')`));
+ assert(r(`TransferReveal52.markup(data52).includes('POS ${String(role+1).padStart(2,'0')}')&&TransferReveal52.markup(data52).includes('&lt;img')&&!TransferReveal52.markup(data52).includes('<img src=x')`));
 }
 r('TransferReveal52.squad();');assert(r("!TransferReveal52.current&&page==='squad'"));
 console.log('PASS V5.2: successful transfers only; real paid fee and original club; free agents; all roles; escaped nicknames; unchanged accounting; no duplicate or reload replay; close and squad.');

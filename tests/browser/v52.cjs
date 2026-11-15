@@ -14,6 +14,17 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await page.screenshot({path:dir+'/welcome-'+width+'.png',fullPage:true});
   await dialog.getByRole('button',{name:'К составу →',exact:true}).click();assert.equal(await dialog.count(),0);assert(await page.evaluate(()=>page==='squad'&&validSave(S)));
  }
+ // New walkout identity, name-first timing and logos below the club names.
+ for(const width of [1440,320]){
+  await page.setViewportSize({width,height:1000});await page.evaluate(()=>{const p=S.players.find(p=>p.name==='Satanic');TransferReveal52.show({player:p,from:S.teams.find(t=>t.name==='PARIVISION'),to:my(),fee:234567})});
+  assert.equal(await page.locator('.w6-intro .w6-first').textContent(),'Алан');assert.equal(await page.locator('.w6-intro .w6-nick').textContent(),'Satanic');assert.equal(await page.locator('.w6-intro .w6-last').textContent(),'Галлямов');
+  await page.evaluate(()=>document.getAnimations().filter(a=>a.effect?.target?.closest?.('#transferReveal52')).forEach(a=>{a.pause();a.currentTime=1800}));
+  assert.equal(await page.locator('.w6-photo').evaluate(e=>getComputedStyle(e).opacity),'0');
+  await page.evaluate(()=>document.getAnimations().filter(a=>a.effect?.target?.closest?.('#transferReveal52')).forEach(a=>a.currentTime=7000));
+  assert.equal(await page.locator('.w6-photo').evaluate(e=>getComputedStyle(e).opacity),'1');assert.equal(await page.locator('.w6-route .club-avatar12').count(),2);
+  assert(await page.locator('.w6-route-club').evaluateAll(es=>es.every(e=>e.querySelector('.w6-club-logo').getBoundingClientRect().top>=e.querySelector('strong').getBoundingClientRect().bottom)));
+  assert(await page.locator('#transferReveal52').evaluate(e=>e.scrollWidth<=e.clientWidth+2));await page.screenshot({path:dir+'/satanic-'+width+'.png',fullPage:true});await page.keyboard.press('Escape');
+ }
  await page.evaluate(()=>{const p=S.players.find(p=>p.team===null&&!p.retired&&p.name!=='Xxs');S.budget=10000000;go('market');offer(p.id,'starter')});
  await page.locator('#modal').getByRole('button',{name:'Подписать',exact:true}).click();assert((await page.locator('#transferReveal52').innerText()).includes('Свободный агент'));await page.keyboard.press('Escape');assert.equal(await page.locator('#transferReveal52').count(),0);
  await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>{const p=S.players.find(p=>p.team===null&&!p.retired);S.budget=10000000;buy(p.id,'starter')});
