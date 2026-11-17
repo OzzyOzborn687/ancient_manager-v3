@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),{run:r}=require('./harness22.cjs')({modelVersion:8});
 r(`S.calendar21.installedDay=100000;S.events=[{id:999,name:'BLAST Slam VIII',series:'ANCIENT',season:8,day:0,pool:100000}];var ma={event:999,entrants:[0,1,2,3],placements:{},schedule:[]};var n={id:0,label:'Финал верхней сетки',pair:[0,1],bo:3,score:null};ma.schedule.push(n);var seedB=S.seed;recordNode6(ma,n,'2:1');`);
-assert(r("S.media60b.posts.length===1&&S.media60b.posts[0].kind==='series'&&S.media60b.posts[0].score==='2 : 1'&&S.seed===seedB"));
+assert(r("S.media60b.posts.length===1&&S.media60b.posts[0].kind==='finalist'&&S.media60b.posts[0].score==='2 : 1'&&S.seed===seedB"));
 r("var captionB=S.media60b.posts[0].caption;Media60B.series(ma,n);");assert.equal(r('S.media60b.posts.length'),1);assert.equal(r('S.media60b.posts[0].caption'),r('captionB'));
 r("var finalB={id:1,pair:[0,2],bo:5,championship:true,outPlace:2,score:null};ma.schedule.push(finalB);recordNode6(ma,finalB,'3:2');");assert(r("S.media60b.posts.some(p=>p.kind==='champions')&&S.media60b.posts.some(p=>p.kind==='eliminated'&&p.to.id===2)&&validSave(S)"));
 assert(r("new Set(Array.from({length:20},(_,i)=>Media60B.phrase('series','event:'+i))).size>=4"));
@@ -10,7 +10,7 @@ r("var initialIncomeB=S.media60b.month.income,initialExpenseB=S.media60b.month.e
 r("while(Media60B.key()==='2026-10')tick();var reportB=S.media60b.reports.find(r=>r.key==='2026-10');");assert(r('!!reportB&&reportB.partial&&reportB.income-reportB.expense===reportB.end.budget-reportB.start.budget&&validSave(S)'));assert(r("reportB.series.filter(s=>s.win).length===2&&S.media60b.month.key==='2026-11'"));
 r('S=JSON.parse(JSON.stringify(S));migrate();');assert(r("S.media60b.reports.length===1&&S.media60b.posts[0].caption===captionB&&validSave(S)"));
 r('var badMediaB=structuredClone(S);badMediaB.media60b.month.income=-1;');assert(!r('validSave(badMediaB)'));
-console.log('PASS V6.0 B: real series/champion/elimination, varied persistent phrases without RNG, no duplicates, read-only UI, monthly boundary, exact cashflow reconciliation, partial-period disclosure and save/reload.');
+console.log('PASS V6.0 B: real finalist/champion/elimination, varied persistent phrases without RNG, no duplicates, read-only UI, monthly boundary, exact cashflow reconciliation, partial-period disclosure and save/reload.');
 
 const {run:q}=require('./harness22.cjs')({modelVersion:8});
 q(`S.calendar21.installedDay=100000;S.events=[{id:999,name:'Test Cup',series:'ANCIENT',day:0,pool:1000}];var ca={event:999,entrants:[0,1,2,3],placements:{},schedule:[]};var initialSeed=S.seed;function resultB(label='Групповой этап',score='2:0',extra={}){var n={id:ca.schedule.length,label,pair:[0,1],bo:3,...extra};ca.schedule.push(n);recordNode6(ca,n,score);return n;}`);
@@ -20,11 +20,26 @@ q('Media60B.series(ca,third);');assert.equal(q('S.media60b.coverage.clubs[0].cou
 q('S=JSON.parse(JSON.stringify(S));migrate();resultB();resultB();resultB();');assert.equal(q('S.media60b.posts.length'),1);
 q('resultB();');assert.equal(q('S.media60b.posts.length'),2,'interval alternates 3 then 4');
 q("resultB('Полуфинал нижней сетки');");assert.equal(q('S.media60b.posts.length'),2,'semifinal is not final');
-q("resultB('Финал верхней сетки');resultB('Финал нижней сетки');");assert.equal(q('S.media60b.posts.length'),4,'both bracket finals bypass cadence');
-assert(q("S.media60b.posts.at(-1).stage==='lower'&&S.media60b.posts.at(-2).stage==='upper'"));
+q("resultB('Финал верхней сетки');resultB('Финал нижней сетки','0:2');");assert.equal(q('S.media60b.posts.length'),4,'both bracket finals bypass cadence');
+assert(q("S.media60b.posts.at(-1).stage==='lower'&&S.media60b.posts.at(-2).stage==='upper'&&S.media60b.posts.filter(p=>p.kind==='finalist').length===2&&S.media60b.posts.filter(p=>p.kind==='series').length===2"),'finalist news replaces ordinary series news');
 assert(q("!ClubNews60A.post(S.media60b.posts[0]).includes('nb-photos')&&!ClubNews60A.post(S.media60b.posts[0]).includes('player-')&&ClubNews60A.post(S.media60b.posts[0]).includes('nb-scoreboard')"));
 q("initialSeed=S.seed;resultB('Гранд-финал','3:1',{bo:5,championship:true,outPlace:2});");assert(q("S.media60b.posts.filter(p=>p.kind==='champions').length===1&&S.media60b.posts.find(p=>p.kind==='champions').stage==='grand'&&validSave(S)&&S.seed===initialSeed"));
-q("var old=structuredClone(S);delete old.media60b.coverage;for(const p of old.media60b.posts){delete p.stage;delete p.round;delete p.bo;}");assert(q('validSave(old)'),'old saves still valid');
+q("var old=structuredClone(S);delete old.media60b.coverage;for(const p of old.media60b.posts){if(p.kind==='finalist')p.kind='series';delete p.stage;delete p.round;delete p.bo;}");assert(q('validSave(old)'),'old saves still valid');
 console.log('PASS V6.0 B bug fix: alternating 3/4 cadence, reload/deduplication, exact bracket finals, grand final, scoreboard artwork, legacy saves and unchanged RNG.');
 
 q("var countsBefore=S.media60b.coverage.clubs[0].count;resultB('Групповой этап','1:1',{bo:2});");assert(q('S.media60b.coverage.clubs[0].count===countsBefore+1'),'draw counts as a played series');
+
+assert(q("new Set(Array.from({length:20},(_,i)=>Media60B.phrase('finalist','event:'+i))).size>=4"),'varied deterministic finalist captions');
+q("var finalistB=S.media60b.posts.find(p=>p.kind==='finalist');var savedCaptionB=finalistB.caption;var savedPostsB=JSON.stringify(S.media60b.posts);S=JSON.parse(JSON.stringify(S));migrate();");
+assert(q('JSON.stringify(S.media60b.posts)===savedPostsB&&validSave(S)'),'finalist posts survive save/reload');
+q("var finalistCountB=S.media60b.posts.filter(p=>p.kind==='finalist').length;Media60B.series(ca,ca.schedule.find(n=>n.label==='Финал верхней сетки'));");
+assert(q("S.media60b.posts.filter(p=>p.kind==='finalist').length===finalistCountB"),'finalist result deduplicated');
+assert(q("!ClubNews60A.post(finalistB).includes('nb-photos')&&ClubNews60A.post(finalistB).includes('GRAND FINAL')"),'finalist artwork emphasises the final without a portrait');
+assert(q("S.media60b.posts.filter(p=>p.kind==='finalist').every(p=>p.stage==='upper'||p.stage==='lower')"),'no semifinal or champion finalist posts');
+q("var beforeNoPostB=S.media60b.posts.length;resultB('Финал нижней сетки','2:0',{forfeitV12:1});S.events.push({id:1000,name:'Regional qualifier',series:'ANCIENT',day:0,pool:0,qualifierFor:999});var qa={event:1000,entrants:[0,1],placements:{},schedule:[]};var qn={id:0,label:'Финал верхней сетки',pair:[0,1],bo:3};qa.schedule.push(qn);recordNode6(qa,qn,'2:0');");
+assert(q('S.media60b.posts.length===beforeNoPostB'),'forfeits and qualifier finals do not publish result news');
+q("var exitPostB=S.media60b.posts.find(p=>p.kind==='eliminated');var exitHTMLB=ClubNews60A.post(exitPostB);");
+assert(q("!exitHTMLB.includes('nb-photos')&&exitHTMLB.includes('ELIMINATED')&&exitHTMLB.includes(exitPostB.place)&&exitHTMLB.includes(exitPostB.to.name)"),'elimination artwork identifies team/place without a player portrait');
+q("ca.placements[3]=9;Media60B.placements(ca);var groupExitB=S.media60b.posts.find(p=>p.kind==='eliminated'&&p.to.id===3);var groupHTMLB=ClubNews60A.post(groupExitB);");
+assert(q("groupExitB.score===null&&!groupHTMLB.includes('null')&&!groupHTMLB.includes('undefined')&&groupHTMLB.includes('ELIMINATED')"),'group elimination does not invent a decisive score');
+console.log('PASS finalist/elimination update: exact final qualification, no duplicate series or finalist posts, persisted varied captions, qualifier/forfeit guards, team/place artwork and honest group elimination.');
