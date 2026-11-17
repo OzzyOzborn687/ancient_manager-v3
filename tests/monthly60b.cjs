@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),{run:r}=require('./harness22.cjs')({modelVersion:8});
-r(`S.calendar21.installedDay=100000;S.events=[{id:999,name:'BLAST Slam VIII',series:'ANCIENT',season:8,day:0,pool:100000}];var ma={event:999,entrants:[0,1,2,3],placements:{},schedule:[]};var n={id:0,pair:[0,1],bo:3,score:null};ma.schedule.push(n);var seedB=S.seed;recordNode6(ma,n,'2:1');`);
+r(`S.calendar21.installedDay=100000;S.events=[{id:999,name:'BLAST Slam VIII',series:'ANCIENT',season:8,day:0,pool:100000}];var ma={event:999,entrants:[0,1,2,3],placements:{},schedule:[]};var n={id:0,label:'Финал верхней сетки',pair:[0,1],bo:3,score:null};ma.schedule.push(n);var seedB=S.seed;recordNode6(ma,n,'2:1');`);
 assert(r("S.media60b.posts.length===1&&S.media60b.posts[0].kind==='series'&&S.media60b.posts[0].score==='2 : 1'&&S.seed===seedB"));
 r("var captionB=S.media60b.posts[0].caption;Media60B.series(ma,n);");assert.equal(r('S.media60b.posts.length'),1);assert.equal(r('S.media60b.posts[0].caption'),r('captionB'));
 r("var finalB={id:1,pair:[0,2],bo:5,championship:true,outPlace:2,score:null};ma.schedule.push(finalB);recordNode6(ma,finalB,'3:2');");assert(r("S.media60b.posts.some(p=>p.kind==='champions')&&S.media60b.posts.some(p=>p.kind==='eliminated'&&p.to.id===2)&&validSave(S)"));
@@ -11,3 +11,20 @@ r("while(Media60B.key()==='2026-10')tick();var reportB=S.media60b.reports.find(r
 r('S=JSON.parse(JSON.stringify(S));migrate();');assert(r("S.media60b.reports.length===1&&S.media60b.posts[0].caption===captionB&&validSave(S)"));
 r('var badMediaB=structuredClone(S);badMediaB.media60b.month.income=-1;');assert(!r('validSave(badMediaB)'));
 console.log('PASS V6.0 B: real series/champion/elimination, varied persistent phrases without RNG, no duplicates, read-only UI, monthly boundary, exact cashflow reconciliation, partial-period disclosure and save/reload.');
+
+const {run:q}=require('./harness22.cjs')({modelVersion:8});
+q(`S.calendar21.installedDay=100000;S.events=[{id:999,name:'Test Cup',series:'ANCIENT',day:0,pool:1000}];var ca={event:999,entrants:[0,1,2,3],placements:{},schedule:[]};var initialSeed=S.seed;function resultB(label='Групповой этап',score='2:0',extra={}){var n={id:ca.schedule.length,label,pair:[0,1],bo:3,...extra};ca.schedule.push(n);recordNode6(ca,n,score);return n;}`);
+q('resultB();resultB();');assert.equal(q('S.media60b.posts.length'),0);
+q('var third=resultB();');assert.equal(q('S.media60b.posts.length'),1);
+q('Media60B.series(ca,third);');assert.equal(q('S.media60b.coverage.clubs[0].count'),0,'duplicate not counted');
+q('S=JSON.parse(JSON.stringify(S));migrate();resultB();resultB();resultB();');assert.equal(q('S.media60b.posts.length'),1);
+q('resultB();');assert.equal(q('S.media60b.posts.length'),2,'interval alternates 3 then 4');
+q("resultB('Полуфинал нижней сетки');");assert.equal(q('S.media60b.posts.length'),2,'semifinal is not final');
+q("resultB('Финал верхней сетки');resultB('Финал нижней сетки');");assert.equal(q('S.media60b.posts.length'),4,'both bracket finals bypass cadence');
+assert(q("S.media60b.posts.at(-1).stage==='lower'&&S.media60b.posts.at(-2).stage==='upper'"));
+assert(q("!ClubNews60A.post(S.media60b.posts[0]).includes('nb-photos')&&!ClubNews60A.post(S.media60b.posts[0]).includes('player-')&&ClubNews60A.post(S.media60b.posts[0]).includes('nb-scoreboard')"));
+q("initialSeed=S.seed;resultB('Гранд-финал','3:1',{bo:5,championship:true,outPlace:2});");assert(q("S.media60b.posts.filter(p=>p.kind==='champions').length===1&&S.media60b.posts.find(p=>p.kind==='champions').stage==='grand'&&validSave(S)&&S.seed===initialSeed"));
+q("var old=structuredClone(S);delete old.media60b.coverage;for(const p of old.media60b.posts){delete p.stage;delete p.round;delete p.bo;}");assert(q('validSave(old)'),'old saves still valid');
+console.log('PASS V6.0 B bug fix: alternating 3/4 cadence, reload/deduplication, exact bracket finals, grand final, scoreboard artwork, legacy saves and unchanged RNG.');
+
+q("var countsBefore=S.media60b.coverage.clubs[0].count;resultB('Групповой этап','1:1',{bo:2});");assert(q('S.media60b.coverage.clubs[0].count===countsBefore+1'),'draw counts as a played series');
