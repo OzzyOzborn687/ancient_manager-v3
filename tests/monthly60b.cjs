@@ -1,0 +1,13 @@
+'use strict';
+const assert=require('node:assert/strict'),{run:r}=require('./harness22.cjs')({modelVersion:8});
+r(`S.calendar21.installedDay=100000;S.events=[{id:999,name:'BLAST Slam VIII',series:'ANCIENT',season:8,day:0,pool:100000}];var ma={event:999,entrants:[0,1,2,3],placements:{},schedule:[]};var n={id:0,pair:[0,1],bo:3,score:null};ma.schedule.push(n);var seedB=S.seed;recordNode6(ma,n,'2:1');`);
+assert(r("S.media60b.posts.length===1&&S.media60b.posts[0].kind==='series'&&S.media60b.posts[0].score==='2 : 1'&&S.seed===seedB"));
+r("var captionB=S.media60b.posts[0].caption;Media60B.series(ma,n);");assert.equal(r('S.media60b.posts.length'),1);assert.equal(r('S.media60b.posts[0].caption'),r('captionB'));
+r("var finalB={id:1,pair:[0,2],bo:5,championship:true,outPlace:2,score:null};ma.schedule.push(finalB);recordNode6(ma,finalB,'3:2');");assert(r("S.media60b.posts.some(p=>p.kind==='champions')&&S.media60b.posts.some(p=>p.kind==='eliminated'&&p.to.id===2)&&validSave(S)"));
+assert(r("new Set(Array.from({length:20},(_,i)=>Media60B.phrase('series','event:'+i))).size>=4"));
+r("var untouchedB=JSON.stringify(S);ClubNews60A.view();Media60B.view();");assert(r('JSON.stringify(S)===untouchedB'),'views are read-only');
+r("var initialIncomeB=S.media60b.month.income,initialExpenseB=S.media60b.month.expense;money(1000,'Income test');money(-250,'Expense test');");assert(r('S.media60b.month.income-initialIncomeB===1000&&S.media60b.month.expense-initialExpenseB===250'));
+r("while(Media60B.key()==='2026-10')tick();var reportB=S.media60b.reports.find(r=>r.key==='2026-10');");assert(r('!!reportB&&reportB.partial&&reportB.income-reportB.expense===reportB.end.budget-reportB.start.budget&&validSave(S)'));assert(r("reportB.series.filter(s=>s.win).length===2&&S.media60b.month.key==='2026-11'"));
+r('S=JSON.parse(JSON.stringify(S));migrate();');assert(r("S.media60b.reports.length===1&&S.media60b.posts[0].caption===captionB&&validSave(S)"));
+r('var badMediaB=structuredClone(S);badMediaB.media60b.month.income=-1;');assert(!r('validSave(badMediaB)'));
+console.log('PASS V6.0 B: real series/champion/elimination, varied persistent phrases without RNG, no duplicates, read-only UI, monthly boundary, exact cashflow reconciliation, partial-period disclosure and save/reload.');
