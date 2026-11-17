@@ -35,4 +35,4 @@ Admissions5.install=function(){installBefore5B.call(this);if(!S?.v5?.sceneReady|
 const rulesBefore5B=UI5.rule;
 UI5.rule=function(e){return rulesBefore5B.call(this,e)+'<section class="panel"><h3>Подтверждение участия</h3><p>Полный состав участников подтверждается минимум за 15 дней до начала турнира. Квалификация завершается до этого срока. При позднем определении участников старт переносится.</p>'+(Number.isInteger(e.participationConfirmed5b)?'<p>Подтверждено: '+date(e.participationConfirmed5b)+' · старт: '+date(e.day)+'.</p>':'')+'</section>';};
 const renderBefore5B=render;
-render=function(...args){const result=renderBefore5B(...args);if(S?.v5?.sceneReady)$('broadcastStatus33c').innerHTML=$('broadcastStatus33c').innerHTML.replace(/V5\.0(?: A)? \/ ARENA/,'V6.0 A / MATCHDAY');return result;};
+render=function(...args){const result=renderBefore5B(...args);if(S?.v5?.sceneReady)$('broadcastStatus33c').innerHTML=$('broadcastStatus33c').innerHTML.replace(/V5\.0(?: A)? \/ ARENA/,'V6.0 B / MATCHDAY');return result;};
