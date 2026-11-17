@@ -1,0 +1,13 @@
+'use strict';
+const assert=require('node:assert/strict'),{run:r}=require('./harness22.cjs')({modelVersion:8});
+assert(r('ClubNews60A.items().length===0&&!S.clubNews60a'));
+r("S.calendar21.installedDay=100000;S.events=[{id:999,name:'Later',series:'ANCIENT',day:90,pool:1000}];S.budget=10000000;var newsPlayer=S.players.find(p=>p.name==='Satanic');var newsSource=newsPlayer.team,newsFee=transferTerms13(newsPlayer,'starter').fee;buy(newsPlayer.id,'starter');");
+assert(r('ClubNews60A.items().length===S.transfersV1.filter(e=>e.type==="sign").length&&S.clubNews60a.posts.length===ClubNews60A.items().length&&validSave(S)'));assert(r('ClubNews60A.items()[0].fee===newsFee&&ClubNews60A.items()[0].from.id===newsSource&&ClubNews60A.items()[0].to.id===S.club'));
+r('TransferReveal52.close();var postBeforeNews=JSON.stringify(ClubNews60A.items()[0]);S.teams[S.club].name="Renamed";newsPlayer.name="Changed";');assert.equal(r('JSON.stringify(ClubNews60A.items()[0])'),r('postBeforeNews'),'snapshots retain original club/player labels');
+assert(r('(()=>{let before=JSON.stringify(S),seed=S.seed;ClubNews60A.view();ClubNews60A.items();return JSON.stringify(S)===before&&S.seed===seed})()'),'read-only feed');
+r('S=JSON.parse(JSON.stringify(S));migrate();');assert(r('validSave(S)&&ClubNews60A.items().length===2'));assert(r('JSON.stringify(ClubNews60A.items()[0])===postBeforeNews'));
+r('delete S.clubNews60a;');assert(r('ClubNews60A.items().length===2'),'old saves use their actual ledger');
+r("var aiP=S.players.find(p=>p.team===null&&!p.retired);aiP.team=3;transferEntryV1(aiP,null,3,'sign',12345,2);");assert(r('ClubNews60A.items()[0].to.id===3&&ClubNews60A.items()[0].fee===12345&&ClubNews60A.items()[0].from===null&&validSave(S)'));assert.equal(r("ClubNews60A.palette(S.teams[3])[0]"),'#ee302c');
+r('var invalidNews=structuredClone(S);invalidNews.clubNews60a.posts[0].palette[0]="red;display:none";');assert(!r('validSave(invalidNews)'));
+r('var countNews=ClubNews60A.items().length;S.budget=0;buy(S.players.find(p=>p.team!==S.club&&!p.retired).id);');assert.equal(r('ClubNews60A.items().length'),r('countNews'),'failed purchases produce no posts');
+console.log('PASS V6.0 A: actual fees/from-to, immutable snapshots, AI/free-agent posts, historical ledger fallback, read-only projections, save validation and no posts for failed purchases.');
