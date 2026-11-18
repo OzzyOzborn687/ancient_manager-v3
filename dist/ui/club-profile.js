@@ -101,6 +101,9 @@ home = function () {
  return `<section class="club-home-summary"><div class="section-head"><h2>${esc(my().name)}</h2>${btn('Профиль клуба', 'openClubProfile(S.club)')}</div>${clubMetrics(clubStats(my()))}</section>${previousHome()}`;
 };
 
+window.clubProfileView9 = () => profileView();
+window.bindClubProfile9 = () => {const select=$('club-profile-select');if(select)select.onchange=e=>{selectedClub=Number(e.target.value);render();$('club-profile-select').focus();};};
+
 const previousRender = render;
 render = function () {
  previousRender();
