@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
-const html=fs.readFileSync('dist/index.html','utf8'),files=[...html.matchAll(/<script\s+src="([^"]+)"/g)].map(m=>m[1].split('?')[0]);
+const html=fs.readFileSync('dist/index.html','utf8'),files=[...html.matchAll(/<script\s+src="([^"]+)"/g)].map(m=>m[1].split('?')[0]).filter(f=>!f.startsWith('v8/')); // Historical development model; beta8.cjs covers the replacement.
 function environment(){const elements={},data=new Map(),c=vm.createContext({console,structuredClone,URL,Blob,setTimeout:(f,ms)=>{let t=setTimeout(f,ms);t.unref();return t},clearTimeout,setInterval,clearInterval,document:{hidden:false,getElementById:id=>elements[id]??={style:{},classList:{add(){},remove(){}},innerHTML:'',textContent:'',showModal(){},close(){}},addEventListener(){}},addEventListener(){},localStorage:{getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v)}});vm.runInContext('window=globalThis',c);for(let f of files)vm.runInContext(fs.readFileSync('dist/'+f,'utf8'),c,{filename:f});return {elements,c,run:s=>vm.runInContext(s,c)};}
 (async()=>{
  const e=environment(),run=e.run;await run('boot()');assert(run('S.gameVersion==="2.6"&&validSave(S)'));
