@@ -6,8 +6,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   const page=await browser.newPage(),base=(process.env.GAME_URL||'http://127.0.0.1:4173').replace(/\/$/,''),errors=[],failed=[],dir=process.env.BROWSER_RESULTS_DIR||'/tmp/am-v51a-browser';fs.mkdirSync(dir,{recursive:true});
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
-  await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V6.0 B');
+  await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);await page.addScriptTag({content:require('../fixtures-market7.js')});
+  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V7.0');
   await page.evaluate(()=>{
    fresh();S.calendar21.installedDay=100000;S.events=[{id:900,name:'Background fixture',series:'FISSURE',day:0,duration:6,pool:100000,formatKey6:'eight5',qualified13:S.teams.slice(1,9).map(t=>t.id)},{id:901,name:'Later own fixture',series:'ANCIENT',day:80,pool:100000}];S.v4.camps={};S.budget=10000000;
    for(const p of roster()){p.form=70;p.fatigue=10;p.progress21.initialForm=70;p.progress21.results=[];}S.training='balanced';go('tactics');
@@ -24,11 +24,11 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await page.locator('.background51').getByRole('button',{name:'Сетка и результаты'}).click();
   assert(await page.evaluate(()=>page==='bracket'&&!S.active));assert((await page.locator('#app').innerText()).includes('Background fixture'));
   await page.evaluate(()=>{go('market');offer(S.players.find(p=>p.team===null&&!p.retired).id)});
-  assert(await page.locator('#modal').isVisible());assert((await page.locator('#modal').innerText()).includes('Подписать'));
+  assert(await page.locator('.m7-market').isVisible());assert(await page.evaluate(()=>page==='market'));
   await page.evaluate(()=>closeModal());
   // A real transfer and upgrade must remain available, not merely their navigation tabs.
   const count=await page.evaluate(()=>owned().length);
-  await page.evaluate(()=>{const p=S.players.find(p=>p.team===null&&!p.retired);buy(p.id,'rotation');upgradeDevelopment21('base')});
+  await page.evaluate(()=>{const p=S.players.find(p=>p.team===null&&!p.retired);finishNegotiation7(p.id,'rotation');TransferReveal52.close();Background51.update();upgradeDevelopment21('base')});
   assert.equal(await page.evaluate(()=>owned().length),count+1);assert.equal(await page.evaluate(()=>development21().base),2);
   const saved=await page.evaluate(async()=>{save();await saveQueue;return JSON.stringify({schedule:S.events.find(e=>e.id===900).schedule6,seed:S.seed,day:S.day})});
   await page.reload();await page.waitForFunction(()=>window.ancientStartup?.ready);
