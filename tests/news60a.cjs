@@ -8,7 +8,7 @@ r('TransferReveal52.close();var postBeforeNews=JSON.stringify(ClubNews60A.items(
 assert(r('(()=>{let before=JSON.stringify(S),seed=S.seed;ClubNews60A.view();ClubNews60A.items();return JSON.stringify(S)===before&&S.seed===seed})()'),'read-only feed');
 r('S=JSON.parse(JSON.stringify(S));migrate();');assert(r('validSave(S)&&ClubNews60A.items().length===2'));assert(r('JSON.stringify(ClubNews60A.items()[0])===postBeforeNews'));
 r('delete S.clubNews60a;');assert(r('ClubNews60A.items().length===2'),'old saves use their actual ledger');
-r("var aiP=S.players.find(p=>p.team===null&&!p.retired);aiP.team=3;transferEntryV1(aiP,null,3,'sign',12345,2);");assert(r('ClubNews60A.items()[0].to.id===3&&ClubNews60A.items()[0].fee===12345&&ClubNews60A.items()[0].from===null&&validSave(S)'));assert.equal(r("ClubNews60A.palette(S.teams[3])[0]"),'#ee302c');
+r("var aiP=S.players.find(p=>p.team===null&&!p.retired);aiP.team=3;transferEntryV1(aiP,null,3,'sign',12345,2);");r('S.day+=3;Vale8.tick();');assert(r('ClubNews60A.items()[0].to.id===3&&ClubNews60A.items()[0].fee===12345&&ClubNews60A.items()[0].from===null&&validSave(S)'));assert.equal(r("ClubNews60A.palette(S.teams[3])[0]"),'#ee302c');
 r('var invalidNews=structuredClone(S);invalidNews.clubNews60a.posts[0].palette[0]="red;display:none";');assert(!r('validSave(invalidNews)'));
 r('var countNews=ClubNews60A.items().length;S.budget=0;buy(S.players.find(p=>p.team!==S.club&&!p.retired).id);');assert.equal(r('ClubNews60A.items().length'),r('countNews'),'failed purchases produce no posts');
 console.log('PASS V6.0 A: actual fees/from-to, immutable snapshots, AI/free-agent posts, historical ledger fallback, read-only projections, save validation and no posts for failed purchases.');
