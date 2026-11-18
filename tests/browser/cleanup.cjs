@@ -13,7 +13,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    await page.setViewportSize({width,height:1000});
    await page.evaluate(()=>{go('home');document.querySelector('#mobileNav33c').remove();document.querySelector('#broadcastStatus33c').remove();render();render();});
    assert.equal(await page.locator('#mobileNav33c').count(),1);assert.equal(await page.locator('#broadcastStatus33c').count(),1);
-   assert.equal(await page.locator('#mobileNav33c button').count(),5);assert.equal(await page.locator('#mobileNav33c').locator('button').filter({hasText:'Буткемп'}).count(),1);
+   assert.equal(await page.locator('#mobileNav33c button').count(),7);assert.equal(await page.locator('#mobileNav33c').locator('button').filter({hasText:'Команда'}).count(),1);
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'navigation overflow '+width);
    await page.screenshot({path:dir+'/navigation-'+width+'.png',fullPage:true});
   }

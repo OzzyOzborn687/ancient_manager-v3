@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),{run,c}=require('./harness22.cjs')({modelVersion:8});
 assert(run(`(()=>{const before=JSON.stringify(S),seed=S.seed;for(const view of [home,squad,calendar,tactics]){const html=view();if(!html||/undefined|NaN/.test(html))return false;}return before===JSON.stringify(S)&&seed===S.seed})()`),'read-only career screens');
 assert(run(`home().indexOf('md-feature')<home().indexOf('md-lower')`),'near-term decision precedes supporting club information');
-assert.equal(run(`(squad().match(/class="g6-player c-player /g)||[]).length`),5);
+assert.equal(run(`(squad().match(/class="v9-player g6-player /g)||[]).length`),5);
 run(`Arena33C.squadMode='table'`);assert(run(`squad().includes('Сравнить')&&!squad().includes('class="panel c-player ')`));
 run(`Arena33C.compareBase=roster()[0].id;Arena33C.compareCandidate=S.players.find(p=>p.role===0&&p.team!==S.club&&!p.retired).id;`);
 assert(run(`(()=>{const before=JSON.stringify(S),seed=S.seed,html=comparison33C();return before===JSON.stringify(S)&&seed===S.seed&&html.includes('SIN состава')&&html.includes('OVR команды')&&!/undefined|NaN/.test(html)})()`),'comparison is read-only');
