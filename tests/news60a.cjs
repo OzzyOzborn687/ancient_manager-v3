@@ -1,7 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'),{run:r}=require('./harness22.cjs')({modelVersion:8});
+r(require('./fixtures-market7.js'));
 assert(r('ClubNews60A.items().length===0&&!S.clubNews60a'));
-r("S.calendar21.installedDay=100000;S.events=[{id:999,name:'Later',series:'ANCIENT',day:90,pool:1000}];S.budget=10000000;var newsPlayer=S.players.find(p=>p.name==='Satanic');var newsSource=newsPlayer.team,newsFee=transferTerms13(newsPlayer,'starter').fee;buy(newsPlayer.id,'starter');");
+r("S.calendar21.installedDay=100000;S.events=[{id:999,name:'Later',series:'ANCIENT',day:90,pool:1000}];S.budget=10000000;var newsPlayer=S.players.find(p=>p.name==='Satanic');var newsSource=newsPlayer.team,newsFee=finishNegotiation7(newsPlayer.id,'starter');");
 assert(r('ClubNews60A.items().length===S.transfersV1.filter(e=>e.type==="sign").length&&S.clubNews60a.posts.length===ClubNews60A.items().length&&validSave(S)'));assert(r('ClubNews60A.items()[0].fee===newsFee&&ClubNews60A.items()[0].from.id===newsSource&&ClubNews60A.items()[0].to.id===S.club'));
 r('TransferReveal52.close();var postBeforeNews=JSON.stringify(ClubNews60A.items()[0]);S.teams[S.club].name="Renamed";newsPlayer.name="Changed";');assert.equal(r('JSON.stringify(ClubNews60A.items()[0])'),r('postBeforeNews'),'snapshots retain original club/player labels');
 assert(r('(()=>{let before=JSON.stringify(S),seed=S.seed;ClubNews60A.view();ClubNews60A.items();return JSON.stringify(S)===before&&S.seed===seed})()'),'read-only feed');
