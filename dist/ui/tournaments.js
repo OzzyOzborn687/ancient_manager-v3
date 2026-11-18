@@ -26,7 +26,7 @@ function neonInlineMatch(n,a,active){
 }
 function neonMatchNode(n,a,active,pos){
  const live=active&&n.id===a.cursor,label=n.championship?'ГРАНД-ФИНАЛ':n.label;
- return '<article class="neon-node '+(live?'playing ':'')+(n.championship?'neon-champion-card':'')+'" data-match-id="'+n.id+'" style="left:'+pos.x+'px;top:'+pos.y+'px;width:'+pos.w+'px;height:'+pos.h+'px"><div class="neon-node-inner"><div class="neon-node-head">'+esc(label)+' · BO'+n.bo+'</div>'+neonMatchContents(n,a,active)+'</div></article>';
+ return '<article class="neon-node '+(live?'playing ':'')+(n.championship?'neon-champion-card':'')+'" data-match-id="'+n.id+'" data-championship="'+!!n.championship+'" style="left:'+pos.x+'px;top:'+pos.y+'px;width:'+pos.w+'px;height:'+pos.h+'px"><div class="neon-node-inner"><div class="neon-node-head">'+esc(label)+' · BO'+n.bo+'</div>'+neonMatchContents(n,a,active)+'</div></article>';
 }
 function neonConnector(x1,y1,x2,y2,kind){
  const middle=x1+(x2-x1)/2;
@@ -167,7 +167,7 @@ function neonPlayoffGraph(a,nodes,active,title){
  for(const n of nodes)for(const v of n.pair){
   if(!v||typeof v!=='object'||!positions.has(v.id))continue;
   const s=positions.get(v.id),t=positions.get(n.id);
-  edges+=neonConnector(s.x+s.w,s.y+s.h/2,t.x,t.y+t.h/2,v.out==='l'?'loser':'');
+  edges+=neonConnector(s.x+s.w,s.y+s.h/2,t.x,t.y+t.h/2,v.out==='l'?'loser':Number.isInteger(a.schedule[v.id]?.w)?'winner-complete':'').replace(' d=',' data-source="'+v.id+'" d=');
  }
  const svg='<svg class="neon-connectors" viewBox="0 0 '+width+' '+height+'" aria-hidden="true">'+edges+'</svg>';
  const labels=(upperNodes.length?'<div class="neon-graph-label" style="left:'+PX+'px;top:24px">UPPER BRACKET</div>':'')+(lowerNodes.length?'<div class="neon-graph-label lower" style="left:'+PX+'px;top:'+(lowerTop-40)+'px">LOWER BRACKET</div>':'');

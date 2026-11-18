@@ -1,0 +1,17 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),{run}=require('./harness22.cjs')();
+assert(run('PAGES.filter(p=>p[0]===\'growth9\').length===1'));
+assert(run('PAGES.every(p=>Interface9.group(p[0]))'));
+run('GlobalInterface6.tab="five";Arena33C.squadMode="cards";var baseline9=JSON.stringify(S),seed9=S.seed;var roster9=squad();');
+assert(run('baseline9===JSON.stringify(S)&&seed9===S.seed'),'render must not change career or RNG');
+assert(run('roster().every(p=>roster9.includes(esc(p.name)))'));
+assert(run('roster9.includes("Открыть профиль")&&roster9.includes("GlobalInterface6.select(")'));
+run('var pick9=roster()[2];GlobalInterface6.select(pick9.id);var selected9=squad();');assert(run('selected9.includes("profile("+pick9.id+")")&&selected9.includes("Сравнить")'));
+run('GlobalInterface6.tab="bench";var bench9=squad();GlobalInterface6.tab="contracts";var contracts9=squad();');assert(run('bench9.includes("Резерв")&&contracts9.includes("<table")'));
+run('var graph9={schedule:[{id:0,label:"Semi",bo:3,pair:[0,1],w:0,l:1,score:"2:1"},{id:1,label:"Grand final",bo:5,championship:true,pair:[{id:0,out:"w"},{id:0,out:"l"}],w:1,l:0,score:"1:3"}]};var old9=JSON.stringify(graph9);var html9=neonPlayoffGraph(graph9,graph9.schedule,false);');
+assert(run('html9.includes(\'data-championship="true"\')&&html9.includes("winner-complete")&&html9.includes("is-winner")'));
+assert(run('JSON.stringify(graph9)===old9'),'bracket results stay untouched');
+assert(run('MarketUI7.row(S.players.find(p=>p.team!==null&&p.team!==S.club)).includes("v9-market-club")'));
+assert(run('validSave(S)'));
+for(let i=0;i<4;i++)assert(fs.statSync('dist/v9/assets/scene'+i+'.webp').size<300000);
+console.log('PASS V9: registered navigation, read-only roster/RNG, selection and prior reserve/contract views, real bracket results/advancement and final tagging, market identity assets, valid save, bounded local backdrops.');

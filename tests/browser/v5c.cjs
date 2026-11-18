@@ -7,14 +7,14 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V8.0 BETA');
-  assert((await page.locator('#broadcastStatus33c').innerText()).includes('V6.0'));
+  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V9.0 BETA');
+  assert(await page.locator('#v9Header').isVisible());
   // Offline from all external sites: inspect every actual core-club squad.
   for(const id of await page.evaluate(()=>S.teams.filter(t=>t.tier===1).map(t=>t.id))){
    await page.evaluate(id=>{S.club=id;go('squad')},id);
-   assert.equal(await page.locator('.c-player .portrait20 img').count(),5);
-   await page.locator('.c-player .portrait20 img').evaluateAll(async imgs=>{for(const i of imgs)i.loading='eager';await Promise.all(imgs.map(i=>i.decode()))});
-   assert(await page.locator('.c-player .portrait20 img').evaluateAll(imgs=>imgs.every(i=>i.naturalWidth>100&&!i.hidden)));
+   assert.equal(await page.locator('.v9-player .portrait20 img').count(),5);
+   await page.locator('.v9-player .portrait20 img').evaluateAll(async imgs=>{for(const i of imgs)i.loading='eager';await Promise.all(imgs.map(i=>i.decode()))});
+   assert(await page.locator('.v9-player .portrait20 img').evaluateAll(imgs=>imgs.every(i=>i.naturalWidth>100&&!i.hidden)));
   }
   await page.evaluate(()=>{const ps=S.players.filter(p=>!p.fiction&&p.team===null);document.getElementById('app').innerHTML=ps.map(p=>portrait20(p,true)).join('')});
   await page.locator('#app .portrait20 img').evaluateAll(async imgs=>Promise.all(imgs.map(i=>i.decode())));

@@ -4,7 +4,7 @@ const test=(name,code)=>{assert(run(code),name);console.log('PASS',name)};
 run(`function fatigueFixture26(bo=3,stage='groups'){
  fresh();S.seed=1000;for(const id of [0,6])for(const p of roster(S.teams[id]))p.fatigue=10;
  const node={id:0,pair:[0,6],bo,groupMatch:stage==='groups',label:'Тестовая серия',day13:S.day,slot13:S.day};
- const a=S.active={event:S.events[0].id,format6:true,stage6:stage,cursor:0,schedule:[node],score:[0,0],maps:[],opponent:6,bo,phase:'circuit',stage:'Тест',round:0,totalRounds:1,bracket:[],pairs:[]};
+ const a=S.active={event:S.events[0].id,entrants:[0,6],placements:{},format6:true,stage6:stage,cursor:0,schedule:[node],score:[0,0],maps:[],opponent:6,bo,phase:'circuit',stage:'Тест',round:0,totalRounds:1,bracket:[],pairs:[]};
  Match22.fatigueState(a);return a;
 }
 function completeCard26(a,winner){const m=a.live=makeLive4(a,autoDraft([0,6]),[0,6]);m.clock=1800;Match22.finish(m,winner,'ancient');finishMap();return m;}`);
