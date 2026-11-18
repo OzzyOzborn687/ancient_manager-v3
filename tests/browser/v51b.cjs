@@ -11,32 +11,32 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   for(const width of [1440,768,390,320]){
    await page.setViewportSize({width,height:1000});
    await page.evaluate(()=>{fresh();S.calendar21.installedDay=100000;S.events=[{id:920,name:'FISSURE PLAYGROUND FIRST',series:'FISSURE',day:40,duration:3,pool:100000},{id:921,name:'FISSURE PLAYGROUND NEXT',series:'FISSURE',day:45,duration:3,pool:100000}];Admissions5.install();for(const e of [...S.events])Qualifiers.freeze(e);S.day=33;S.budget=1000000;S.v4.camps={};campEvent4=920;selectedQualifierEvent=920;Camp4.book(920,'elite');go('home')});
-   const hero=page.locator('.md-feature');assert.equal((await hero.locator('h1').innerText()).replace(/\s+/g,' ').toUpperCase(),'FISSURE PLAYGROUND FIRST');
-   const day=hero.locator('.md-next'),skip=hero.getByRole('button',{name:'ПРОПУСТИТЬ ТУРНИР',exact:true});
+   const hero=page.locator('.v9-home-event');assert.equal((await hero.locator('h2').first().innerText()).replace(/\s+/g,' ').toUpperCase(),'FISSURE PLAYGROUND FIRST');
+   const day=hero.locator('.primary').first(),skip=hero.getByRole('button',{name:/^Пропустить турнир$/i});
    assert(await skip.isVisible()&&await skip.isEnabled());
-   assert(await skip.evaluate(e=>e.previousElementSibling.textContent.includes('ПОДГОТОВИТЬ КОМАНДУ')));
-   if(width===1440){const d=await day.boundingBox(),s=await skip.boundingBox();assert(s.y>=d.y+d.height-1,'skip stays in the command panel below next day');}
+   assert(await skip.evaluate(e=>e.previousElementSibling.textContent.toLowerCase().includes('подготовить команду')));
+   if(width===1440){const d=await day.boundingBox(),s=await skip.boundingBox();assert(s.x>d.x&&Math.abs(s.y-d.y)<3,'skip is next to next day in the new event strip');}
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'overflow before skip '+width);
    await page.screenshot({path:dir+'/before-'+width+'.png',fullPage:true});
    const before=await page.evaluate(()=>({day:S.day,seed:S.seed,budget:S.budget,players:JSON.stringify(S.players)}));
    await skip.click();
-   assert.equal((await hero.locator('h1').innerText()).replace(/\s+/g,' ').toUpperCase(),'FISSURE PLAYGROUND NEXT');
+   assert.equal((await hero.locator('h2').first().innerText()).replace(/\s+/g,' ').toUpperCase(),'FISSURE PLAYGROUND NEXT');
    assert(await page.evaluate(before=>S.day===before.day&&S.seed===before.seed&&JSON.stringify(S.players)===before.players&&S.budget===before.budget+112000&&!S.active&&validSave(S),before));
    assert(await page.evaluate(()=>selectedQualifierEvent===921&&campEvent4===921&&CampUI4.selected().id===921));
-   assert.equal(await hero.getByRole('button',{name:'ПРОПУСТИТЬ ТУРНИР',exact:true}).count(),1);
-   assert.equal(await page.locator('.md-home [data-qualification-event="921"]').count(),1);
-   assert.equal(await page.locator('.md-home [data-qualification-event="920"]').count(),0);
+   assert.equal(await hero.getByRole('button',{name:/^Пропустить турнир$/i}).count(),1);
+   assert.equal(await page.locator('.v9-home-scene [data-qualification-event="921"]').count(),1);
+   assert.equal(await page.locator('.v9-home-scene [data-qualification-event="920"]').count(),0);
    assert(await page.evaluate(()=>!skipUpcomingTournament51B(920)&&nextEvent().id===921));
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'overflow after skip '+width);
    await page.screenshot({path:dir+'/after-'+width+'.png',fullPage:true});
-   await page.locator('.md-camp').getByRole('button',{name:'Открыть буткемп',exact:true}).click();
+   await page.locator('.v9-home-camp').click();
    assert.equal(await page.getByLabel('Турнир для буткемпа').inputValue(),'921');
    await page.locator('.v4-tier.elite').getByRole('button',{name:'Выбрать программу',exact:true}).click();
    assert((await page.locator('#modal').innerText()).includes('FISSURE PLAYGROUND NEXT'));
    await page.locator('#modal button.primary').click();
    assert(await page.evaluate(()=>Camp4.plans()[Camp4.key(921)].status==='active'&&Camp4.plans()[Camp4.key(920)].status==='cancelled'&&validSave(S)));
    await page.evaluate(async()=>{save();await saveQueue});await page.reload();await page.waitForFunction(()=>window.ancientStartup?.ready);
-   await page.evaluate(()=>go('home'));assert.equal((await page.locator('.md-feature h1').innerText()).replace(/\s+/g,' ').toUpperCase(),'FISSURE PLAYGROUND NEXT');
+   await page.evaluate(()=>go('home'));assert.equal((await page.locator('.v9-home-event h2').first().innerText()).replace(/\s+/g,' ').toUpperCase(),'FISSURE PLAYGROUND NEXT');
    assert(await page.evaluate(()=>nextEvent().id===921&&Camp4.plans()[Camp4.key(921)].status==='active'&&validSave(S)));
   }
   assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);

@@ -14,7 +14,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),fs=require
     await page.evaluate(n=>go(n),name);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),name+' '+width);
    }
    await page.evaluate(()=>go('home'));
-   if(width<=390){assert(await page.locator('#v9Header').isVisible());await page.locator('#mobileNav33c').getByRole('button',{name:'Команда',exact:true}).click();assert(await page.evaluate(()=>page==='squad'));}
+   if(width<=390){assert(await page.locator('#mobileNav33c').isVisible());await page.locator('#mobileNav33c').getByRole('button',{name:'Команда',exact:true}).click();assert(await page.evaluate(()=>page==='squad'));}
    await page.evaluate(()=>go('squad'));
    await page.getByRole('button',{name:'Таблица',exact:true}).click();assert(await page.locator('.neon-squad table').isVisible());
    await page.getByRole('button',{name:'Карточки',exact:true}).click();assert.equal(await page.locator('.v9-player').count(),5);

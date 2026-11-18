@@ -1,5 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),{run}=require('./harness22.cjs')();
+const entry9=fs.readFileSync('dist/index.html','utf8');assert([...entry9.matchAll(/<link[^>]+href="([^"]+)"/g)].every(m=>m[1].startsWith('v9/')),'legacy site themes are not loaded');
 assert(run('PAGES.filter(p=>p[0]===\'growth9\').length===1'));
 assert(run('PAGES.every(p=>Interface9.group(p[0]))'));
 run('GlobalInterface6.tab="five";Arena33C.squadMode="cards";var baseline9=JSON.stringify(S),seed9=S.seed;var roster9=squad();');

@@ -1,7 +1,8 @@
 'use strict';
-// V9 presentation state lives outside the saved career. All actions use existing entry points.
+// Single authoritative UI. Older render decorators are intentionally not called.
+// All career actions continue to use their original handlers and save format.
 const Interface9={
- resultsSeen:new Set(), lastPage:null, motion:true, timer:null, introTimer:null, enterTimer:null, scene:0, layer:0, selectedFrom:null,
+ lastPage:null,motion:true,timer:null,scene:0,layer:0,selectedFrom:null,calendarTab:'upcoming',resultsSeen:new Set(),enterTimer:null,
  groups:[
   {id:'home',label:'Главная',pages:['home','menu21']},
   {id:'match',label:'Матч-центр',pages:['match','history','pools','model']},
@@ -12,86 +13,115 @@ const Interface9={
   {id:'finance',label:'Клуб',pages:['finance','sponsors','services8','development','trophies','clubs','clubProfile','settings','saves','patch']}
  ],
  group(key=page){return this.groups.find(g=>g.pages.includes(key))||(key==='player'?this.groups.find(g=>g.id===this.selectedFrom)||this.groups[2]:this.groups[6]);},
- title(key){return ({home:'Обзор',tactics:'Тренировки и тактика',growth9:'Развитие OVR',development:'База и штаб',scene5:'Клубы и регионы',monthly60b:'Итоги месяца',news60a:'Общая лента'})[key]||PAGES.find(p=>p[0]===key)?.[2]||'Клуб';},
+ title(key){return ({home:'Обзор',growth9:'Развитие OVR',tactics:'Тренировки',development:'База и штаб',news60a:'Общая лента',monthly60b:'Итоги месяца',scene5:'Регионы'})[key]||PAGES.find(p=>p[0]===key)?.[2]||'Клуб';},
  init(){
-  if(!document.body?.classList||!document.createElement||typeof document.querySelector!=='function')return;
+  if(!document.body?.classList||typeof document.querySelector!=='function')return;
   if(document.getElementById('v9Backdrop'))return;
   try{this.motion=localStorage.getItem('ancient-v9-motion')!=='off';}catch(_){}
-  const bg=document.createElement('div');bg.id='v9Backdrop';bg.setAttribute('aria-hidden','true');
-  bg.innerHTML='<img class="is-visible" src="v9/assets/scene0.webp" alt="" decoding="async"><img src="v9/assets/scene1.webp" alt="" decoding="async"><div></div>';
-  document.body.prepend(bg);
-  const credits=document.createElement('a');credits.id='v9PhotoCredit';credits.href='v9/assets/ATTRIBUTION.md';credits.target='_blank';credits.rel='noopener';credits.textContent='PHOTO: Watbe / xReDeYe / a.canvas.of.light';document.body.append(credits);
-  document.addEventListener('visibilitychange',()=>this.background());
-  this.media=window.matchMedia?.('(prefers-reduced-motion: reduce)');this.media?.addEventListener?.('change',()=>this.background());
-  document.body.classList.add('v9','v9-intro');this.introTimer=setTimeout(()=>document.body.classList.remove('v9-intro'),1500);
-  this.background();
+  const bg=document.createElement('div');bg.id='v9Backdrop';bg.setAttribute('aria-hidden','true');bg.innerHTML='<img class="is-visible" src="v9/assets/scene0.webp" alt="" decoding="async"><img src="v9/assets/scene1.webp" alt="" decoding="async"><div></div>';document.body.prepend(bg);
+  this.media=window.matchMedia?.('(prefers-reduced-motion: reduce)');this.media?.addEventListener?.('change',()=>this.background());document.addEventListener('visibilitychange',()=>this.background());
+  document.body.classList.add('v9','v9-intro');setTimeout(()=>document.body.classList.remove('v9-intro'),1500);this.background();
  },
  background(){
   if(this.timer!==null){clearInterval(this.timer);this.timer=null;}
-  const off=!this.motion||!!this.media?.matches;document.body?.classList.toggle('v9-motion-off',off);
-  document.body?.classList.toggle('v9-background-paused',!!document.hidden);
+  const off=!this.motion||!!this.media?.matches;document.body?.classList.toggle('v9-motion-off',off);document.body?.classList.toggle('v9-background-paused',!!document.hidden);
   if(off||document.hidden)return;
-  this.timer=setInterval(()=>{
-   const imgs=document.querySelectorAll('#v9Backdrop>img');if(imgs.length!==2)return;
-   this.scene=(this.scene+1)%4;const next=1-this.layer;imgs[next].src='v9/assets/scene'+this.scene+'.webp';
-   // Keep the current photo until the replacement is decoded; failed assets never blank the page.
-   Promise.resolve(imgs[next].decode?.()).then(()=>{if(document.hidden||!this.motion||this.media?.matches)return;imgs[next].classList.add('is-visible');imgs[this.layer].classList.remove('is-visible');this.layer=next;}).catch(()=>{});
-  },9000);
+  this.timer=setInterval(()=>{const imgs=document.querySelectorAll('#v9Backdrop>img');if(imgs.length!==2)return;this.scene=(this.scene+1)%4;const next=1-this.layer;imgs[next].src='v9/assets/scene'+this.scene+'.webp';Promise.resolve(imgs[next].decode?.()).then(()=>{if(document.hidden||!this.motion||this.media?.matches)return;imgs[next].classList.add('is-visible');imgs[this.layer].classList.remove('is-visible');this.layer=next;}).catch(()=>{});},3000);
  },
- toggleMotion(){this.motion=!this.motion;try{localStorage.setItem('ancient-v9-motion',this.motion?'on':'off');}catch(_){}this.background();this.shell();},
- navigate(destination){go(destination);},
+ toggleMotion(){this.motion=!this.motion;try{localStorage.setItem('ancient-v9-motion',this.motion?'on':'off');}catch(_){}this.background();render();},
+ reset(){this.lastPage=null;this.selectedFrom=null;this.resultsSeen.clear();this.calendarTab='upcoming';},
+ label(){return busy13?'Симуляция…':S.practice13?'Идёт КВ':S.active?'К матчу':nextEvent()?.day<=S.day?'Начать турнир':'Следующий день';},
  shell(){
-  const group=this.group(),nav=$('nav');
-  const signature=page+'|'+this.motion;
-  if(nav.dataset.v9Signature!==signature||!nav.querySelector('.v9-primary')){nav.dataset.v9Signature=signature;
-   nav.innerHTML='<a class="v9-brand" href="#" onclick="go(\'home\');return false">ANCIENT<br>MANAGER<small>DOTA 2 / CLUB MANAGEMENT</small></a><div class="v9-primary">'+this.groups.map(g=>'<button type="button" '+(g===group?'aria-current="page"':'')+' onclick="go(\''+g.id+'\')">'+g.label+'</button>').join('')+'</div><div class="v9-utilities"><button onclick="go(\'menu21\')">Все разделы</button><button onclick="go(\'saves\')">Сохранения</button><button onclick="go(\'settings\')">Настройки</button><button type="button" aria-pressed="'+this.motion+'" onclick="Interface9.toggleMotion()">Анимации: '+(this.motion?'вкл.':'выкл.')+'</button><small>V9.0 BETA</small></div>';
-  }
-  let header=document.getElementById('v9Header');if(!header){header=document.createElement('header');header.id='v9Header';document.querySelector('.workspace21>main').prepend(header);}
+  const group=this.group(),nav=$('nav');nav.innerHTML='<a class="v9-brand" href="#" onclick="go(\'home\');return false">ANCIENT<br>MANAGER<small>DOTA 2 / CLUB MANAGEMENT</small></a><div class="v9-primary">'+this.groups.map(g=>'<button type="button" '+(g===group?'aria-current="page"':'')+' onclick="go(\''+g.id+'\')">'+g.label+'<span aria-hidden="true"></span></button>').join('')+'</div><div class="v9-utilities"><button onclick="go(\'saves\')">Сохранения</button><button onclick="go(\'settings\')">Настройки</button><button type="button" aria-pressed="'+this.motion+'" onclick="Interface9.toggleMotion()">Анимации: '+(this.motion?'вкл.':'выкл.')+'</button><small>V9.0 BETA / FULL INTERFACE</small></div>';
   const keys=[...group.pages,...(group===this.groups[6]?PAGES.map(p=>p[0]).filter(k=>!this.groups.some(g=>g.pages.includes(k))):[])].filter(k=>k==='growth9'||PAGES.some(p=>p[0]===k));
-  const html='<div class="v9-context"><span>'+esc(my().name)+' / '+group.label+'</span><span>'+esc(date(S.day))+' · '+esc(cash(S.budget))+'</span><button class="v9-day" type="button" onclick="advance()" '+($('advance').disabled?'disabled':'')+'>'+esc($('advance').textContent)+'</button></div><nav class="v9-subnav" aria-label="Вкладки раздела '+group.label+'">'+keys.map(k=>'<button type="button" '+(page===k?'aria-current="page"':'')+' onclick="go(\''+k+'\')">'+esc(this.title(k))+'</button>').join('')+'</nav>';
-  if(header.innerHTML!==html){header.innerHTML=html;const current=header.querySelector('[aria-current=page]');if(current){const rail=current.parentElement;rail.scrollLeft=Math.max(0,current.offsetLeft-rail.offsetLeft-rail.clientWidth/2+current.clientWidth/2);}}
-  const mobile=$('mobileNav33c');if(mobile){mobile.innerHTML=this.groups.map(g=>'<button '+(g===group?'aria-current="page"':'')+' onclick="go(\''+g.id+'\')">'+g.label+'</button>').join('');mobile.style.gridTemplateColumns='none';const current=mobile.querySelector('[aria-current=page]');if(current)mobile.scrollLeft=Math.max(0,current.offsetLeft-mobile.clientWidth/2+current.clientWidth/2);}
-  const oldHeader=$('matchdayHeader6');if(oldHeader){oldHeader.hidden=true;oldHeader.setAttribute('aria-hidden','true');}
-  const badge=document.querySelector('.version-badge21');if(badge)badge.textContent='ANCIENT MANAGER / V9.0 BETA';
+  $('v9Header').innerHTML='<div class="v9-context"><span>'+esc(my().name)+' / '+esc(group.label)+'</span><span>'+esc(date(S.day))+' · '+esc(cash(S.budget))+'</span><button class="v9-day" onclick="advance()" '+(busy13||S.practice13?'disabled':'')+'>'+this.label()+'</button></div><nav class="v9-subnav" aria-label="Вкладки раздела '+group.label+'">'+keys.map(k=>'<button '+(page===k?'aria-current="page"':'')+' onclick="go(\''+k+'\')">'+esc(this.title(k))+'</button>').join('')+'</nav>';
+  const current=$('v9Header').querySelector('.v9-subnav [aria-current]');if(current)current.parentElement.scrollLeft=Math.max(0,current.offsetLeft-current.parentElement.offsetLeft-current.parentElement.clientWidth/2+current.clientWidth/2);
+  $('mobileNav33c').innerHTML=this.groups.map(g=>'<button '+(g===group?'aria-current="page"':'')+' onclick="go(\''+g.id+'\')">'+g.label+'</button>').join('');const mobile=$('mobileNav33c'),active=mobile.querySelector('[aria-current]');if(active)mobile.scrollLeft=Math.max(0,active.offsetLeft-mobile.clientWidth/2+active.clientWidth/2);
+  $('advance').textContent=this.label();$('advance').disabled=!!busy13||!!S.practice13;
+  $('club').textContent=my().name;$('date').textContent=date(S.day);$('crumb').textContent=this.title(page);
+  document.body.dataset.page=page;document.body.dataset.v9Group=group.id;
  },
- decorate(){
-  if(!S||typeof document.querySelector!=='function'||!document.body?.classList)return;
-  this.init();this.shell();
-  const app=$('app');app.classList.add('v9-view');document.body.dataset.v9Group=this.group().id;
-  for(const el of app.querySelectorAll(':scope>.g6-context'))el.remove();
-  if(page==='settings')app.insertAdjacentHTML('afterbegin','<section class="panel"><h2>Движение интерфейса</h2><p>Смена фоновых фотографий и короткие переходы между вкладками.</p><button type="button" aria-pressed="'+this.motion+'" onclick="Interface9.toggleMotion();render()">Анимации: '+(this.motion?'включены':'отключены')+'</button></section>');
-  if(page==='growth9')app.innerHTML=head('PLAYER DEVELOPMENT','Развитие OVR','Опыт, тренировки и разбор ошибок. Все показатели берутся из текущей карьеры.')+'<div class="v9-growth-grid">'+roster().map(p=>Growth8.view(p)).join('')+'</div><div class="actions">'+btn('К тренировкам',"go('tactics')",true)+btn('База и штаб',"go('development')")+'</div>';
-  if(this.lastPage!==page){
-   app.classList.remove('v9-enter');void app.offsetWidth;app.classList.add('v9-enter');
-   if(this.enterTimer!==null)clearTimeout(this.enterTimer);this.enterTimer=setTimeout(()=>app.classList.remove('v9-enter'),550);
-   this.lastPage=page;
-  }
-  this.bracket();
+ titleBlock(k,title,desc='',right=''){return '<header class="v9-title"><div><small>'+k+'</small><h1>'+title+'</h1>'+(desc?'<p>'+desc+'</p>':'')+'</div>'+(right?'<div class="v9-title-actions">'+right+'</div>':'')+'</header>';},
+ metrics(){const r=readiness33C();return '<div class="v9-metrics">'+[['OVR',r.ovr],['SIN',r.sin],['Форма',r.form],['Энергия',r.energy]].map(([s,n])=>'<div><small>'+s+'</small><b>'+Math.round(n)+(s==='Энергия'?'%':'')+'</b></div>').join('')+'</div>';},
+ event(){return S.events.find(e=>e.id===S.active?.event)||nextEvent();},
+ home(){
+  const e=this.event(),a=S.active,team=my(),opponent=S.teams[a?.opponent],camp=e&&Camp4.plans()[Camp4.key(e.id)],invite=Qualifiers.isRegional(e)?S.events.find(v=>v.id===e.qualifierFor):e;
+  return '<div class="v9-home-scene"><div class="v9-home-account"><span>'+esc(my().name)+'</span><span>'+esc(date(S.day))+'</span><b>'+cash(S.budget)+'</b></div><div class="v9-scene-caption"><h1>THE SCENE.<br>YOUR LEGACY.</h1><p>DOTA 2 / CLUB MANAGEMENT</p><div class="v9-scene-indicators"><i></i><i></i><i></i><i></i></div></div><section class="v9-home-event"><div class="v9-home-event-copy"><small>'+esc(a?'ТЕКУЩАЯ СЕРИЯ':'БЛИЖАЙШИЙ ВЫЗОВ')+'</small><h2>'+esc(e?.name||'Новый сезон')+'</h2><p>'+esc(e?date(e.day):date(S.day))+' · '+esc(a?.stage||'Подготовка к турниру')+'</p></div><div class="v9-home-pair">'+clubAvatar12(team)+'<span>'+esc(team.short)+'</span><b>'+(a?a.score.join(' : '):'VS')+'</b>'+(opponent?clubAvatar12(opponent):'<span class="v9-unknown">?</span>')+'<span>'+esc(opponent?.short||'Жеребьёвка')+'</span></div><div class="actions">'+btn(this.label(),'advance()',true,!!busy13||!!S.practice13)+btn('Подготовить команду',"go('tactics')")+(e&&!a?btn('Пропустить турнир','skipUpcomingTournament51B('+e.id+')',false,!!busy13||!!S.practice13):btn('Сетка турнира',"go('bracket')"))+'</div><div class="v9-home-foot">'+this.metrics()+'<button class="v9-home-camp" onclick="campEvent4='+(e?.id??'null')+';go(\'bootcamp\')"><small>ПОДГОТОВКА</small><b>'+esc(camp?V4_CONFIG.camp.tiers[camp.tier].label:'Онлайн / выбрать буткемп')+'</b></button></div>'+(invite?.qualification&&invite.qualification.status!=='pending'?'<details class="v9-home-invite"><summary>Приглашение и участие в турнире</summary>'+qualifierCard(invite)+'</details>':'')+'</section><div class="v9-home-alerts">'+alerts33C().slice(0,2).map(x=>'<button onclick="'+x.action+'">'+esc(x.text)+' <span>'+esc(x.label)+' →</span></button>').join('')+'</div></div>';
+ },
+ select(id){GlobalInterface6.select(id);},
+ squad(){
+  const all=owned().filter(p=>!p.retired),ps=GlobalInterface6.tab==='bench'?all.filter(p=>!p.active):roster(),selected=all.find(p=>p.id===GlobalInterface6.selected)||ps[0],r=readiness33C();
+  const tabs='<nav class="g6-tabs v9-local-tabs" aria-label="Управление составом">'+[['five','Основная пятёрка'],['bench','Резерв'],['contracts','Контракты']].map(([key,label])=>'<button aria-pressed="'+(GlobalInterface6.tab===key)+'" onclick="GlobalInterface6.setTab(\''+key+'\')">'+label+'</button>').join('')+'</nav>';
+  const card=p=>{const bio=bio20(p);return '<article class="v9-player g6-player '+(selected?.id===p.id?'is-selected':'')+'"><button class="g6-select" aria-pressed="'+(selected?.id===p.id)+'" aria-label="Выбрать '+esc(p.name)+'" onclick="GlobalInterface6.select('+p.id+')"><span class="v9-position">'+String(p.role+1).padStart(2,'0')+'</span><strong class="v9-rating">'+Math.round(p.skill)+'</strong>'+portrait20(p)+'<div class="v9-player-caption"><h2>'+esc(p.name)+'</h2><small>'+esc(bio?[bio.first,bio.last].filter(Boolean).join(' '):'')+'</small><em>'+esc(ROLES[p.role])+'</em></div></button></article>';};
+  return this.titleBlock(esc(my().name)+' / ПЯТЬ ИГРОКОВ. ОДНА ЦЕЛЬ.',GlobalInterface6.tab==='five'?'Стартовая пятёрка':GlobalInterface6.tab==='bench'?'Резерв команды':'Контракты', '',this.metrics())+tabs+
+   (GlobalInterface6.tab==='contracts'?'<section class="v9-contracts">'+playerTable(all,true)+'</section>':
+    (GlobalInterface6.tab==='five'?'<div class="v9-display actions">'+btn('Карточки',"setSquadMode33C('cards')")+btn('Таблица',"setSquadMode33C('table')")+'</div>':'')+
+    (Arena33C.squadMode==='table'&&GlobalInterface6.tab==='five'?'<section class="neon-squad">'+neonSquadTable(ps)+'</section>':'<section class="v9-five g6-five '+(GlobalInterface6.tab==='bench'?'v9-reserves g6-reserves':'')+'">'+(ps.length?ps.map(card).join(''):'<div class="v9-empty"><h2>Резерв свободен</h2><p>Подписанные игроки появятся здесь.</p>'+btn('Найти игрока',"go('market')",true)+'</div>')+'</section>')+
+    (selected?'<section class="v9-player-summary g6-selected"><div><small>ВЫБРАННЫЙ ИГРОК</small><h2>'+esc(selected.name)+'</h2><p>'+esc(ROLES[selected.role])+' · '+selected.contract+' дн. · '+cash(selected.salary)+'/нед.</p></div><div class="v9-selected-vitals">'+[['Форма',selected.form],['Энергия',100-selected.fatigue],['Мораль',selected.morale]].map(([label,n])=>'<div><small>'+label+'</small><b>'+Math.round(n)+(label==='Энергия'?'%':'')+'</b><meter min="0" max="100" value="'+clamp(n)+'"></meter></div>').join('')+'</div><div class="actions">'+btn('Открыть профиль','profile('+selected.id+')',true)+btn('Сравнить','openCompare33C('+selected.id+')')+'</div></section>':''))+
+   '<div class="v9-roster-foot"><span>Резерв: '+all.filter(p=>!p.active).length+' / 3</span>'+btn('Поиск усиления',"go('market')")+btn('Подготовка команды',"go('tactics')")+'</div><details class="v9-archive"><summary>Поддержка клуба и архив состава</summary>'+amTeamCard(my())+S.players.filter(p=>p.retired&&p.retiredFromTeam===S.club).map(p=>'<div class="news"><b>'+esc(p.name)+'</b>'+btn('Профиль','profile('+p.id+')')+'</div>').join('')+'</details>';
+ },
+ match(){
+  if(S.active)return this.titleBlock('MATCH CENTRE / '+esc(this.event()?.name||'Серия'),'Матч-центр')+this.clean(matchView());
+  const e=this.event();return this.titleBlock('MATCH CENTRE / '+esc(e?.name||'Сезон'),'Матч-центр')+'<section class="v9-match-preview"><div class="v9-match-label"><span>'+esc(e&&e.day<=S.day?'ТУРНИР ГОТОВ К СТАРТУ':'ПОДГОТОВКА К СЕРИИ')+'</span><span>'+esc(e?date(e.day):date(S.day))+'</span></div><div class="v9-versus"><div>'+clubAvatar12(my())+'<h2>'+esc(my().name)+'</h2></div><div class="v9-versus-center"><b>VS</b><small>СОПЕРНИК ПО ЖЕРЕБЬЁВКЕ</small></div><div><span class="v9-unknown">?</span><h2>Ожидание соперника</h2></div></div><div class="actions">'+btn(e?.day<=S.day?'Начать турнир':'Подготовка и драфт',e?.day<=S.day?'TournamentIntro52A.open()':"go('tactics')",true)+btn('Календарь турниров',"go('calendar')")+'</div></section><section class="v9-recent"><h2>Путь команды</h2>'+(S.history.slice(0,3).map((h,i)=>'<button onclick="report('+i+')"><small>'+esc(h.event)+'</small><b>'+esc(h.win?'ПОБЕДА':'ПОРАЖЕНИЕ')+'</b><span>'+esc(date(h.day))+'</span></button>').join('')||'<p>Первые результаты появятся после официальных серий.</p>')+'</section>';
+ },
+ market(){
+  const ui=MarketUI7,players=ui.list(),deals=(S.market7?.deals||[]).filter(d=>d.buyer===S.club),active=deals.filter(d=>d.buyer===S.club&&!['signed','rejected','cancelled','expired','invalid'].includes(d.stage)),selected=S.players[ui.selected]&&(!S.players[ui.selected].retired||ui.selectedDeal!=null)&&(ui.tab!=='sales'||S.players[ui.selected].team===S.club)?S.players[ui.selected]:ui.tab==='deals'?S.players[active.at(-1)?.player??deals.at(-1)?.player]:players[Math.min(ui.page,Math.max(0,Math.ceil(players.length/ui.size)-1))*ui.size];
+  return '<div class="m7-market v9-transfer-desk">'+this.titleBlock('TRANSFER OPERATIONS / '+esc(my().short),'Трансферный рынок','', '<div class="v9-budget"><small>ДОСТУПНО ДЛЯ СДЕЛОК</small><b>'+cash(Market7.available())+'</b><span>Резерв '+cash(Market7.reserved())+'</span></div>')+
+   '<nav class="m7-tabs v9-local-tabs" aria-label="Разделы трансферного рынка">'+[['market','Рынок'],['watchlist','Избранное'],['deals','Переговоры'],['sales','Мои продажи']].map(([k,label])=>'<button aria-pressed="'+(ui.tab===k)+'" onclick="MarketUI7.setTab(\''+k+'\')">'+label+(k==='deals'?' / '+active.length:'')+'</button>').join('')+'</nav>'+ui.filters()+'<div class="v9-market-body"><div class="m7-main">'+(ui.tab==='deals'?ui.deals():ui.tab==='sales'?ui.sales()+ui.board(players):ui.board(players))+'</div>'+ui.dossier(selected)+'</div></div>';
+ },
+ calendar(){
+  const done=this.calendarTab==='completed',events=S.events.filter(e=>!e.background51&&!!e.done===done).slice().sort((a,b)=>done?b.day-a.day:a.day-b.day);
+  return this.titleBlock('SEASON CALENDAR / '+esc(my().name),'Турниры','',btn('Поручить ближайший турнир тренеру','autoTournament13()',false,!!busy13||!!S.practice13))+'<nav class="v9-local-tabs">'+btn('Ближайшие',"Interface9.calendarTab='upcoming';render()",!done)+btn('Завершённые',"Interface9.calendarTab='completed';render()",done)+'</nav><div class="v9-calendar">'+events.map(e=>'<article class="v9-calendar-event"><div class="v9-event-date"><small>'+esc(date(e.day))+'</small><b>'+Math.max(0,e.day-S.day)+'</b><span>'+(e.done?'ЗАВЕРШЁН':'ДНЕЙ ДО СТАРТА')+'</span></div><div><small>'+esc(e.series||'DOTA 2')+' / '+esc(e.venue||'Турнирная сцена')+'</small><h2>'+esc(e.name)+'</h2><p>'+(e.done?'Чемпион: '+esc(S.teams[e.champion]?.name||'Не определён'):'Призовой фонд '+cash(e.pool||0))+'</p></div><div class="actions">'+btn('Сетка и результаты','showBracket('+e.id+')',true)+btn('Квалификации',"selectedQualifierEvent="+e.id+";go('qualifiers')")+'</div></article>').join('')+'</div>';
+ },
+ finance(){
+  const income=Sponsor4A.weekly(S.club),out=wage()+S.facility*6000,ledger=S.ledger||[],recent=ledger.slice(0,15);
+  return this.titleBlock('CLUB OPERATIONS / '+esc(my().name),'Финансы клуба')+'<div class="v9-finance"><section class="v9-budget-main"><small>ДОСТУПНЫЙ БЮДЖЕТ</small><h2>'+cash(S.budget)+'</h2><dl><div><dt>Спонсоры / неделю</dt><dd>'+cash(income)+'</dd></div><div><dt>Зарплаты состава и штаба / неделю</dt><dd>'+cash(wage())+'</dd></div><div><dt>Содержание базы / неделю</dt><dd>'+cash(S.facility*6000)+'</dd></div><div><dt>Призовые за карьеру</dt><dd>'+cash(S.prizes)+'</dd></div></dl><div class="actions">'+btn('Спонсоры',"go('sponsors')")+btn('База и штаб',"go('development')")+btn('Услуги',"go('services8')")+'</div></section><section class="v9-finance-summary"><small>ПЛАНОВОЕ ДВИЖЕНИЕ / НЕДЕЛЯ</small>'+[['Доходы',income],['Расходы',out]].map(([name,n])=>'<div><span>'+name+'</span><b>'+cash(n)+'</b><meter min="0" max="'+Math.max(income,out,1)+'" value="'+n+'"></meter></div>').join('')+'<small>ПЛАНОВЫЙ БАЛАНС / НЕДЕЛЯ</small><h2>'+(income-out>=0?'+':'')+cash(income-out)+'</h2></section></div><section class="v9-ledger"><h2>Последние операции</h2>'+recent.map(l=>'<div><time>'+esc(date(l.day))+'</time><span>'+esc(l.text)+'</span><b class="'+(l.n<0?'negative':'positive')+'">'+(l.n>=0?'+':'')+cash(l.n)+'</b></div>').join('')+(recent.length?'':'<p>Операций пока нет.</p>')+'</section><details><summary>Инфраструктура и долг совету</summary><p>Долг совету: '+cash(S.world13.debt)+'. Погашение проходит по действующим правилам карьеры.</p><div class="actions">'+btn('Улучшить базу · '+cash(S.facility*150000),'upgradeBase()',false,S.facility>=5||S.budget<S.facility*150000)+btn('Расширить штаб · $100 000','upgradeCoach()',false,S.coach>=95||S.budget<100000)+'</div></details><details><summary>Экономика соперников</summary><div class="table-wrap"><table><thead><tr><th>Клуб</th><th>Бюджет</th><th>База</th></tr></thead><tbody>'+S.teams.filter(t=>t.id!==S.club).map(t=>'<tr><td>'+esc(t.name)+'</td><td>'+cash(funds13(t.id))+'</td><td>'+clubState13(t).facility+'</td></tr>').join('')+'</tbody></table></div></details>';
+ },
+ training(){
+  const ps=roster(),p=ps.find(p=>p.id===GlobalInterface6.selected)||ps[0],available=trainingAvailable33(),preview=available?trainingPreview33():null,gain=preview?avg(preview.map(p=>p.form))-avg(ps.map(p=>p.form)):0;
+  return this.titleBlock('PLAYER DEVELOPMENT / '+esc(my().short),'Тренировочный день','',this.metrics())+'<div class="v9-training-layout"><section><small>ПЛАН ПОДГОТОВКИ</small><h2>Следующий шаг к +1 OVR</h2><div class="v9-training-programs">'+Object.entries(trainingModes33).map(([key,label],i)=>'<button class="'+(S.training===key?'is-selected':'')+'" onclick="selectTraining33(\'mode\',\''+key+'\')" '+(!available?'disabled':'')+'><small>0'+(i+1)+'</small><span><b>'+esc(label)+'</b><em>'+({balanced:'Обычный тренировочный день',intensive:'Высокая нагрузка и работа над навыками',rest:'Восстановление после нагрузки'})[key]+'</em></span></button>').join('')+'</div><p>'+esc(available?'Прогноз среднего изменения формы: '+Arena33C.signed(gain):'Занятия будут доступны после текущих обязательств команды.')+'</p><div class="training-actions33 actions">'+btn('Провести тренировку','trainingDay33()',true,!available)+btn('Разбор ошибок · 1 день',"Growth8.day('analysis')",false,!available)+btn('Внутренняя практика',"Growth8.day('practice')",false,!available)+btn('Пропустить день','trainingDay33(true)',false,!available)+'</div></section><section class="v9-training-progress">'+(p?'<div class="v9-training-player">'+portrait20(p)+'<div><small>ВЫБРАННЫЙ ИГРОК</small><h2>'+esc(p.name)+'</h2><p>'+esc(ROLES[p.role])+'</p></div></div>'+Growth8.view(p)+btn('Открыть профиль','profile('+p.id+')'):'')+'</section></div><details class="v9-training-advanced"><summary>Фокусы, прогноз по игрокам и тактика команды</summary>'+tactics()+'</details>';
+ },
+ camp(){
+  const e=CampUI4.selected();if(!e)return this.titleBlock('PREPARATION','Буткемпы','Программы появятся вместе с календарём турниров.');const b=Camp4.plans()[Camp4.key(e.id)],gap=e.day-S.day,status=b?CampUI4.labels[b.status]:Camp4.confirmed(e,S.club)?gap>=7&&gap<=14?'Окно бронирования открыто':gap<7?'До старта меньше семи дней':'Выбор откроется за 14 дней':'Участие пока не подтверждено';
+  return this.titleBlock('PREPARATION / '+esc(my().short),'Буткемпы',esc(status),this.metrics())+'<section class="v9-camp-event"><div><small>ПОДГОТОВКА К ТУРНИРУ</small><h2>'+esc(e.name)+'</h2><p>'+esc(date(e.day))+' / '+Math.max(0,gap)+' дн. до старта</p></div><select aria-label="Турнир для буткемпа" onchange="campEvent4=+this.value;render()">'+CampUI4.events().map(v=>'<option value="'+v.id+'" '+(e.id===v.id?'selected':'')+'>'+esc(v.name)+'</option>').join('')+'</select></section>'+(b?CampUI4.progress(e,b):'')+'<div class="v9-camp-programs">'+Object.entries(V4_CONFIG.camp.tiers).map(([key,tier])=>CampUI4.tier(e,key,tier,b)).join('')+'</div><div class="actions">'+btn('Следующий день','advance()',true,!!S.active||!!S.practice13||!!busy13)+btn('Продолжить календарь','skip()',false,!!S.active||!!S.practice13||!!busy13)+btn('Обычные тренировки',"go('tactics')")+'</div>';
+ },
+ news(){
+  const ui=ClubNews60A,posts=ui.items().filter(p=>ui.matchesType(p)&&ui.matchesChannel(p,ui.channel)),index=Math.min(ui.page,Math.max(0,Math.ceil(posts.length/ui.size)-1)),shown=posts.slice(index*ui.size,(index+1)*ui.size);
+  return this.titleBlock('CLUBS / RESULTS / TRANSFERS','Новости')+'<div class="v9-media-controls cn-channels"><nav aria-label="Каналы новостей">'+[['all','Общая лента'],['mine','Мой клуб'],['vale','Alex Vale']].map(([k,label])=>'<button aria-pressed="'+(ui.channel===k)+'" onclick="ClubNews60A.choose(\''+k+'\')">'+label+'</button>').join('')+'</nav><select aria-label="Канал клуба" onchange="ClubNews60A.choose(this.value===\'all\'?\'all\':Number(this.value))"><option value="all">Все клубы</option>'+S.teams.map(t=>'<option value="'+t.id+'" '+(ui.channel===t.id?'selected':'')+'>'+esc(t.name)+'</option>').join('')+'</select></div>'+ui.typeFilters()+'<section class="cn-feed">'+(shown.length?'<div class="v9-media-posts">'+shown.map(p=>ui.post(p)).join('')+'</div>':'<div class="v9-media-empty"><h2>История ещё пишется</h2><p>Здесь появятся объявления клубов, результаты и инсайды Alex Vale из вашей карьеры.</p></div>')+'<div class="cn-pages">'+btn('Назад','ClubNews60A.next(-1)',false,index===0)+'<span>'+(index+1)+' / '+Math.max(1,Math.ceil(posts.length/ui.size))+'</span>'+btn('Далее','ClubNews60A.next(1)',false,(index+1)*ui.size>=posts.length)+'</div></section><div class="v9-media-bulletins">'+gameplayNewsNeon().slice(0,3).map(p=>'<article><small>'+esc(date(p.day))+'</small><p>'+esc(p.text)+'</p></article>').join('')+'</div>';
+ },
+ growth(){return this.titleBlock('PLAYER DEVELOPMENT','Развитие OVR','Опыт, тренировки и разбор ошибок из текущей карьеры.')+'<div class="v9-growth-grid">'+roster().map(p=>Growth8.view(p)).join('')+'</div><div class="actions">'+btn('К тренировкам',"go('tactics')",true)+btn('База и штаб',"go('development')")+'</div>';},
+ menu(){return this.titleBlock('CLUB OPERATIONS','Все разделы')+'<div class="v9-hub">'+this.groups.filter(g=>g.id!=='home').map((g,i)=>'<section><small>'+String(i+1).padStart(2,'0')+'</small><h2>'+g.label+'</h2><div>'+g.pages.filter(k=>k==='growth9'||PAGES.some(p=>p[0]===k)).map(k=>btn(this.title(k),"go('"+k+"')")).join('')+'</div></section>').join('')+'</div>';},
+ clean(html){
+  // Strip superseded ornamental/title layers; preserve semantic forms and handlers.
+  return html.replace(/<div class="title-row[^"]*"[\s\S]*?(?=<section|<div class="(?:cards|columns|stats|table-wrap|neon-tournament)|$)/,'').replace(/<span class="neon-title-art[\s\S]*?<\/span><\/span>/g,'').replace(/<div class="neon-building-visual"[\s\S]*?<\/div>/g,'');
+ },
+ view(){
+  const views={home:()=>this.home(),squad:()=>this.squad(),market:()=>this.market(),match:()=>this.match(),calendar:()=>this.calendar(),finance:()=>this.finance(),growth9:()=>this.growth(),menu21:()=>this.menu(),bootcamp:()=>this.camp(),sponsors:()=>Sponsor4A.view(),clubProfile:()=>window.clubProfileView9(),qualifiers:()=>qualifiersView(),scene5:()=>S.v5?.sceneReady?UI5.scene():this.titleBlock('WORLD SCENE','Обновление сцены','Новая сцена будет доступна после текущего турнира или КВ.'),news60a:()=>this.news(),monthly60b:()=>Media60B.view(),services8:()=>Services8.view(),development:()=>developmentView21(),tactics:()=>this.training(),bracket:()=>bracketView(),players:()=>playersView20(),player:()=>playerView20(),trophies:()=>trophiesView20(),clubs:()=>clubs(),history:()=>history(),settings:()=>settings(),saves:()=>savesView(),reshuffles:()=>reshufflesViewV1(),patch:()=>patchViewV1(),practice:()=>practiceView13(),ranking:()=>rankingView13(),pools:()=>heroPoolsView4(),model:()=>modelView4()};
+  const html=(views[page]||views.home)();return '<div class="v9-screen v9-screen-'+esc(page)+'">'+html+'</div>';
  },
  bracket(){
-  for(const node of $('app').querySelectorAll('.neon-node[data-match-id]')){
-   node.classList.toggle('v9-final',node.dataset.championship==='true');
-   const winner=node.querySelector('.is-winner');
-   if(winner){const key=(selectedBracket??S.active?.event??'preview')+'|'+node.dataset.matchId+'|'+node.textContent;
-    if(!this.resultsSeen.has(key)){this.resultsSeen.add(key);if(this.resultsSeen.size>128)this.resultsSeen.delete(this.resultsSeen.values().next().value);node.classList.add('v9-result-arrive');for(const edge of $('app').querySelectorAll('.neon-edge[data-source="'+node.dataset.matchId+'"]'))edge.classList.add('v9-edge-arrive');}
-   }
-   for(const row of node.querySelectorAll('.neon-match-team'))row.classList.toggle('v9-loser',!!node.querySelector('.is-winner')&&!row.classList.contains('is-winner'));
-  }
+  for(const node of $('app').querySelectorAll('.neon-node[data-match-id]')){node.classList.toggle('v9-final',node.dataset.championship==='true');const winner=node.querySelector('.is-winner');if(winner){const key=(selectedBracket??S.active?.event??'preview')+'|'+node.dataset.matchId+'|'+node.textContent;if(!this.resultsSeen.has(key)){this.resultsSeen.add(key);if(this.resultsSeen.size>128)this.resultsSeen.delete(this.resultsSeen.values().next().value);node.classList.add('v9-result-arrive');for(const edge of $('app').querySelectorAll('.neon-edge[data-source="'+node.dataset.matchId+'"]'))edge.classList.add('v9-edge-arrive');}}}
  },
- reset(){this.lastPage=null;this.selectedFrom=null;this.resultsSeen.clear();},
- squad(){
-  if(GlobalInterface6.tab!=='five'||Arena33C.squadMode==='table')return this.oldSquad();
-  const ps=roster(),ownedPlayers=owned().filter(p=>!p.retired),selected=ownedPlayers.find(p=>p.id===GlobalInterface6.selected)||ps[0],r=readiness33C();
-  const tabs='<nav class="g6-tabs" aria-label="Управление составом">'+[['five','Основная пятёрка'],['bench','Резерв'],['contracts','Контракты']].map(([key,label])=>'<button type="button" aria-pressed="'+(GlobalInterface6.tab===key)+'" onclick="GlobalInterface6.setTab(\''+key+'\')">'+label+'</button>').join('')+'</nav>';
-  return '<div class="v9-squad g6-squad">'+tabs+'<div class="v9-roster-heading"><div><small>'+esc(my().name)+' / ROSTER</small><h1>Стартовая пятёрка</h1></div><div class="v9-roster-metrics">'+[['OVR',r.ovr],['SIN',r.sin],['Форма',r.form]].map(([label,n])=>'<div><small>'+label+'</small><b>'+Math.round(n)+'</b></div>').join('')+'</div></div><div class="actions v9-display">'+btn('Карточки',"setSquadMode33C('cards')")+btn('Таблица',"setSquadMode33C('table')")+'</div><section class="v9-five g6-five" aria-label="Основной состав">'+ps.map(p=>{
-   const bio=bio20(p),name=bio?[bio.first,bio.last].filter(Boolean).join(' '):'';
-   return '<article class="v9-player g6-player '+(selected?.id===p.id?'is-selected':'')+'"><button class="g6-select" type="button" aria-pressed="'+(selected?.id===p.id)+'" aria-label="Выбрать '+esc(p.name)+'" onclick="GlobalInterface6.select('+p.id+')"><span class="v9-position">'+String(p.role+1).padStart(2,'0')+'</span><b class="v9-rating">'+Math.round(p.skill)+'</b>'+portrait20(p)+'<span class="v9-player-caption"><b>'+esc(p.name)+'</b><small>'+esc(name)+'</small><em>'+esc(ROLES[p.role])+'</em></span></button></article>';
-  }).join('')+'</section>'+(selected?'<section class="v9-player-summary g6-selected"><div><small>ВЫБРАННЫЙ ИГРОК</small><h2>'+esc(selected.name)+'</h2><p>'+esc(ROLES[selected.role])+' · '+selected.contract+' дн. · '+cash(selected.salary)+'/нед.</p></div><div class="v9-selected-vitals">'+[['Форма',selected.form],['Энергия',100-selected.fatigue],['Мораль',selected.morale]].map(([label,n])=>'<div><small>'+label+'</small><b>'+Math.round(n)+(label==='Энергия'?'%':'')+'</b><meter min="0" max="100" value="'+clamp(n)+'"></meter></div>').join('')+'</div><div class="actions">'+btn('Открыть профиль','profile('+selected.id+')',true)+btn('Сравнить','openCompare33C('+selected.id+')')+'</div></section>':'<p>В основной пятёрке пока нет игроков.</p>')+'<div class="v9-roster-foot"><span>Резерв: '+ownedPlayers.filter(p=>!p.active).length+' / 3</span>'+btn('Управление резервом',"GlobalInterface6.setTab('bench')")+btn('Поиск усиления',"go('market')")+btn('Подготовка команды',"go('tactics')")+'</div><details class="g6-legacy v9-roster-archive"><summary>Поддержка клуба и архив состава</summary>'+amTeamCard(my())+'<p>Болельщики: '+Math.round(Fans4.support(my()).fans).toLocaleString('ru-RU')+'</p>'+S.players.filter(p=>p.retired&&p.retiredFromTeam===S.club).map(p=>'<div class="news"><b>'+esc(p.name)+'</b><p>'+esc(ROLES[p.role])+' · '+date(p.retiredDay)+'</p>'+btn('Профиль','profile('+p.id+')')+'</div>').join('')+'</details></div>';
+ render(){
+  if(!S||Background51.finishing)return;
+  // These initializers and presentation notifications were previously buried in render wrappers.
+  Sponsor4A.install();init13();initV12();initWorldV1();
+  if(page==='vale8'){page='news60a';ClubNews60A.channel='vale';}
+  save();const html=busy13?jobPanel13():this.view();$('app').innerHTML=html;
+  if(typeof document.querySelector!=='function')return;
+  ensureCriticalDom();if($('mobileNav33c').closest('.legacy-registry'))document.body.append($('mobileNav33c'));this.init();this.shell();
+  if(page==='clubProfile'&&!busy13)window.bindClubProfile9();
+  if(page==='settings')$('app').insertAdjacentHTML('afterbegin','<section class="v9-preference"><h2>Движение интерфейса</h2>'+btn(this.motion?'Отключить анимации':'Включить анимации','Interface9.toggleMotion()')+'</section>');
+  this.bracket();
+  if(this.lastPage!==page){$('app').classList.remove('v9-enter');void $('app').offsetWidth;$('app').classList.add('v9-enter');if(this.enterTimer)clearTimeout(this.enterTimer);this.enterTimer=setTimeout(()=>$('app').classList.remove('v9-enter'),500);this.lastPage=page;}
+  if(typeof requestAnimationFrame==='function')requestAnimationFrame(fitNeonBracket);
+  if(page==='match'&&S.active?.live?.draftUpdatePending)showDraftUpdate();
+  Sponsor4A.showNotice();Elimination52B.present();GrandFinal52C.present();TournamentResultsD.present();
  }
 };
 if(!PAGES.some(p=>p[0]==='growth9'))PAGES.push(['growth9','↗','Развитие OVR']);
-Interface9.oldSquad=squad;squad=function(){return Interface9.squad();};
-const renderBefore9=render;render=function(...args){const r=renderBefore9(...args);Interface9.decorate();return r;};
+head=(k,title,desc,right)=>Interface9.titleBlock(k,title,desc,right);
+home=()=>Interface9.home();squad=()=>Interface9.squad();market=()=>Interface9.market();
+render=()=>Interface9.render();
 const goBefore9=go;go=function(destination){if(destination==='player')Interface9.selectedFrom=Interface9.group().id;return goBefore9(destination);};
 const freshBefore9=fresh,migrateBefore9=migrate;fresh=function(...args){Interface9.reset();return freshBefore9(...args);};migrate=function(...args){Interface9.reset();return migrateBefore9(...args);};
-const patchBefore9=patchViewV1;patchViewV1=function(...args){return '<section class="panel"><div class="eyebrow">V9.0 BETA / GLOBAL INTERFACE UPDATE</div><h1>Живая киберспортивная сцена</h1><p>Семь разделов с внутренними вкладками, анимированный фон Dota-сцены, новая пятёрка, рынок с фотографиями и логотипами, белые победители сетки и золотой победитель гранд-финала. Анимации можно отключить. Все игровые действия и правила сохранены.</p></section>'+patchBefore9(...args);};

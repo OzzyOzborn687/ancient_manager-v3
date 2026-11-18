@@ -16,7 +16,7 @@ assert(run('JSON.stringify(S)===before&&S.seed===beforeSeed'),'UI projections pr
 run('S.active=null;S.practice13=null;S.budget=10000000;development21().base=1;var cashBefore=S.budget;var cost=DEVELOPMENT21.base.cost[1];var upgraded=upgradeDevelopment21("base");');
 assert(run('upgraded&&development21().base===2&&S.budget===cashBefore-cost&&validSave(S)'),'Existing upgrade handler still works');
 const html=fs.readFileSync('dist/index.html','utf8');
-assert(html.includes('id="advance"')&&html.includes('saves')&&html.includes('settings'),'Core navigation remains accessible');
+assert(html.includes('id="advance"')&&html.includes('id="nav"')&&html.includes('id="mobileNav33c"'),'Core navigation remains accessible');
 for(const file of ['home-reference','development-reference','squad-reference','bracket-reference']){
  const bytes=fs.readFileSync('dist/assets/neon/'+file+'.jpg');
  assert(bytes.length>10000&&bytes[0]===255&&bytes[1]===216,file+' photo');
