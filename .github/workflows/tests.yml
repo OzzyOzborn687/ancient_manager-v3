@@ -37,6 +37,7 @@ jobs:
       - name: Inspect all screens and tournament formats
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 --directory dist > /tmp/ancient-http.log 2>&1 &
+          GAME_URL=http://127.0.0.1:4173 node tests/browser/v91.cjs
           GAME_URL=http://127.0.0.1:4173 BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/presentation9 node tests/browser/presentation9.cjs
           BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/beta9 node tests/browser/beta9.cjs
           BROWSER_RESULTS_DIR=/tmp/ancient-manager-browser/v5 node tests/browser/v5.cjs
