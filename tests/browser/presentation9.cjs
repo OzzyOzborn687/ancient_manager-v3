@@ -52,6 +52,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
     if(kind==='transfer'){
      const fit=await d.locator('.w6-copy .w6-nick').evaluate(e=>{const r=e.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(e);const t=range.getBoundingClientRect();return t.right<=r.right+1&&t.left>=r.left-1&&t.height<parseFloat(getComputedStyle(e).fontSize)*1.8});
      assert(fit,'long nickname fits a single title row '+size.width);
+     const signed=await d.locator('.w6-signed').boundingBox(),skip=await d.locator('.w6-header button').boundingBox();
+     assert(signed.y>=skip.y+skip.height||signed.x+signed.width<=skip.x,'contract label clear of skip control '+size.width);
      if(size.width<=650){const photo=await d.locator('.w6-photo').boundingBox(),role=await d.locator('.w6-role').boundingBox();assert(role.y+role.height<=photo.y,'identity and portrait have separate areas '+size.width);}
     }
     if(kind==='draft'){
