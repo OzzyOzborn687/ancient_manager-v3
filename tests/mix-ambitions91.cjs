@@ -1,0 +1,13 @@
+'use strict';
+const assert=require('node:assert/strict'),{run:r}=require('./harness22.cjs')({modelVersion:8});
+r("var star91=S.players.find(p=>p.team!==S.club&&p.team!==null&&Market7.status(p).key!=='keep');star91.skill=95;star91.potential=99;star91.amRating.values.fill(95);Career91.pending={name:'Ambition Test',tag:'AT',region:'EU'};Career91.create();S.budget=20000000;");
+assert(r("Market7.quote(star91).role==='starter'"),'vacant mix position defaults to starter');
+assert(r("Market7.sportingReason(star91)===''&&Market7.wants(star91,'starter')===''&&Market7.wants(star91,'rotation')===''") ,'star can join empty mix in either role');
+r("var deal91=Market7.request(star91.id);if(!deal91)throw Error('request denied');S.day=deal91.due;Market7.tick();Market7.acceptClub(deal91.id);Market7.proposeContract(deal91.id,Math.ceil(deal91.salary*2),365,'starter');S.day=deal91.due;Market7.tick();");
+assert(r("deal91.stage==='agreed'&&Market7.sign(deal91.id)&&star91.team===S.club&&star91.active&&validSave(S)"),'club agreement leads to real star signing');
+r("for(let role=0;role<5;role++){if(roster().some(p=>p.role===role))continue;const p=S.players.find(p=>p.team===null&&p.role===role&&!p.retired);p.team=S.club;p.active=true;p.contract=365;}");
+assert(r("roster().length===5&&Market7.sportingReason({skill:99})===''&&Market7.wants({skill:99,role:0},'rotation')===''") ,'no level restriction after five signings');
+assert(r("Market7.wants(star91,'invalid')!==''"),'invalid contract roles remain rejected');
+r("my().mix91=false;var standard91=Market7.sportingReason({skill:99});my().mix91=true;");assert(r("standard91.length>0"),'ordinary club rules retained');
+r("var retry91=S.players.find(p=>!p.retired&&p.team===null);var rejected91=Market7.request(retry91.id);Market7.close(rejected91,'rejected','Для нового микса стартовый спортивный ориентир — OVR 75; игрок пока не готов присоединиться.');");assert(r("Market7.request(retry91.id).id!==rejected91.id"),'old level rejection does not block retry');
+console.log('PASS mix ambitions: OVR90+ negotiated club signing into empty mix; full-roster/rotation acceptance; role validation and ordinary club restrictions retained.');
