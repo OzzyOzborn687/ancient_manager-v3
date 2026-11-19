@@ -68,7 +68,7 @@ Qualifiers.validScene=function(x){
   if(p.team!==null&&p.active)roles[p.team][p.role]++;
  }
  for(const [i,t] of x.teams.entries()){
-  if(t.id!==i||typeof t.name!=='string'||names.has(t.name.toLowerCase())||![1,2,3].includes(t.tier)||!regions.includes(t.homeRegion)||roles[i].some(n=>n!==1))return false;
+  if(t.id!==i||typeof t.name!=='string'||names.has(t.name.toLowerCase())||![1,2,3].includes(t.tier)||!regions.includes(t.homeRegion)||roles[i].some(n=>t.mix91===true?n>1:n!==1))return false;
   names.add(t.name.toLowerCase());
   if(i>=scene.coreCount&&(x.v5?.sceneReady?(!t.v5Key||t.fiction||!t.sceneClub):(!t.fiction||!t.sceneClub)))return false;
  }

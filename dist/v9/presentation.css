@@ -37,3 +37,5 @@ body.v9 :is(.t52-dialog,.ta-dialog,.el52-dialog,.gf52-dialog,.rd-dialog){max-wid
 @media(max-width:360px){.difficulty-options{grid-template-columns:1fr}.difficulty-options button{min-height:120px}}
 #transferReveal52 .w6-signed{top:145px;left:66px;right:auto;font-size:12px}
 @media(max-width:650px){#transferReveal52 .w6-signed{top:110px;left:20px;right:auto;font-size:9px}}
+
+.v9-screen-career91>.panel{border-top:2px solid var(--accent)}.v9-screen-career91 input,.v9-screen-career91 select{display:block;width:min(100%,480px);min-height:44px}.v9-screen-career91 .actions{margin-top:25px}.v9-screen-career91>.panel>p{max-width:850px;line-height:1.65}

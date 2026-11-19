@@ -22,9 +22,9 @@ const Market7={
   if(listing==='available'||p.contract<=90)return {key:'available',label:'Готов обсуждать',reason:''};
   return key?{key:'key',label:'Ключевой игрок',reason:'Клуб потребует повышенную компенсацию за лидера.'}:{key:'available',label:'Готов обсуждать',reason:''};
  },
- sportingReason(p){const teamOVR=avg(roster().map(q=>q.skill));return p.skill>teamOVR+5?'Спортивные амбиции игрока выше текущего уровня клуба. Деньги и обещание основы не меняют это решение.':'';},
+ sportingReason(p){const teamOVR=my().mix91&&roster().length<3?75:avg(roster().map(q=>q.skill));return p.skill>teamOVR+5?'Спортивные амбиции игрока выше текущего уровня клуба. Деньги и обещание основы не меняют это решение.':'';},
  wants(p,role){if(!['starter','rotation'].includes(role))return 'Выберите роль в составе.';const current=roster().find(q=>q.role===p.role),teamOVR=avg(roster().map(q=>q.skill));const ambition=this.sportingReason(p);if(ambition)return ambition;
-  if(role==='starter'&&!current)return 'Сначала восстановите основную пятёрку.';
+  if(role==='starter'&&!current&&!my().mix91)return 'Сначала восстановите основную пятёрку.';
   if(role==='starter'&&current&&p.skill<current.skill-3)return 'Обещание основы неубедительно: игрок заметно уступает текущему основному.';
   if(role==='rotation'&&(p.skill>teamOVR+.8||p.active&&p.skill>=(current?.skill??75)-.5))return 'Игрок согласится только на место в основном составе.';
   if(role==='rotation'&&p.skill>teamOVR+6)return 'Спортивные амбиции игрока выше предложенной роли.';
