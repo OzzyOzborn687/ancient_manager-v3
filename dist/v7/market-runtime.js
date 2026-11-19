@@ -22,7 +22,7 @@ const Market7={
   if(listing==='available'||p.contract<=90)return {key:'available',label:'Готов обсуждать',reason:''};
   return key?{key:'key',label:'Ключевой игрок',reason:'Клуб потребует повышенную компенсацию за лидера.'}:{key:'available',label:'Готов обсуждать',reason:''};
  },
- sportingReason(p){const teamOVR=my().mix91&&roster().length<3?75:avg(roster().map(q=>q.skill));return p.skill>teamOVR+5?'Спортивные амбиции игрока выше текущего уровня клуба. Деньги и обещание основы не меняют это решение.':'';},
+ sportingReason(p){const teamOVR=avg(roster().map(q=>q.skill));return p.skill>teamOVR+5?'Спортивные амбиции игрока выше текущего уровня клуба. Деньги и обещание основы не меняют это решение.':'';},
  wants(p,role){if(!['starter','rotation'].includes(role))return 'Выберите роль в составе.';const current=roster().find(q=>q.role===p.role),teamOVR=avg(roster().map(q=>q.skill));const ambition=this.sportingReason(p);if(ambition)return ambition;
   if(role==='starter'&&!current&&!my().mix91)return 'Сначала восстановите основную пятёрку.';
   if(role==='starter'&&current&&p.skill<current.skill-3)return 'Обещание основы неубедительно: игрок заметно уступает текущему основному.';
@@ -30,7 +30,7 @@ const Market7={
   if(role==='rotation'&&p.skill>teamOVR+6)return 'Спортивные амбиции игрока выше предложенной роли.';
   return '';
  },
- quote(p){const status=this.status(p),role=this.wants(p,'rotation')?'starter':'rotation',contract=p.contract<=90?.68:p.contract<=180?.85:1,factor=status.key==='key'?1.55:status.key==='listed'?.9:1.15;
+ quote(p){const status=this.status(p),role=my().mix91&&!roster().some(q=>q.role===p.role)?'starter':this.wants(p,'rotation')?'starter':'rotation',contract=p.contract<=90?.68:p.contract<=180?.85:1,factor=status.key==='key'?1.55:status.key==='listed'?.9:1.15;
   return {fee:Math.max(0,Math.round(value(p)*(p.team===null?.15:factor*contract)/1000)*1000),salary:Math.max(1000,Math.ceil(p.salary*(role==='starter'?1.12:1.25)/100)*100),days:365,role,status:status.label,key:status.key,reason:status.key==='keep'?status.reason:''};
  },
  note(d,text){d.message=text;d.history.push({day:S.day,text});},
