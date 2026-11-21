@@ -112,5 +112,13 @@
     "file": "15.webp",
     "image_url": "https://media.cyberscore.live/static/teams/2025/8/c6c53230-033c-4a57-83d6-2ab93bcdfeeb.webp",
     "retrieved": "2026-10-16"
+  },
+  {
+    "club": "PSG",
+    "file": "psg.svg",
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg",
+    "source": "https://en.wikipedia.org/wiki/File:Paris_Saint-Germain_F.C..svg",
+    "retrieved": "2026-11-21",
+    "processing": "Original SVG with transparent canvas; no background added"
   }
 ]

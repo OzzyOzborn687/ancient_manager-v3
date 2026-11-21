@@ -7,7 +7,7 @@ for(const [dependency,consumer] of [['hero-pools.js','game.js'],['career-v1.js',
 assert(!scripts.some(path=>/mandatory-field|hotfix-mandatory|hotfix-mobile-nav|hotfix-coach|hotfix-a/.test(path)));
 const h=harness({modelVersion:8}),r=h.run;
 assert.equal(r(`startupText('<img src="x" onerror="alert(1)">&')`),'&lt;img src=&quot;x&quot; onerror=&quot;alert(1)&quot;&gt;&amp;');
-assert(r('validSave(S)&&S.teams.length===51'));
+assert(r('validSave(S)&&S.teams.length===52'));
 for(const [series,slots] of [['BLAST SLAM',1],['PGL WALLACHIA',1],['ESL ONE',1],['DREAMLEAGUE',1],['THE INTERNATIONAL',0]]){
  r(`fresh();S.calendar21.installedDay=100000;S.events=[{id:909,name:'Cleanup fixture',series:${JSON.stringify(series)},day:60,pool:1000000}];Admissions5.install();Qualifiers.freeze(S.events[0]);`);
  assert.equal(r('S.events.find(e=>e.id===909).qualification.policy.field-S.events.find(e=>e.id===909).qualification.policy.direct'),slots);

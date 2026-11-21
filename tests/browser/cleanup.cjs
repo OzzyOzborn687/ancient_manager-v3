@@ -7,7 +7,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',route=>route.request().url().startsWith(base)||!route.request().url().startsWith('http')?route.continue():route.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert(await page.evaluate(()=>S.teams.length===51&&validSave(S)));
+  assert(await page.evaluate(()=>S.teams.length===52&&validSave(S)));
   for(const key of await page.evaluate(()=>PAGES.map(p=>p[0]))){await page.evaluate(key=>go(key),key);assert((await page.locator('#app').innerText()).length>20,key);}
   for(const width of [320,390,768,1440]){
    await page.setViewportSize({width,height:1000});
@@ -22,7 +22,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   assert(await page.evaluate(()=>S.budget===321000&&localStorage.getItem('ancient-manager-v1')===cleanupRaw&&localStorage.getItem('ancient-manager-before-new-career')===cleanupRaw));
   await page.evaluate(async()=>{fresh=cleanupFresh;await startFreshCareer();});
   assert(await page.evaluate(()=>ancientStartup.ready&&validSave(S)&&S.budget===startingBudget(0)&&localStorage.getItem('ancient-manager-before-new-career')===cleanupRaw));
-  await page.reload();await page.waitForFunction(()=>window.ancientStartup?.ready);assert(await page.evaluate(()=>validSave(S)&&S.teams.length===51&&!!readSnapshot('ancient-manager-before-new-career')));
+  await page.reload();await page.waitForFunction(()=>window.ancientStartup?.ready);assert(await page.evaluate(()=>validSave(S)&&S.teams.length===52&&!!readSnapshot('ancient-manager-before-new-career')));
   await page.evaluate(()=>{S.calendar21.installedDay=100000;S.events=[{id:799,name:'Coach browser fixture',series:'FISSURE',day:0,pool:1000000,qualified13:S.teams.slice(0,8).map(t=>t.id)}];startEvent();go('match')});
   assert.equal(await page.getByRole('button',{name:'Поручить турнир тренеру',exact:true}).count(),1);
   await page.evaluate(()=>{playMap();confirmDraftUpdate();go('match')});
