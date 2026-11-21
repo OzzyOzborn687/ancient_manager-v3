@@ -21,7 +21,7 @@ r('S=JSON.parse(packetCleanup).state;migrate();Qualifiers.complete(S.events.find
 assert(r('validSave(S)&&S.events.find(e=>e.id===909).qualified13.includes(winnerCleanup)'));
 assert(r('ownedCleanup===JSON.stringify(owned())&&budgetCleanup===S.budget'));
 assert.equal(r('JSON.stringify(S.events.find(e=>e.id===childCleanup.id).schedule6)'),r('playedCleanup'));
-assert(r('S.events.find(e=>e.id===909).day-S.events.find(e=>e.id===909).participationConfirmed5b>=15'));
+assert(r('S.events.find(e=>e.id===909).day-S.events.find(e=>e.id===childCleanup.id).day>=14&&S.events.find(e=>e.id===909).day>S.events.find(e=>e.id===childCleanup.id).completedDay20'));
 r('var stableCleanup=JSON.stringify({...S,news:[]});migrate();');assert.equal(r('JSON.stringify({...S,news:[]})'),r('stableCleanup'));
 // One coach action in both manual phases; no forced changes to spectator or active fields.
 r(`fresh();S.calendar21.installedDay=100000;S.events=[{id:799,name:'Coach fixture',series:'FISSURE',day:0,pool:1000000,qualified13:S.teams.slice(0,8).map(t=>t.id)}];startEvent();`);

@@ -1,0 +1,9 @@
+'use strict';
+const assert=require('node:assert/strict'),{run:r}=require('./harness22.cjs')({modelVersion:8});
+r('fresh(S.teams.find(t=>t.psg91).id);S.day=PSGSupport91.day-1;var beforeSupportPSG=S.budget;');assert.equal(r('date(PSGSupport91.day)'),r("new Date(Date.UTC(2026,10,28)).toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})"));assert(!r('PSGSupport91.grant()'));r('tick();');assert(r('S.psgSupport91.day===44&&S.budget===beforeSupportPSG+1500000&&S.ledger.filter(e=>e.text===\'Поддержка шейхов · PSG\').length===1&&validSave(S)'),'date crossing credits exactly once');
+r('var creditedPSG=S.budget;for(let i=0;i<10;i++)PSGSupport91.grant();var savedSupportPSG=JSON.stringify(S);S=JSON.parse(savedSupportPSG);migrate();PSGSupport91.grant();');assert(r('S.budget===creditedPSG&&S.psgSupport91.acknowledged===false&&validSave(S)'),'reload retains pending notification without another payment');
+r('S.psgSupport91.acknowledged=true;PSGSupport91.grant();');assert(r('S.budget===creditedPSG'),'acknowledged payment not repeated');
+r('fresh();S.day=PSGSupport91.day;var otherBudgetSupportPSG=S.budget;');assert(!r('PSGSupport91.grant()'));assert(r('S.budget===otherBudgetSupportPSG&&!S.psgSupport91'),'other clubs receive nothing');
+r('fresh(S.teams.find(t=>t.psg91).id);S.day=PSGSupport91.day+3;var lateBudgetSupportPSG=S.budget;PSGSupport91.grant();');assert(r('S.budget===lateBudgetSupportPSG+1500000&&validSave(S)'),'skipped date and old PSG saves receive one pending payment');
+r('var invalidSupportPSG=structuredClone(S);invalidSupportPSG.psgSupport91.amount=1500001;');assert(!r('validSave(invalidSupportPSG)'));
+console.log('PASS PSG support: 28 Nov 2026 UTC, exact $1.5m once, date crossing/skip, old-save catch-up, reload/ack idempotence, ledger, other clubs excluded and strict validation.');
