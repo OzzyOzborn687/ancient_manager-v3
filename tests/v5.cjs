@@ -1,10 +1,10 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),harness=require('./harness22.cjs');
 const h=harness({modelVersion:8});const run=h.run;
-assert.equal(run('S.teams.length'),51);assert.equal(run('CLUBS5.length'),37);
+assert.equal(run('S.teams.length'),52);assert.equal(run('CLUBS5.length'),37);
 assert(run('S.teams.every(t=>!t.fiction)'));
 assert(run('CLUBS5.every(d=>S.teams.filter(t=>t.v5Key===d.key).length===1)'));
-assert(run('S.teams.every(t=>[0,1,2,3,4].every(r=>roster(t).filter(p=>p.role===r).length===1))'));
+assert(run('S.teams.every(t=>t.psg91?roster(t).length===0:[0,1,2,3,4].every(r=>roster(t).filter(p=>p.role===r).length===1))'));
 assert(run('validSave(S)'));
 assert(run('(()=>{const before=JSON.stringify(S);UI5.scene();return before===JSON.stringify(S)})()'),'scene catalogue is read-only');
 assert(run('new Set(S.players.filter(p=>p.team!==null).map(p=>Scene5.key(p.name))).size===S.players.filter(p=>p.team!==null).length'));

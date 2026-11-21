@@ -7,10 +7,10 @@ const {chromium}=require('playwright'),fs=require('node:fs'),assert=require('nod
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',route=>route.request().url().startsWith(base)||!route.request().url().startsWith('http')?route.continue():route.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert(await page.evaluate(()=>S.teams.length===51&&validSave(S)));
+  assert(await page.evaluate(()=>S.teams.length===52&&validSave(S)));
   for(const width of [320,390,768,1440]){
    await page.setViewportSize({width,height:1000});await page.evaluate(()=>{sceneRegion5='ALL';go('scene5')});
-   assert.equal(await page.locator('.v5-club').count(),51);
+   assert.equal(await page.locator('.v5-club').count(),52);
    await page.evaluate(async()=>{const imgs=[...document.querySelectorAll('.v5-club img')];for(const img of imgs)img.loading='eager';await Promise.all(imgs.map(img=>img.decode()));});
    assert(await page.evaluate(()=>[...document.querySelectorAll('.v5-club img')].every(img=>img.naturalWidth>0&&getComputedStyle(img.parentElement).backgroundColor==='rgba(0, 0, 0, 0)')));
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'horizontal overflow '+width);
