@@ -6,7 +6,7 @@ const PSG91={
   if(S.teams.some(t=>t.name.trim().toLowerCase()==='psg'))return null;
   if(S.teams.length>=QUALIFIERS.scene.maxTeams)return null;
   const id=S.teams.length;t={id,name:'PSG',short:'PSG',region:'EU',homeRegion:'EU',tier:3,coach:'Менеджер',tactic:'balanced',points:0,psg91:true,sceneClub:true,fiction:false,v5Key:'psg-career',logo5:'assets/club-logos/psg.svg'};
-  S.teams.push(t);S.qualifiers.scene.generated.push(id);clubState13(t).elo=1200;return t;
+  S.teams.push(t);S.qualifiers.scene.generated.push(id);Object.assign(clubState13(t),{budget:2000000,elo:1200});return t;
  },
  playing(){return !!S?.teams[S.club]?.psg91;},
  policy(e,base){if(!this.playing()||Qualifiers.isRegional(e))return base;const f=base||{field:format6(e).n,format:formatKey6(e),source:'',mandatory:'regional'};return {...f,direct:f.field-1,quotas:{EU:1},psgPath91:true,label:'PSG · квалификация EU',note:'PSG участвует через квалификацию EU. Победитель получает одно место на основной турнир. Размер основного турнира сохранён.'};},
@@ -20,7 +20,7 @@ const PSG91={
  }
 };
 const initBeforePSG91=init13;init13=function(...a){const r=initBeforePSG91(...a);PSG91.install();return r;};
-const freshBeforePSG91=fresh;fresh=function(id=0,...a){const chosen=!!S?.teams[id]&&(S.teams[id].psg91||S.teams[id].name.trim().toLowerCase()==='psg');const r=freshBeforePSG91(chosen?0:id,...a),t=PSG91.install();if(chosen&&t){S.club=t.id;S.budget=1200000;S.chem=75;S.coach=75;S.facility=1;S.training='balanced';S.tactic='balanced';PSG91.configure();Sponsor4A.install();Fans4.cache=null;log('PSG · соберите пятёрку на рынке. Путь на турниры: квалификации EU.');}save();render();return r;};
+const freshBeforePSG91=fresh;fresh=function(id=0,...a){const chosen=!!S?.teams[id]&&(S.teams[id].psg91||S.teams[id].name.trim().toLowerCase()==='psg');const r=freshBeforePSG91(chosen?0:id,...a),t=PSG91.install();if(chosen&&t){S.club=t.id;S.budget=2000000;S.chem=75;S.coach=75;S.facility=1;S.training='balanced';S.tactic='balanced';PSG91.configure();Sponsor4A.install();Fans4.cache=null;log('PSG · соберите пятёрку на рынке. Путь на турниры: квалификации EU.');}save();render();return r;};
 const migrateBeforePSG91=migrate;migrate=function(...a){const r=migrateBeforePSG91(...a);PSG91.install();PSG91.configure();return r;};
 const policyBeforePSG91=Admissions5.policy;Admissions5.policy=function(e){return PSG91.policy(e,policyBeforePSG91.call(this,e));};
 const installBeforePSG91=Admissions5.install;Admissions5.install=function(...a){const r=installBeforePSG91.apply(this,a);if(!this.installing&&!Scene5.loading&&!Scene5.installing)PSG91.configure();return r;};
