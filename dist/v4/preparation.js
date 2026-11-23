@@ -49,8 +49,7 @@ const Camp4={
   if(!e||e.done||S.day>e.day||this.busy(p.team)){this.close(b,'interrupted');return;}
   const day=b.days[S.day]??={players:{}};if(Object.hasOwn(day.players,p.id))return;
   const cfg=V4_CONFIG.camp.tiers[b.tier],old=p.form,fatigue=p.fatigue;
-  const ceiling=Math.min(95,trainingFormCeiling5C(p)+5);
-  if(allowForm)p.form=Math.max(old,Math.min(ceiling,old+cfg.form+Math.max(0,old-beforeForm)*cfg.growth));
+  // V9.2 applies the camp multiplier with daily training, never a flat bonus.
   p.fatigue=Math.max(0,p.fatigue-cfg.recovery);
   day.players[p.id]={form:p.form-old,recovery:fatigue-p.fatigue};
  },
@@ -85,7 +84,7 @@ const V4={
    if(b.status==='online'&&b.tier!=='online'||b.status==='active'&&(b.tier==='online'||b.refund!==0))return false;
    for(const [day,entry] of Object.entries(b.days)){
     if(!Number.isInteger(+day)||+day<=b.start||+day>b.end||+day>state.day||!entry?.players||Array.isArray(entry.players)||Object.keys(entry.players).length>5)return false;
-    for(const [id,value] of Object.entries(entry.players))if(!state.players[+id]||!Number.isFinite(value.form)||value.form<0||value.form>2||!Number.isFinite(value.recovery)||value.recovery<0||value.recovery>V4_CONFIG.camp.tiers[b.tier].recovery+1e-8)return false;
+    for(const [id,value] of Object.entries(entry.players))if(!state.players[+id]||!Number.isFinite(value.form)||value.form<0||value.form>3.75+1e-8||!Number.isFinite(value.recovery)||value.recovery<0||value.recovery>V4_CONFIG.camp.tiers[b.tier].recovery+1e-8)return false;
    }
   }
   if(Object.values(v.camps).filter(b=>b.status==='active').some((b,i,a)=>a.some((other,j)=>i!==j&&other.team===b.team)))return false;

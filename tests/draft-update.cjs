@@ -33,5 +33,5 @@ for(let seed=1;seed<=100;seed++){
 }
 assert(run(`(()=>{const w=DraftUpdate.weights,old=w.conversion;w.conversion=100;const r=DraftUpdate.evaluate(draftA,draftB);w.conversion=old;return r.bonuses[0]===5&&r.bonuses[1]===-5})()`));
 // Existing maps are not upgraded on load.
-assert(run(`(()=>{const m=S.active.live;delete m.draftUpdate;const p=m.sides[0].heroes[0];return Match8.unit(m,p)===unitBeforeDraftUpdate.call(Match8,m,p)})()`));
+assert(run(`(()=>{const m=S.active.live;delete m.draftUpdate;delete m.formVersion92;const p=m.sides[0].heroes[0];return Match8.unit(m,p)===unitBeforeDraftUpdate.call(Match8,m,p)})()`));
 console.log('PASS AM - Draft update: 116 heroes, roles, matchups, gaps, caps, reversal, 100 generated drafts, power integration, popup/start, deterministic save continuation, unchanged career inputs and legacy maps');

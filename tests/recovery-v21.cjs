@@ -26,7 +26,7 @@ function environment(data=new Map()){
  // Exercise the actual calendar tick; training and match fatigue use the same level.
  for(let level of [1,5])for(let mode of ['balanced','rest','intensive'])for(let tournament of [false,true]){
   reset();run(`development21().recovery=${level};S.training='${mode}';for(let p of roster())p.fatigue=60;S.active=${tournament?'{event:S.events[0].id,entrants:[S.club],phase:"groups"}':'null'};tick();`);
-  const delta=mode==='intensive'?4/(level===5?3.5:1):-(mode==='rest'?12:1)*(!tournament&&level===5?2:1);
+  const delta=mode==='rest'?-12*(!tournament&&level===5?2:1):(mode==='intensive'?6:3)/(level===5?3.5:1);
   assert(run(`roster().every(p=>Math.abs(p.fatigue-${60+delta})<1e-9)`),`${level}/${mode}/${tournament}`);
  }
  reset();

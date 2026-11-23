@@ -7,8 +7,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)failed.push(r.url())});
   await page.route('**/*',r=>r.request().url().startsWith(base)||!/^https?:/.test(r.request().url())?r.continue():r.abort());
   await page.goto(base);await page.waitForFunction(()=>window.ancientStartup?.ready);
-  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V9.1 BETA');
-  assert(await page.locator('#v9Header').isVisible());
+  assert.equal(await page.locator('.version-badge21').innerText(),'ANCIENT MANAGER / V9.2');
+  await page.evaluate(()=>go('squad'));assert(await page.locator('#v9Header').isVisible());
   // Offline from all external sites: inspect every actual core-club squad.
   for(const id of await page.evaluate(()=>S.teams.filter(t=>t.tier===1).map(t=>t.id))){
    await page.evaluate(id=>{S.club=id;go('squad')},id);
@@ -21,14 +21,14 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await page.evaluate(()=>{fresh();S.calendar21.installedDay=100000;S.events=[{id:800,name:'Training fixture',series:'ANCIENT',day:10,pool:100000,entrants:[S.club]}];S.v4.camps={};S.training='balanced';S.budget=1000000;for(const p of roster()){p.form=70;p.fatigue=20;p.progress21.initialForm=70;p.progress21.lastOfficialDay=null;p.progress21.results=[];}go('tactics')});
   for(const width of [320,390,768,1440]){
    await page.setViewportSize({width,height:1000});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
-   assert((await page.locator('.training-form33').innerText()).includes('Обычные тренировки повышают форму'));
+   assert(/форма до 99/i.test(await page.locator('.training-form33').textContent()));
    await page.screenshot({path:dir+'/training-'+width+'.png',fullPage:true});
   }
   const predicted=await page.evaluate(()=>trainingPreview33().map(p=>p.form));
   await page.getByRole('button',{name:'Провести тренировку',exact:true}).click();
   assert.deepEqual(await page.evaluate(()=>roster().map(p=>p.form)),predicted);assert(predicted.every(f=>f>70));
   await page.evaluate(()=>{Camp4.book(800,'elite');go('tactics')});
-  assert((await page.locator('.training-form33').innerText()).includes('Championship Campus'));
+  assert(/Championship Campus/i.test(await page.locator('.training-form33').textContent()));
   const before=await page.evaluate(()=>roster().map(p=>p.form)),campPrediction=await page.evaluate(()=>trainingPreview33().map(p=>p.form));
   await page.getByRole('button',{name:'Провести тренировку',exact:true}).click();
   assert.deepEqual(await page.evaluate(()=>roster().map(p=>p.form)),campPrediction);assert(campPrediction.every((f,i)=>f-before[i]>predicted[i]-70));

@@ -23,7 +23,7 @@ function selectTraining33(field,key){
  render();
 }
 function trainingSnapshot33(p){
- return {id:p.id,skill:p.skill,form:p.form,fatigue:p.fatigue,morale:p.morale};
+ return {id:p.id,skill:p.skill,form:p.form,fatigue:p.fatigue,morale:p.morale,formGain:p.form92?.gain??0,formDecay:p.form92?.decay??0};
 }
 function trainingPreview33(){
  const original=S;
@@ -82,8 +82,8 @@ tactics=function(){
    'onclick="setTactic(\''+key+'\')">'+esc(info[0])+'</button>').join('')+'</div></section>'+
   '<section class="panel training-choice33"><h2>Интенсивность тренировки</h2><div>'+
   trainingChoices33(trainingModes33,S.training,'mode',!available)+'</div></section>'+
-  '<section class="panel training-form33"><h2>Форма команды</h2><p>Обычные тренировки повышают форму без обязательных побед: базово +0,30 за сбалансированный день или +0,45 за интенсивный. Прирост зависит от штаба и усталости; базовый тренировочный потолок — 85, успешный сезон повышает его до 95.</p>'+
-  (camp?'<p><b>Буткемп: '+esc(V4_CONFIG.camp.tiers[camp.tier].label)+'</b> · дневная прибавка и усиление прироста включены в прогноз.</p>':'<p>Буткемп дополнительно усиливает рост формы. Восстановление и пропуск не дают обычной тренировочной прибавки.</p>')+'<strong>'+fmt(form)+
+  '<section class="panel training-form33"><h2>Форма команды</h2><p>Форма до 99: дневная база +2 / +1,2 / +0,7 / +0,4 / +0,2 по диапазонам до 70 / 85 / 92 / 97 / 99. Интенсивный режим ×1,25; усталость снижает усвоение. Высокая форма постепенно спадает. Прогноз уже учитывает прирост, спад и буткемп.</p>'+
+  (camp?'<p><b>Буткемп: '+esc(V4_CONFIG.camp.tiers[camp.tier].label)+'</b> · усиление тренировочного прироста включено в прогноз.</p>':'<p>Буткемп дополнительно усиливает рост формы. Восстановление и пропуск не дают обычной тренировочной прибавки.</p>')+'<strong>'+fmt(form)+
   (available?' → '+fmt(nextForm)+' <small>'+delta(nextForm-form)+'</small>':'')+
   '</strong>'+trainingBar33(form,nextForm)+'</section>'+
   '<div class="training-layout33"><section class="panel training-choice33"><h2>Фокус тренировки</h2><div>'+
