@@ -9,9 +9,10 @@ for(const [level,expected] of Object.entries(levels)){
   const factors=JSON.parse(run('JSON.stringify(tested.difficulty.multipliers)'));
   const want=ids.map(id=>id===0?expected[0]:level==='impossible'&&!ids.includes(0)?1:expected[1]);
   assert.deepEqual(factors,want,level+' IDs '+ids);
-  const ratios=run('tested.sides.map((s,side)=>Match8.strength(tested,side)/s.heroes.reduce((n,p)=>n+unitBeforeDifficulty.call(Match8,tested,p),0))');
+  run('var neutralDifficulty=structuredClone(tested);neutralDifficulty.difficulty.multipliers=[1,1];');
+  const ratios=run('tested.sides.map((s,side)=>Match8.strength(tested,side)/Match8.strength(neutralDifficulty,side))');
   ratios.forEach((r,i)=>assert(Math.abs(r-want[i])<1e-12,level+' strength multiplier once'));
-  assert(run('tested.sides.every((s,side)=>s.heroes.every(p=>Math.abs(unitPower5(tested,p)/unitBeforeDifficulty.call(Match8,tested,p)-tested.difficulty.multipliers[side])<1e-12))'),level+' all combat units');
+  assert(run('tested.sides.every((s,side)=>s.heroes.every((p,i)=>Math.abs(unitPower5(tested,p)/Match8.unit(neutralDifficulty,neutralDifficulty.sides[side].heroes[i])-tested.difficulty.multipliers[side])<1e-12))'),level+' all combat units');
  }
 }
 run('var frozen=difficultyMap("easy");var frozenPower=Match8.strength(frozen,0);setCareerDifficulty("impossible");');

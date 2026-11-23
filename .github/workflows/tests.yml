@@ -37,6 +37,7 @@ jobs:
       - name: Inspect all screens and tournament formats
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 --directory dist > /tmp/ancient-http.log 2>&1 &
+          GAME_URL=http://127.0.0.1:4173 node tests/browser/form92.cjs
           GAME_URL=http://127.0.0.1:4173 node tests/browser/qualifier-calendar91.cjs
           GAME_URL=http://127.0.0.1:4173 node tests/browser/psg-support91.cjs
           GAME_URL=http://127.0.0.1:4173 node tests/browser/psg91.cjs

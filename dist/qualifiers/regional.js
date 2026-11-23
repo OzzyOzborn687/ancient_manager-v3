@@ -104,7 +104,7 @@ Qualifiers.fastRegionalSeries=function(a,n){
   const lineups=pair.map(id=>roster(S.teams[id]));
   const synergy=lineups.map(players=>amSynergyFactor(amSynergy(players).score));
   const ratings=pair.map(id=>clubState13(S.teams[id]).elo*C.skillEloWeight+
-   (strength(S.teams[id])-C.skillReference)*C.skillScale+(stats[id].form-C.formReference)*C.formWeight);
+   (strength(S.teams[id])-C.skillReference)*C.skillScale);
   const p=clamp(1/(1+QUALIFIERS.provisional.eloBase**((ratings[1]-ratings[0])/QUALIFIERS.provisional.eloScale)*multipliers[1]*synergy[1]/(multipliers[0]*synergy[0])),QUALIFIERS.provisional.minProbability,QUALIFIERS.provisional.maxProbability);
   const winner=rng()<p?0:1;score[winner]++;maps.push({winner:pair[winner],difficulty:{level,club:S.club,multipliers},pWin:p});
   const clubs=pair.map(id=>clubState13(S.teams[id])),expected=1/(1+10**((clubs[1].elo-clubs[0].elo)/QUALIFIERS.provisional.eloScale));

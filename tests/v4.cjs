@@ -1,6 +1,6 @@
 'use strict';
 // Retained V4 admission/scene contracts; V5 replacement and migration are verified in v5.cjs.
-const assert=require('node:assert/strict'),h=require('./harness22.cjs')({modelVersion:8,stopBefore:'v5/clubs.js'}),{run,c}=h;
+const assert=require('node:assert/strict'),h=require('./harness22.cjs')({modelVersion:8,stopBefore:'v5/clubs.js'});let {run,c}=h;
 run(`function fixture4(series='PGL WALLACHIA',n=16){fresh();S.seed=4182;Qualifiers.ensureScene();S.calendar21.installedDay=100000;S.v4.camps={};S.events=[{id:900001,name:'V4 test major',series,season:n===24?30:31,day:40,duration:8,pool:1000000}];V4.install();return S.events[0];}`);
 for(const [series,n,invites] of [['PGL WALLACHIA',16,15],['DREAMLEAGUE',24,16],['FISSURE',16,15],['THE INTERNATIONAL',16,15]]){
  c.testSeries4=series;c.testN4=n;c.testInvites4=invites;
@@ -14,6 +14,8 @@ assert(run(`(()=>{const e=fixture4();for(const t of S.teams)clubState13(t).seaso
 // A locked legacy event must not be rebuilt on migration.
 assert(run(`(()=>{fixture4();const e=S.events[0];e.qualification={qualVersion:1,status:'complete',qualified:[0]};const before=JSON.stringify(e);V4.install();return before===JSON.stringify(e)})()`));
 assert(run(`(()=>{fixture4();const e=S.events[0];e.qualification={qualVersion:1,status:'frozen',mode:'legacy-fixture'};const before=JSON.stringify(e);V4.install();return before===JSON.stringify(e)})()`),'previously published legacy invitations are preserved');
+// Exercise camp preparation with the current form system, separately from legacy admissions.
+({run,c}=require('./harness22.cjs')({modelVersion:8}));
 run(`function campFixture4(){fresh();S.calendar21.installedDay=100000;S.events=[{id:800001,name:'Bootcamp test',series:'ANCIENT',day:10,duration:5,pool:100000,entrants:[S.club]}];S.v4.camps={};S.training='balanced';S.budget=1000000;for(const p of roster()){p.form=70;p.fatigue=50;p.progress21.initialForm=70;}return S.events[0];}`);
 assert(run(`(()=>{const e=campFixture4(),before=S.budget,r=Camp4.book(e.id,'elite'),once=S.budget;return r.ok&&before-once===140000&&!Camp4.book(e.id,'elite').ok&&once===S.budget&&roster().every(p=>p.form===70)&&validSave(S)})()`),'pay once, no instant form bonus');
 const effects=[];
@@ -33,7 +35,7 @@ assert(run(`(()=>{const e=campFixture4();Camp4.book(e.id,'elite');tick();const s
 assert(run(`(()=>{campFixture4();const p=roster()[0];p.morale=70;delete p.v4FanSupport;Fans4.apply(p,{fans:100000,bonus:3});const first=p.morale;for(let i=0;i<50;i++)Fans4.apply(p,{fans:100000,bonus:3});Fans4.apply(p,{fans:0,bonus:0});return first===73&&p.morale===70})()`),'fan support is bounded and non-stacking');
 assert(run(`(()=>{campFixture4();const p=roster()[0];p.morale=97;delete p.v4FanSupport;Fans4.apply(p,{fans:1000000,bonus:4});const first=p.morale;Fans4.apply(p,{fans:0,bonus:0});return first===98&&p.morale===97})()`),'morale cap does not create phantom withdrawal');
 assert(run(`(()=>{campFixture4();const p=roster()[0];p.morale=70;delete p.v4FanSupport;Fans4.apply(p,{fans:100000,bonus:3});p.team=null;Fans4.apply(p,{fans:0,bonus:0});return p.morale===70})()`),'former club support is removed after transfer');
-assert(run(`(()=>{const e=fixture4('DREAMLEAGUE',24),q=Qualifiers.freeze(e),child=S.events.find(c=>c.qualifierFor===e.id);S.day=e.day-7;Qualifiers.backgroundRegionals();const field=Qualifiers.complete(e);return field?.length===24&&child.inviteWinners.length===8&&q.invited.every(r=>field.includes(r.team))&&validSave(S)})()`),'24-team field: eight qualifier winners plus sixteen invitations');
+assert(h.run(`(()=>{const e=fixture4('DREAMLEAGUE',24),q=Qualifiers.freeze(e),child=S.events.find(c=>c.qualifierFor===e.id);S.day=e.day-7;Qualifiers.backgroundRegionals();const field=Qualifiers.complete(e);return field?.length===24&&child.inviteWinners.length===8&&q.invited.every(r=>field.includes(r.team))&&validSave(S)})()`),'24-team field: eight qualifier winners plus sixteen invitations');
 assert(run(`(()=>{const e=campFixture4();Camp4.book(e.id,'elite');skipTraining33=true;try{tick()}finally{skipTraining33=false}const values=Object.values(Camp4.plans()[Camp4.key(e.id)].days[S.day].players);return values.length===5&&values.every(v=>v.form===0&&v.recovery>0)})()`),'skipping training retains recovery without camp form');
 assert(run(`(()=>{const e=campFixture4();e.entrants.push(1);clubState13(S.teams[1]).budget=2000000;const before=funds13(1),own=S.budget;Camp4.autoBook();const b=Camp4.plans()[Camp4.key(e.id,1)];return b?.tier==='online'&&funds13(1)===before&&S.budget===own})()`),'AI prize budget discipline and no human autobooking');
 assert(run(`(()=>{const e=campFixture4();e.pool=1000000;e.entrants.push(1);clubState13(S.teams[1]).budget=2000000;const before=funds13(1);Camp4.autoBook();const b=Camp4.plans()[Camp4.key(e.id,1)];return b?.tier==='elite'&&funds13(1)===before-140000&&!Camp4.plans()[Camp4.key(e.id)]})()`),'AI pays its own budget for the same camp');
